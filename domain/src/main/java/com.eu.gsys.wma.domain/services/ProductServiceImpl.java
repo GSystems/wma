@@ -1,7 +1,7 @@
-package com.eu.gsys.wma.web.service;
+package com.eu.gsys.wma.domain.services;
 
-import com.eu.gsys.wma.web.domain.entities.ProductEntity;
-import com.eu.gsys.wma.web.domain.repositories.ProductRepository;
+import com.eu.gsys.wma.infrastructure.entities.ProductEntity;
+import com.eu.gsys.wma.infrastructure.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,14 +10,19 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductRepository productRepository;
 
+    @Autowired
+    public void setProductRepository(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
     @Override
-    public Iterable <ProductEntity> listAllProducts() {
+    public Iterable<ProductEntity> listAllProducts() {
         return productRepository.findAll();
     }
 
     @Override
     public ProductEntity getProductById(Integer id) {
-        return null;
+        return productRepository.findById(id).get();
     }
 
     @Override
@@ -26,12 +31,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteProduct(ProductEntity productEntity) {
-        productRepository.delete(productEntity);
-    }
-
-    @Autowired
-    public void setProductRepository(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    public void deleteProduct(Integer id) {
+        productRepository.deleteById(id);
     }
 }

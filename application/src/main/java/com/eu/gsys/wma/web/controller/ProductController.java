@@ -1,13 +1,15 @@
 package com.eu.gsys.wma.web.controller;
 
-import com.eu.gsys.wma.web.domain.entities.ProductEntity;
-import com.eu.gsys.wma.web.service.ProductService;
+import com.eu.gsys.wma.infrastructure.entities.ProductEntity;
+import com.eu.gsys.wma.domain.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+@Controller
 public class ProductController {
 
     private ProductService productService;
@@ -49,7 +51,7 @@ public class ProductController {
 
     @RequestMapping("product/delete/{id}")
     public String delete(@PathVariable Integer id){
-//        productService.deleteProduct(id);
+        productService.deleteProduct(id);
         return "redirect:/products";
     }
 }

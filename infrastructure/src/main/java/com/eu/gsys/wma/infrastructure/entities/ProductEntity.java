@@ -1,10 +1,11 @@
-package com.eu.gsys.wma.web.domain.entities;
+package com.eu.gsys.wma.infrastructure.entities;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
 public class ProductEntity {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;

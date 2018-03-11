@@ -1,7 +1,7 @@
 package com.eu.gsys.wma.web.startup;
 
-import com.eu.gsys.wma.web.domain.entities.ProductEntity;
-import com.eu.gsys.wma.web.domain.repositories.ProductRepository;
+import com.eu.gsys.wma.infrastructure.entities.ProductEntity;
+import com.eu.gsys.wma.infrastructure.repositories.ProductRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 public class ProductLoader implements ApplicationListener<ContextRefreshedEvent> {
 
 	private ProductRepository productRepository;
-
 	private Logger log = Logger.getLogger(ProductLoader.class);
 
 	@Autowired

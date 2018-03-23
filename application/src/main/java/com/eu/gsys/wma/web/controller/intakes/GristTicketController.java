@@ -2,6 +2,7 @@ package com.eu.gsys.wma.web.controller.intakes;
 
 import com.eu.gsys.wma.domain.model.GristTicket;
 import com.eu.gsys.wma.domain.services.GristTicketService;
+import com.eu.gsys.wma.web.mappers.GristTicketMapper;
 import com.eu.gsys.wma.web.model.GristTicketModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,12 +22,14 @@ public class GristTicketController {
 	}
 
 	@RequestMapping(value = "/gristTickets", method = RequestMethod.GET)
-	public String listGristTickets(Model model) {
+	public String list(Model model) {
+		model.addAttribute("gristTickets", gristTicketService.listAllGristTickets());
 		return "gristTickets";
 	}
 
 	@RequestMapping("gristTicket/{id}")
 	public String showGristTicket(@PathVariable Integer id, Model model) {
+		model.addAttribute("gristTicket", gristTicketService.getGristTicketsById(id));
 		return "gristTicketShow";
 	}
 
@@ -40,6 +43,12 @@ public class GristTicketController {
 	public String newGristTicket(Model model) {
 		model.addAttribute("gristTicket", new GristTicketModel());
 		return "gristTicketForm";
+	}
+
+	@RequestMapping(value = "gristTicket", method = RequestMethod.POST)
+	public String saveGristTicket(GristTicketModel gristTicketModel) {
+		gristTicketService.saveGristTicket(GristTicketMapper.toGristTicketFromModel(gristTicketModel));
+		return "redirect:/gristTicket/" + gristTicketModel.getTicketId();
 	}
 
 	@RequestMapping("gristTicket/delete/{id}")

@@ -2,12 +2,11 @@ package com.eu.gsys.wma.domain.transformers;
 
 import com.eu.gsys.wma.domain.model.DepositTicket;
 import com.eu.gsys.wma.domain.model.GristTicket;
-import com.eu.gsys.wma.infrastructure.entities.DepositTicketEntity;
-import com.eu.gsys.wma.infrastructure.entities.GristTicketEntity;
+import com.eu.gsys.wma.infrastructure.entities.tickets.DepositTicketEntity;
+import com.eu.gsys.wma.infrastructure.entities.tickets.GristTicketEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
@@ -28,7 +27,7 @@ public class TicketTransformer {
 		gristTicketEntity.setTollWheatQty(gristTicket.getTollWheatQty());
 		gristTicketEntity.setWheatQtyBrought(gristTicket.getWheatQtyBrought());
 		gristTicketEntity.setWheatQtyForGrist(gristTicket.getWheatQtyForGrist());
-		gristTicketEntity.setDate(gristTicket.getDate());
+		gristTicketEntity.setTimestamp(gristTicket.getDate());
 
 		return gristTicketEntity;
 	}
@@ -47,7 +46,7 @@ public class TicketTransformer {
 		gristTicket.setTollWheatQty(gristTicketEntity.getTollWheatQty());
 		gristTicket.setWheatQtyBrought(gristTicketEntity.getWheatQtyBrought());
 		gristTicket.setWheatQtyForGrist(gristTicketEntity.getWheatQtyForGrist());
-		gristTicket.setDate(gristTicketEntity.getDate());
+		gristTicket.setDate(gristTicketEntity.getTimestamp());
 
 		return gristTicket;
 	}
@@ -69,7 +68,7 @@ public class TicketTransformer {
 		depositTicket.setAddress(depositTicketEntity.getAddress());
 		depositTicket.setClientId(depositTicketEntity.getClientId());
 		depositTicket.setClientName(depositTicketEntity.getClientName());
-		depositTicket.setDate(depositTicketEntity.getDate());
+		depositTicket.setDate(depositTicketEntity.getTimestamp());
 		depositTicket.setTicketId(depositTicketEntity.getTicketId());
 
 		return depositTicket;
@@ -82,7 +81,7 @@ public class TicketTransformer {
 		depositTicketEntity.setAddress(depositTicket.getAddress());
 		depositTicketEntity.setClientId(depositTicket.getClientId());
 		depositTicketEntity.setClientName(depositTicket.getClientName());
-		depositTicketEntity.setDate(depositTicket.getDate());
+		depositTicketEntity.setTimestamp(depositTicket.getDate());
 		depositTicketEntity.setTicketId(depositTicket.getTicketId());
 
 		return depositTicketEntity;

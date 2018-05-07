@@ -1,33 +1,25 @@
 package com.eu.gsys.wma.infrastructure.entities;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
 import java.time.LocalDate;
 
-@MappedSuperclass
-public class BasicTicketEntity {
+@Entity
+public class ClientEntity {
 
     @Id
-    private Long ticketId;
-    private LocalDate date;
+    private Integer id;
     private String clientName;
-    private String clientId;    // CNP
+    private String clientId;
     private String address;
+    private LocalDate joinDate;
 
-    public Long getTicketId() {
-        return ticketId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setTicketId(Long ticketId) {
-        this.ticketId = ticketId;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getClientName() {
@@ -52,5 +44,13 @@ public class BasicTicketEntity {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public LocalDate getJoinDate() {
+        return joinDate;
+    }
+
+    public void setJoinDate(LocalDate joinDate) {
+        this.joinDate = joinDate;
     }
 }

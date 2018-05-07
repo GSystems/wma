@@ -1,11 +1,9 @@
-package com.eu.gsys.wma.infrastructure.entities;
+package com.eu.gsys.wma.infrastructure.entities.tickets;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.time.LocalDate;
 
 @Entity
-public class DepositTicketEntity extends BasicTicketEntity {
+public class DepositTicketEntity extends BasicTicketMaster {
 
 	private Double wheatQtyForDeposit;
 

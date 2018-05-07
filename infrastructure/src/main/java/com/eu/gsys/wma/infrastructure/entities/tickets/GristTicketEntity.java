@@ -1,11 +1,9 @@
-package com.eu.gsys.wma.infrastructure.entities;
+package com.eu.gsys.wma.infrastructure.entities.tickets;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.time.LocalDate;
 
 @Entity
-public class GristTicketEntity extends BasicTicketEntity {
+public class GristTicketEntity extends BasicTicketMaster {
 
 	private Integer referenceId;
 	private Double wheatQtyBrought;

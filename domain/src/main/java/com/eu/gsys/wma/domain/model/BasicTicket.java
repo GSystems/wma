@@ -7,8 +7,7 @@ public class BasicTicket {
 	private Long ticketId;
 	private LocalDate date;
 	private String clientName;
-	private String clientId;	// CNP
-	private String companyClientUIC;	// CUI
+	private String clientId;	// CNP - CUI
 	private String address;
 
 	public Long getTicketId() {
@@ -41,14 +40,6 @@ public class BasicTicket {
 
 	public void setClientId(String clientId) {
 		this.clientId = clientId;
-	}
-
-	public String getCompanyClientUIC() {
-		return companyClientUIC;
-	}
-
-	public void setCompanyClientUIC(String companyClientUIC) {
-		this.companyClientUIC = companyClientUIC;
 	}
 
 	public String getAddress() {

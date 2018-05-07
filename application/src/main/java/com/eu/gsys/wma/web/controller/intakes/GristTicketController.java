@@ -2,7 +2,6 @@ package com.eu.gsys.wma.web.controller.intakes;
 
 import com.eu.gsys.wma.domain.model.GristTicket;
 import com.eu.gsys.wma.domain.services.GristTicketService;
-import com.eu.gsys.wma.web.model.GristTicketModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class GristTicketController {
 
+	@Autowired
 	private GristTicketService gristTicketService;
 
 	@Autowired
@@ -38,7 +38,7 @@ public class GristTicketController {
 
 	@RequestMapping("gristTicket/new")
 	public String newGristTicket(Model model) {
-		model.addAttribute("gristTicket", new GristTicketModel());
+		model.addAttribute("gristTicket", new GristTicket());
 		return "gristTicketForm";
 	}
 

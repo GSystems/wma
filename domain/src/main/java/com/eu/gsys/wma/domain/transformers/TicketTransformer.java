@@ -1,22 +1,25 @@
 package com.eu.gsys.wma.domain.transformers;
 
+import com.eu.gsys.wma.domain.model.DepositTicket;
 import com.eu.gsys.wma.domain.model.GristTicket;
+import com.eu.gsys.wma.infrastructure.entities.DepositTicketEntity;
 import com.eu.gsys.wma.infrastructure.entities.GristTicketEntity;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class GristTicketTransformer {
+@Component
+public class TicketTransformer {
 
-	public static GristTicketEntity fromGristTicketToEntity(GristTicket gristTicket) {
+	public GristTicketEntity fromGristTicketToEntity(GristTicket gristTicket) {
 		GristTicketEntity gristTicketEntity = new GristTicketEntity();
 
 		gristTicketEntity.setAddress(gristTicket.getAddress());
 		gristTicketEntity.setBranQtyForClient(gristTicket.getBranQtyForClient());
 		gristTicketEntity.setClientId(gristTicket.getClientId());
 		gristTicketEntity.setClientName(gristTicket.getClientName());
-		gristTicketEntity.setCompanyClientUIC(gristTicket.getCompanyClientUIC());
 		gristTicketEntity.setFlourQtyForClient(gristTicket.getFlourQtyForClient());
 		gristTicketEntity.setManufacturingLossesQty(gristTicket.getManufacturingLossesQty());
 		gristTicketEntity.setOtherCorpusQty(gristTicket.getOtherCorpusQty());
@@ -30,13 +33,12 @@ public class GristTicketTransformer {
 		return gristTicketEntity;
 	}
 
-	public static GristTicket toGristTicketFromEntity(GristTicketEntity gristTicketEntity) {
+	public GristTicket toGristTicketFromEntity(GristTicketEntity gristTicketEntity) {
 		GristTicket gristTicket = new GristTicket();
 
 		gristTicket.setAddress(gristTicketEntity.getAddress());
 		gristTicket.setBranQtyForClient(gristTicketEntity.getBranQtyForClient());
 		gristTicket.setClientId(gristTicketEntity.getClientId());
-		gristTicket.setCompanyClientUIC(gristTicketEntity.getCompanyClientUIC());
 		gristTicket.setFlourQtyForClient(gristTicketEntity.getFlourQtyForClient());
 		gristTicket.setManufacturingLossesQty(gristTicketEntity.getManufacturingLossesQty());
 		gristTicket.setOtherCorpusQty(gristTicketEntity.getOtherCorpusQty());
@@ -50,7 +52,43 @@ public class GristTicketTransformer {
 		return gristTicket;
 	}
 
-	public static Iterable<GristTicket> fromGristTicketToEntityList(Iterable<GristTicketEntity> gristTicketEntities) {
+	public List<DepositTicket> toDepositTicketFromEntityList(Iterable<DepositTicketEntity> depositTicketEntities) {
+		List<DepositTicket> depositTickets = new ArrayList<>();
+
+		for (DepositTicketEntity depositTicketEntity : depositTicketEntities) {
+			depositTickets.add(toDepositTicketFromEntity(depositTicketEntity));
+		}
+
+		return depositTickets;
+	}
+
+	public DepositTicket toDepositTicketFromEntity(DepositTicketEntity depositTicketEntity) {
+		DepositTicket depositTicket = new DepositTicket();
+
+		depositTicket.setWheatQtyForDeposit(depositTicketEntity.getWheatQtyForDeposit());
+		depositTicket.setAddress(depositTicketEntity.getAddress());
+		depositTicket.setClientId(depositTicketEntity.getClientId());
+		depositTicket.setClientName(depositTicketEntity.getClientName());
+		depositTicket.setDate(depositTicketEntity.getDate());
+		depositTicket.setTicketId(depositTicketEntity.getTicketId());
+
+		return depositTicket;
+	}
+
+	public DepositTicketEntity fromDepositTicketToEntity(DepositTicket depositTicket) {
+		DepositTicketEntity depositTicketEntity = new DepositTicketEntity();
+
+		depositTicketEntity.setWheatQtyForDeposit(depositTicket.getWheatQtyForDeposit());
+		depositTicketEntity.setAddress(depositTicket.getAddress());
+		depositTicketEntity.setClientId(depositTicket.getClientId());
+		depositTicketEntity.setClientName(depositTicket.getClientName());
+		depositTicketEntity.setDate(depositTicket.getDate());
+		depositTicketEntity.setTicketId(depositTicket.getTicketId());
+
+		return depositTicketEntity;
+	}
+
+	public Iterable<GristTicket> fromGristTicketToEntityList(Iterable<GristTicketEntity> gristTicketEntities) {
 		List<GristTicket> gristTickets = new ArrayList<>();
 
 		for (GristTicketEntity gristTicketEntity : gristTicketEntities) {

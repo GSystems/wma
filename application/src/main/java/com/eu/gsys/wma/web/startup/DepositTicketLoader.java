@@ -1,5 +1,6 @@
 package com.eu.gsys.wma.web.startup;
 
+import com.eu.gsys.wma.domain.model.Client;
 import com.eu.gsys.wma.domain.model.DepositTicket;
 import com.eu.gsys.wma.domain.services.DepositTicketService;
 import org.apache.log4j.Logger;
@@ -13,21 +14,20 @@ import java.time.LocalDate;
 @Component
 public class DepositTicketLoader implements ApplicationListener<ContextRefreshedEvent> {
 
+	@Autowired
 	private DepositTicketService depositTicketService;
 	private Logger log = Logger.getLogger(DepositTicketLoader.class);
-
-	@Autowired
-	public void setDepositTicketService(DepositTicketService depositTicketService) {
-		this.depositTicketService = depositTicketService;
-	}
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 		DepositTicket depositTicket0 = new DepositTicket();
+		Client client0 = new Client();
 
-		depositTicket0.setAddress("str Louis");
-		depositTicket0.setClientId("1890210226682");
-		depositTicket0.setClientName("Lesseter Gregory");
+		client0.setAddress("str Louis");
+		client0.setClientId("1890210226682");
+		client0.setClientName("Lesseter Gregory");
+
+		depositTicket0.setClient(client0);
 		depositTicket0.setTicketId(100L);
 		depositTicket0.setWheatQtyForDeposit(2000.0);
 		depositTicket0.setDate(LocalDate.now());
@@ -36,10 +36,13 @@ public class DepositTicketLoader implements ApplicationListener<ContextRefreshed
 		log.info("Saved DepositTicket - id: " + depositTicket0.getTicketId());
 
 		DepositTicket depositTicket1 = new DepositTicket();
+		Client client1 = new Client();
 
-		depositTicket1.setAddress("str Alca");
-		depositTicket1.setClientName("SC Example SRL");
-		depositTicket1.setClientId("RO21423");
+		client1.setAddress("str Alca");
+		client1.setClientName("SC Example SRL");
+		client1.setClientId("RO21423");
+
+		depositTicket1.setClient(client1);
 		depositTicket1.setTicketId(101L);
 		depositTicket1.setWheatQtyForDeposit(1000.0);
 		depositTicket1.setDate(LocalDate.now());

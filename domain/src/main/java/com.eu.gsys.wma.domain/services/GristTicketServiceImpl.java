@@ -1,42 +1,44 @@
 package com.eu.gsys.wma.domain.services;
 
 import com.eu.gsys.wma.domain.model.GristTicket;
-import com.eu.gsys.wma.domain.transformers.TicketTransformer;
+import com.eu.gsys.wma.domain.transformers.GristTicketTransformer;
+import com.eu.gsys.wma.infrastructure.entities.tickets.GristTicketEntity;
 import com.eu.gsys.wma.infrastructure.repositories.GristTicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.security.krb5.internal.Ticket;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class GristTicketServiceImpl implements GristTicketService {
 
-	private TicketTransformer transformer;
+	@Autowired
+	private GristTicketTransformer gristTicketTransformer;
+
+	@Autowired
 	private GristTicketRepository gristTicketRepository;
-
-	@Autowired
-	public void setTransformer(TicketTransformer transformer) {
-		this.transformer = transformer;
-	}
-
-	@Autowired
-	public void setGristTicketRepository(GristTicketRepository gristTicketRepository) {
-		this.gristTicketRepository = gristTicketRepository;
-	}
 
 	@Override
 	public Iterable<GristTicket> listAllGristTickets() {
-		return transformer.fromGristTicketToEntityList(gristTicketRepository.findAll());
+		List<GristTicket> gristTicketList = new ArrayList<>();
+
+		for (GristTicketEntity gristTicketEntity : gristTicketRepository.findAll()) {
+			gristTicketList.add(gristTicketTransformer.toModel(gristTicketEntity));
+		}
+
+		return gristTicketList;
 	}
 
 	@Override
 	public GristTicket getGristTicketsById(Integer id) {
-		return transformer.toGristTicketFromEntity(gristTicketRepository.findById(id).get());
+		return gristTicketTransformer.toModel(gristTicketRepository.findById(id).get());
 	}
 
 	@Override
 	public GristTicket saveGristTicket(GristTicket gristTicket) {
-		return transformer.toGristTicketFromEntity(
-				gristTicketRepository.save(transformer.fromGristTicketToEntity(gristTicket)));
+		return gristTicketTransformer.toModel(
+				gristTicketRepository.save(gristTicketTransformer.fromModel(gristTicket)));
 	}
 
 	@Override

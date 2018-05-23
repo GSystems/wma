@@ -12,8 +12,10 @@ public class BasicTicketMaster {
 
     @Id
     private Long ticketId;
+
     @ManyToOne
     private ClientEntity client;
+
     private LocalDate timestamp;
 
     public Long getTicketId() {

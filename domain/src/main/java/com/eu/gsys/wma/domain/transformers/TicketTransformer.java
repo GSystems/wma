@@ -15,10 +15,10 @@ public class TicketTransformer {
 	public GristTicketEntity fromGristTicketToEntity(GristTicket gristTicket) {
 		GristTicketEntity gristTicketEntity = new GristTicketEntity();
 
-		gristTicketEntity.setAddress(gristTicket.getAddress());
+//		gristTicketEntity.setAddress(gristTicket.getAddress());
 		gristTicketEntity.setBranQtyForClient(gristTicket.getBranQtyForClient());
-		gristTicketEntity.setClientId(gristTicket.getClientId());
-		gristTicketEntity.setClientName(gristTicket.getClientName());
+//		gristTicketEntity.setClientId(gristTicket.getClientId());
+//		gristTicketEntity.setClientName(gristTicket.getClientName());
 		gristTicketEntity.setFlourQtyForClient(gristTicket.getFlourQtyForClient());
 		gristTicketEntity.setManufacturingLossesQty(gristTicket.getManufacturingLossesQty());
 		gristTicketEntity.setOtherCorpusQty(gristTicket.getOtherCorpusQty());
@@ -35,9 +35,9 @@ public class TicketTransformer {
 	public GristTicket toGristTicketFromEntity(GristTicketEntity gristTicketEntity) {
 		GristTicket gristTicket = new GristTicket();
 
-		gristTicket.setAddress(gristTicketEntity.getAddress());
+//		gristTicket.setAddress(gristTicketEntity.getAddress());
 		gristTicket.setBranQtyForClient(gristTicketEntity.getBranQtyForClient());
-		gristTicket.setClientId(gristTicketEntity.getClientId());
+//		gristTicket.setClientId(gristTicketEntity.getClientId());
 		gristTicket.setFlourQtyForClient(gristTicketEntity.getFlourQtyForClient());
 		gristTicket.setManufacturingLossesQty(gristTicketEntity.getManufacturingLossesQty());
 		gristTicket.setOtherCorpusQty(gristTicketEntity.getOtherCorpusQty());
@@ -65,9 +65,9 @@ public class TicketTransformer {
 		DepositTicket depositTicket = new DepositTicket();
 
 		depositTicket.setWheatQtyForDeposit(depositTicketEntity.getWheatQtyForDeposit());
-		depositTicket.setAddress(depositTicketEntity.getAddress());
-		depositTicket.setClientId(depositTicketEntity.getClientId());
-		depositTicket.setClientName(depositTicketEntity.getClientName());
+//		depositTicket.setAddress(depositTicketEntity.getAddress());
+//		depositTicket.setClientId(depositTicketEntity.getClientId());
+//		depositTicket.setClientName(depositTicketEntity.getClientName());
 		depositTicket.setDate(depositTicketEntity.getTimestamp());
 		depositTicket.setTicketId(depositTicketEntity.getTicketId());
 
@@ -78,9 +78,9 @@ public class TicketTransformer {
 		DepositTicketEntity depositTicketEntity = new DepositTicketEntity();
 
 		depositTicketEntity.setWheatQtyForDeposit(depositTicket.getWheatQtyForDeposit());
-		depositTicketEntity.setAddress(depositTicket.getAddress());
-		depositTicketEntity.setClientId(depositTicket.getClientId());
-		depositTicketEntity.setClientName(depositTicket.getClientName());
+//		depositTicketEntity.setAddress(depositTicket.getAddress());
+//		depositTicketEntity.setClientId(depositTicket.getClientId());
+//		depositTicketEntity.setClientName(depositTicket.getClientName());
 		depositTicketEntity.setTimestamp(depositTicket.getDate());
 		depositTicketEntity.setTicketId(depositTicket.getTicketId());
 

@@ -2,8 +2,8 @@ package com.eu.gsys.wma.domain.services;
 
 import com.eu.gsys.wma.domain.model.DepositTicket;
 import com.eu.gsys.wma.domain.transformers.DepositTicketTransformer;
+import com.eu.gsys.wma.infrastructure.dao.DepositTicketDAO;
 import com.eu.gsys.wma.infrastructure.entities.tickets.DepositTicketEntity;
-import com.eu.gsys.wma.infrastructure.repositories.DepositTicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +17,13 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 	private DepositTicketTransformer depositTicketTransformer;
 
 	@Autowired
-	private DepositTicketRepository depositTicketRepository;
+	private DepositTicketDAO depositTicketDAO;
 
 	@Override
 	public Iterable<DepositTicket> listAllDepositTickets() {
 		List<DepositTicket> depositTicketList = new ArrayList<>();
 
-		for (DepositTicketEntity depositTicketEntity : depositTicketRepository.findAll()) {
+		for (DepositTicketEntity depositTicketEntity : depositTicketDAO.listAllDepositTickets()) {
 			depositTicketList.add(depositTicketTransformer.toModel(depositTicketEntity));
 		}
 
@@ -32,17 +32,17 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 
 	@Override
 	public DepositTicket getDepositTicketsById(Integer id) {
-		return depositTicketTransformer.toModel(depositTicketRepository.findById(id).get());
+		return depositTicketTransformer.toModel(depositTicketDAO.getDepositTicketsById(id));
 	}
 
 	@Override
 	public DepositTicket saveDepositTicket(DepositTicket depositTicket) {
 		return depositTicketTransformer.toModel(
-				depositTicketRepository.save(depositTicketTransformer.fromModel(depositTicket)));
+				depositTicketDAO.saveDepositTicket(depositTicketTransformer.fromModel(depositTicket)));
 	}
 
 	@Override
 	public void deleteDepositTicket(Integer id) {
-		depositTicketRepository.deleteById(id);
+		depositTicketDAO.deleteDepositTicket(id);
 	}
 }

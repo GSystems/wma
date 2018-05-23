@@ -5,31 +5,31 @@ import javax.persistence.Entity;
 @Entity
 public class CompanyDepositEntity extends DepositMaster {
 
-    private Double tollWheatBalance;
-    private Double flourBalance;
-    private Double branWheatBalance;
+    private Double profitWheatQty;
+    private Double profitFlourQty;
+    private Double profitBranQty;
 
-    public Double getTollWheatBalance() {
-        return tollWheatBalance;
+    public Double getProfitWheatQty() {
+        return profitWheatQty;
     }
 
-    public void setTollWheatBalance(Double tollWheatBalance) {
-        this.tollWheatBalance = tollWheatBalance;
+    public void setProfitWheatQty(Double profitWheatQty) {
+        this.profitWheatQty = profitWheatQty;
     }
 
-    public Double getFlourBalance() {
-        return flourBalance;
+    public Double getProfitFlourQty() {
+        return profitFlourQty;
     }
 
-    public void setFlourBalance(Double flourBalance) {
-        this.flourBalance = flourBalance;
+    public void setProfitFlourQty(Double profitFlourQty) {
+        this.profitFlourQty = profitFlourQty;
     }
 
-    public Double getBranWheatBalance() {
-        return branWheatBalance;
+    public Double getProfitBranQty() {
+        return profitBranQty;
     }
 
-    public void setBranWheatBalance(Double branWheatBalance) {
-        this.branWheatBalance = branWheatBalance;
+    public void setProfitBranQty(Double profitBranQty) {
+        this.profitBranQty = profitBranQty;
     }
 }

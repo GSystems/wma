@@ -2,6 +2,7 @@ package com.eu.gsys.wma.domain.services;
 
 import com.eu.gsys.wma.domain.model.GristTicket;
 import com.eu.gsys.wma.domain.transformers.GristTicketTransformer;
+import com.eu.gsys.wma.infrastructure.dao.GristTicketDAO;
 import com.eu.gsys.wma.infrastructure.entities.tickets.GristTicketEntity;
 import com.eu.gsys.wma.infrastructure.repositories.GristTicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +18,13 @@ public class GristTicketServiceImpl implements GristTicketService {
 	private GristTicketTransformer gristTicketTransformer;
 
 	@Autowired
-	private GristTicketRepository gristTicketRepository;
+	private GristTicketDAO gristTicketDAO;
 
 	@Override
 	public Iterable<GristTicket> listAllGristTickets() {
 		List<GristTicket> gristTicketList = new ArrayList<>();
 
-		for (GristTicketEntity gristTicketEntity : gristTicketRepository.findAll()) {
+		for (GristTicketEntity gristTicketEntity : gristTicketDAO.listAllGristTickets()) {
 			gristTicketList.add(gristTicketTransformer.toModel(gristTicketEntity));
 		}
 
@@ -32,17 +33,17 @@ public class GristTicketServiceImpl implements GristTicketService {
 
 	@Override
 	public GristTicket getGristTicketsById(Integer id) {
-		return gristTicketTransformer.toModel(gristTicketRepository.findById(id).get());
+		return gristTicketTransformer.toModel(gristTicketDAO.getGristTicketsById(id));
 	}
 
 	@Override
 	public GristTicket saveGristTicket(GristTicket gristTicket) {
 		return gristTicketTransformer.toModel(
-				gristTicketRepository.save(gristTicketTransformer.fromModel(gristTicket)));
+				gristTicketDAO.saveGristTicket(gristTicketTransformer.fromModel(gristTicket)));
 	}
 
 	@Override
 	public void deleteGristTicket(Integer id) {
-		gristTicketRepository.deleteById(id);
+		gristTicketDAO.deleteGristTicket(id);
 	}
 }

@@ -9,7 +9,9 @@ public class DepositMaster {
 
     @Id
     private Integer id;
-    private Double totalWheatBalance;
+    private Double totalWheatQty;
+    private Double totalFlourQty;
+    private Double totalBranQty;
     private LocalDate timestamp;
 
     public Integer getId() {
@@ -20,12 +22,28 @@ public class DepositMaster {
         this.id = id;
     }
 
-    public Double getTotalWheatBalance() {
-        return totalWheatBalance;
+    public Double getTotalWheatQty() {
+        return totalWheatQty;
     }
 
-    public void setTotalWheatBalance(Double totalWheatBalance) {
-        this.totalWheatBalance = totalWheatBalance;
+    public void setTotalWheatQty(Double totalWheatQty) {
+        this.totalWheatQty = totalWheatQty;
+    }
+
+    public Double getTotalFlourQty() {
+        return totalFlourQty;
+    }
+
+    public void setTotalFlourQty(Double totalFlourQty) {
+        this.totalFlourQty = totalFlourQty;
+    }
+
+    public Double getTotalBranQty() {
+        return totalBranQty;
+    }
+
+    public void setTotalBranQty(Double totalBranQty) {
+        this.totalBranQty = totalBranQty;
     }
 
     public LocalDate getTimestamp() {

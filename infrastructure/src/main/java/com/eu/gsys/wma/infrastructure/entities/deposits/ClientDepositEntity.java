@@ -8,9 +8,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class ClientDepositEntity extends DepositMaster {
 
-
     @ManyToOne
     private ClientEntity client;
 
-    private Double totalWheatBalance;
 }

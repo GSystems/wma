@@ -1,22 +1,16 @@
-package com.eu.gsys.wma.infrastructure.entities;
+package com.eu.gsys.wma.domain.model;
 
+import com.eu.gsys.wma.domain.util.OperationTypeEnum;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.time.LocalTime;
 
 @Data
-@Entity
-public class TransactionEntity {
+public class GeneralDeposit {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private LocalTime time;
-	private String operationType;
+	private OperationTypeEnum ticketType;
 	private Long ticketId;
 
 	private Double totalWheatQty;

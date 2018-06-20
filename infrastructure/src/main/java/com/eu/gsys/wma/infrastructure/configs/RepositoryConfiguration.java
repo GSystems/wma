@@ -1,4 +1,4 @@
-package com.eu.gsys.wma.infrastructure.config;
+package com.eu.gsys.wma.infrastructure.configs;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;

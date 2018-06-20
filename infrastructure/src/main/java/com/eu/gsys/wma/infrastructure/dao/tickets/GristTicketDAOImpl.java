@@ -1,7 +1,7 @@
 package com.eu.gsys.wma.infrastructure.dao.tickets;
 
 import com.eu.gsys.wma.infrastructure.entities.tickets.GristTicketEntity;
-import com.eu.gsys.wma.infrastructure.repositories.GristTicketRepository;
+import com.eu.gsys.wma.infrastructure.repositories.tickets.GristTicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

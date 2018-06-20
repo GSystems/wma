@@ -22,8 +22,10 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 	@Override
 	public Iterable<DepositTicket> listAllDepositTickets() {
 		List<DepositTicket> depositTicketList = new ArrayList<>();
+		List<DepositTicketEntity> depositTicketEntities =
+				(List<DepositTicketEntity>) depositTicketDAO.listAllDepositTickets();
 
-		for (DepositTicketEntity depositTicketEntity : depositTicketDAO.listAllDepositTickets()) {
+		for (DepositTicketEntity depositTicketEntity : depositTicketEntities) {
 			depositTicketList.add(depositTicketTransformer.toModel(depositTicketEntity));
 		}
 
@@ -31,14 +33,13 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 	}
 
 	@Override
-	public DepositTicket getDepositTicketsById(Integer id) {
-		return depositTicketTransformer.toModel(depositTicketDAO.getDepositTicketsById(id));
+	public DepositTicket getDepositTicketById(Integer id) {
+		return depositTicketTransformer.toModel(depositTicketDAO.getDepositTicketById(id));
 	}
 
 	@Override
-	public DepositTicket saveDepositTicket(DepositTicket depositTicket) {
-		return depositTicketTransformer.toModel(
-				depositTicketDAO.saveDepositTicket(depositTicketTransformer.fromModel(depositTicket)));
+	public void saveDepositTicket(DepositTicket depositTicket) {
+		depositTicketDAO.saveDepositTicket(depositTicketTransformer.fromModel(depositTicket));
 	}
 
 	@Override

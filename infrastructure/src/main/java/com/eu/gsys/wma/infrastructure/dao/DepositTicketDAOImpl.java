@@ -5,9 +5,6 @@ import com.eu.gsys.wma.infrastructure.repositories.DepositTicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Repository
 public class DepositTicketDAOImpl implements DepositTicketDAO {
 
@@ -16,17 +13,11 @@ public class DepositTicketDAOImpl implements DepositTicketDAO {
 
 	@Override
 	public Iterable<DepositTicketEntity> listAllDepositTickets() {
-		List<DepositTicketEntity> depositTicketList = new ArrayList<>();
-
-		for (DepositTicketEntity depositTicketEntity : depositTicketRepository.findAll()) {
-			depositTicketList.add(depositTicketEntity);
-		}
-
-		return depositTicketList;
+		return depositTicketRepository.findAll();
 	}
 
 	@Override
-	public DepositTicketEntity getDepositTicketsById(Integer id) {
+	public DepositTicketEntity getDepositTicketById(Integer id) {
 		return depositTicketRepository.findById(id).get();
 	}
 

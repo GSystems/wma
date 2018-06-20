@@ -5,9 +5,6 @@ import com.eu.gsys.wma.infrastructure.repositories.GristTicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Repository
 public class GristTicketDAOImpl implements GristTicketDAO {
 
@@ -16,17 +13,11 @@ public class GristTicketDAOImpl implements GristTicketDAO {
 
 	@Override
 	public Iterable<GristTicketEntity> listAllGristTickets() {
-		List<GristTicketEntity> gristTicketList = new ArrayList<>();
-
-		for (GristTicketEntity gristTicketEntity : gristTicketRepository.findAll()) {
-			gristTicketList.add(gristTicketEntity);
-		}
-
-		return gristTicketList;
+		return gristTicketRepository.findAll();
 	}
 
 	@Override
-	public GristTicketEntity getGristTicketsById(Integer id) {
+	public GristTicketEntity getGristTicketById(Integer id) {
 		return gristTicketRepository.findById(id).get();
 	}
 

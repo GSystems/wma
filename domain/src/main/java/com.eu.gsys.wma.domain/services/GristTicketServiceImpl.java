@@ -4,7 +4,6 @@ import com.eu.gsys.wma.domain.model.GristTicket;
 import com.eu.gsys.wma.domain.transformers.GristTicketTransformer;
 import com.eu.gsys.wma.infrastructure.dao.GristTicketDAO;
 import com.eu.gsys.wma.infrastructure.entities.tickets.GristTicketEntity;
-import com.eu.gsys.wma.infrastructure.repositories.GristTicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +22,9 @@ public class GristTicketServiceImpl implements GristTicketService {
 	@Override
 	public Iterable<GristTicket> listAllGristTickets() {
 		List<GristTicket> gristTicketList = new ArrayList<>();
+		List<GristTicketEntity> gristTicketEntities = (List<GristTicketEntity>) gristTicketDAO.listAllGristTickets();
 
-		for (GristTicketEntity gristTicketEntity : gristTicketDAO.listAllGristTickets()) {
+		for (GristTicketEntity gristTicketEntity : gristTicketEntities) {
 			gristTicketList.add(gristTicketTransformer.toModel(gristTicketEntity));
 		}
 
@@ -32,14 +32,13 @@ public class GristTicketServiceImpl implements GristTicketService {
 	}
 
 	@Override
-	public GristTicket getGristTicketsById(Integer id) {
-		return gristTicketTransformer.toModel(gristTicketDAO.getGristTicketsById(id));
+	public GristTicket getGristTicketById(Integer id) {
+		return gristTicketTransformer.toModel(gristTicketDAO.getGristTicketById(id));
 	}
 
 	@Override
-	public GristTicket saveGristTicket(GristTicket gristTicket) {
-		return gristTicketTransformer.toModel(
-				gristTicketDAO.saveGristTicket(gristTicketTransformer.fromModel(gristTicket)));
+	public void saveGristTicket(GristTicket gristTicket) {
+		gristTicketDAO.saveGristTicket(gristTicketTransformer.fromModel(gristTicket));
 	}
 
 	@Override

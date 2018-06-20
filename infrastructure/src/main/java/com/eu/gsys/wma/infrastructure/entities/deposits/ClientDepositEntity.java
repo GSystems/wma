@@ -12,5 +12,4 @@ public class ClientDepositEntity extends DepositMaster {
 
 	@ManyToOne
 	private ClientEntity client;
-
 }

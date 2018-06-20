@@ -1,7 +1,7 @@
 package com.eu.gsys.wma.web.controller.intakes;
 
-import com.eu.gsys.wma.domain.model.GristTicket;
-import com.eu.gsys.wma.infrastructure.dao.GristTicketDAO;
+import com.eu.gsys.wma.domain.model.tickets.GristTicket;
+import com.eu.gsys.wma.infrastructure.dao.tickets.GristTicketDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,6 +1,6 @@
-package com.eu.gsys.wma.domain.services;
+package com.eu.gsys.wma.domain.services.tickets;
 
-import com.eu.gsys.wma.domain.model.GristTicket;
+import com.eu.gsys.wma.domain.model.tickets.GristTicket;
 
 public interface GristTicketService {
 

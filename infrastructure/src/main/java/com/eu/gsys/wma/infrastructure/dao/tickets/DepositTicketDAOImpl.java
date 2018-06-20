@@ -1,9 +1,11 @@
-package com.eu.gsys.wma.infrastructure.dao;
+package com.eu.gsys.wma.infrastructure.dao.tickets;
 
 import com.eu.gsys.wma.infrastructure.entities.tickets.DepositTicketEntity;
 import com.eu.gsys.wma.infrastructure.repositories.DepositTicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class DepositTicketDAOImpl implements DepositTicketDAO {
@@ -12,8 +14,8 @@ public class DepositTicketDAOImpl implements DepositTicketDAO {
 	private DepositTicketRepository depositTicketRepository;
 
 	@Override
-	public Iterable<DepositTicketEntity> listAllDepositTickets() {
-		return depositTicketRepository.findAll();
+	public List<DepositTicketEntity> listAllDepositTickets() {
+		return (List<DepositTicketEntity>) depositTicketRepository.findAll();
 	}
 
 	@Override

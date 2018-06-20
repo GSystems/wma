@@ -1,10 +1,12 @@
-package com.eu.gsys.wma.infrastructure.dao;
+package com.eu.gsys.wma.infrastructure.dao.tickets;
 
 import com.eu.gsys.wma.infrastructure.entities.tickets.GristTicketEntity;
 
+import java.util.List;
+
 public interface GristTicketDAO {
 
-	Iterable<GristTicketEntity> listAllGristTickets();
+	List<GristTicketEntity> listAllGristTickets();
 
 	GristTicketEntity getGristTicketById(Integer id);
 

@@ -1,10 +1,12 @@
-package com.eu.gsys.wma.infrastructure.dao;
+package com.eu.gsys.wma.infrastructure.dao.tickets;
 
 import com.eu.gsys.wma.infrastructure.entities.tickets.DepositTicketEntity;
 
+import java.util.List;
+
 public interface DepositTicketDAO {
 
-	Iterable<DepositTicketEntity> listAllDepositTickets();
+	List<DepositTicketEntity> listAllDepositTickets();
 
 	DepositTicketEntity getDepositTicketById(Integer id);
 

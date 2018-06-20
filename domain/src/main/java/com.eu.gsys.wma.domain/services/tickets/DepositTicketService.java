@@ -1,6 +1,6 @@
-package com.eu.gsys.wma.domain.services;
+package com.eu.gsys.wma.domain.services.tickets;
 
-import com.eu.gsys.wma.domain.model.DepositTicket;
+import com.eu.gsys.wma.domain.model.tickets.DepositTicket;
 
 public interface DepositTicketService {
 

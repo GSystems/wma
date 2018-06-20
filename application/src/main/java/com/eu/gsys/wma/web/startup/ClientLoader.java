@@ -23,7 +23,6 @@ public class ClientLoader implements ApplicationListener<ContextRefreshedEvent> 
 	public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 		Client client0 = new Client();
 
-		client0.setId(1);
 		client0.setAddress("str Louis");
 		client0.setClientId(1890210226682L);
 		client0.setFirstName("Lesseter");
@@ -34,7 +33,6 @@ public class ClientLoader implements ApplicationListener<ContextRefreshedEvent> 
 
 		Client client1 = new Client();
 
-		client1.setId(2);
 		client1.setAddress("str Alca");
 		client1.setCompanyName("SC Example SRL");
 		client1.setCompanyId("RO21423");

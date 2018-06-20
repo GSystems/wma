@@ -1,4 +1,4 @@
-package com.eu.gsys.wma.domain.model;
+package com.eu.gsys.wma.domain.model.tickets;
 
 import lombok.Data;
 

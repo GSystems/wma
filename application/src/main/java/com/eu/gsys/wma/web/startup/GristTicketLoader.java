@@ -1,9 +1,9 @@
 package com.eu.gsys.wma.web.startup;
 
 import com.eu.gsys.wma.domain.model.Client;
-import com.eu.gsys.wma.domain.model.GristTicket;
+import com.eu.gsys.wma.domain.model.tickets.GristTicket;
 import com.eu.gsys.wma.domain.services.ClientService;
-import com.eu.gsys.wma.domain.services.GristTicketService;
+import com.eu.gsys.wma.domain.services.tickets.GristTicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;

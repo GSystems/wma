@@ -1,9 +1,11 @@
-package com.eu.gsys.wma.infrastructure.dao;
+package com.eu.gsys.wma.infrastructure.dao.tickets;
 
 import com.eu.gsys.wma.infrastructure.entities.tickets.GristTicketEntity;
 import com.eu.gsys.wma.infrastructure.repositories.GristTicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class GristTicketDAOImpl implements GristTicketDAO {
@@ -12,8 +14,8 @@ public class GristTicketDAOImpl implements GristTicketDAO {
 	private GristTicketRepository gristTicketRepository;
 
 	@Override
-	public Iterable<GristTicketEntity> listAllGristTickets() {
-		return gristTicketRepository.findAll();
+	public List<GristTicketEntity> listAllGristTickets() {
+		return (List<GristTicketEntity>) gristTicketRepository.findAll();
 	}
 
 	@Override

@@ -1,8 +1,8 @@
-package com.eu.gsys.wma.domain.services;
+package com.eu.gsys.wma.domain.services.tickets;
 
-import com.eu.gsys.wma.domain.model.GristTicket;
-import com.eu.gsys.wma.domain.transformers.GristTicketTransformer;
-import com.eu.gsys.wma.infrastructure.dao.GristTicketDAO;
+import com.eu.gsys.wma.domain.model.tickets.GristTicket;
+import com.eu.gsys.wma.domain.transformers.tickets.GristTicketTransformer;
+import com.eu.gsys.wma.infrastructure.dao.tickets.GristTicketDAO;
 import com.eu.gsys.wma.infrastructure.entities.tickets.GristTicketEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

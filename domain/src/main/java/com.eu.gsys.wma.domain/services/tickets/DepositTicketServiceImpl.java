@@ -1,8 +1,8 @@
-package com.eu.gsys.wma.domain.services;
+package com.eu.gsys.wma.domain.services.tickets;
 
-import com.eu.gsys.wma.domain.model.DepositTicket;
-import com.eu.gsys.wma.domain.transformers.DepositTicketTransformer;
-import com.eu.gsys.wma.infrastructure.dao.DepositTicketDAO;
+import com.eu.gsys.wma.domain.model.tickets.DepositTicket;
+import com.eu.gsys.wma.domain.transformers.tickets.DepositTicketTransformer;
+import com.eu.gsys.wma.infrastructure.dao.tickets.DepositTicketDAO;
 import com.eu.gsys.wma.infrastructure.entities.tickets.DepositTicketEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +39,8 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 
 	@Override
 	public void saveDepositTicket(DepositTicket depositTicket) {
+
+
 		depositTicketDAO.saveDepositTicket(depositTicketTransformer.fromModel(depositTicket));
 	}
 

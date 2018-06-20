@@ -5,6 +5,8 @@ import com.eu.gsys.wma.infrastructure.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class ClientDAOImpl implements ClientDAO {
 
@@ -12,8 +14,8 @@ public class ClientDAOImpl implements ClientDAO {
 	private ClientRepository clientRepository;
 
 	@Override
-	public Iterable<ClientEntity> listAllClients() {
-		return clientRepository.findAll();
+	public List<ClientEntity> listAllClients() {
+		return (List<ClientEntity>) clientRepository.findAll();
 	}
 
 	@Override

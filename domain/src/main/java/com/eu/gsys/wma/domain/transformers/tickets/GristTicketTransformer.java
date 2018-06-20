@@ -1,6 +1,8 @@
-package com.eu.gsys.wma.domain.transformers;
+package com.eu.gsys.wma.domain.transformers.tickets;
 
-import com.eu.gsys.wma.domain.model.GristTicket;
+import com.eu.gsys.wma.domain.model.tickets.GristTicket;
+import com.eu.gsys.wma.domain.transformers.BaseTransformer;
+import com.eu.gsys.wma.domain.transformers.ClientTransformer;
 import com.eu.gsys.wma.infrastructure.entities.tickets.GristTicketEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class GristTicketTransformer implements BaseTransformer<GristTicketEntity, GristTicket> {
 
     @Autowired
-    ClientTransformer clientTransformer;
+	ClientTransformer clientTransformer;
 
     @Override
     public GristTicketEntity fromModel(GristTicket gristTicket) {

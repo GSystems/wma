@@ -1,9 +1,9 @@
 package com.eu.gsys.wma.web.startup;
 
 import com.eu.gsys.wma.domain.model.Client;
-import com.eu.gsys.wma.domain.model.DepositTicket;
+import com.eu.gsys.wma.domain.model.tickets.DepositTicket;
 import com.eu.gsys.wma.domain.services.ClientService;
-import com.eu.gsys.wma.domain.services.DepositTicketService;
+import com.eu.gsys.wma.domain.services.tickets.DepositTicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;

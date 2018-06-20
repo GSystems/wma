@@ -17,6 +17,5 @@ public class BasicTicketMaster {
 
 	@ManyToOne
 	private ClientEntity client;
-
 	private LocalDate timestamp;
 }

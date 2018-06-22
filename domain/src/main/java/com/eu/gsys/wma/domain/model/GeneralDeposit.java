@@ -3,14 +3,14 @@ package com.eu.gsys.wma.domain.model;
 import com.eu.gsys.wma.domain.util.OperationTypeEnum;
 import lombok.Data;
 
-import java.time.LocalTime;
+import java.time.LocalDate;
 
 @Data
-public class GeneralDeposit {
+public class GeneralDeposit implements Cloneable {
 
 	private Long id;
-	private LocalTime time;
-	private OperationTypeEnum ticketType;
+	private LocalDate date;
+	private OperationTypeEnum operationType;
 	private Long ticketId;
 
 	private Double totalWheatQty;
@@ -24,4 +24,14 @@ public class GeneralDeposit {
 	private Double totalBranQty;
 	private Double branQtyOfCompany;
 	private Double branQtyOfClients;
+
+	public Object clone() {
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO log message
+		}
+
+		return null;
+	}
 }

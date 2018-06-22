@@ -7,7 +7,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class GenericDeposit {
+public class GenericDeposit implements Cloneable {
 
 	private Integer id;
 	private Double wheatQty;
@@ -17,4 +17,14 @@ public class GenericDeposit {
 	private Long ticketId;
 	private LocalDate timestamp;
 	private Client client;
+
+	public Object clone() {
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO log message
+		}
+
+		return null;
+	}
 }

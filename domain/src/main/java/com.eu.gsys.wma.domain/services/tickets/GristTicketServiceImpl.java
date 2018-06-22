@@ -20,7 +20,7 @@ public class GristTicketServiceImpl implements GristTicketService {
 	private GristTicketDAO gristTicketDAO;
 
 	@Override
-	public Iterable<GristTicket> listAllGristTickets() {
+	public List<GristTicket> listAllGristTickets() {
 		List<GristTicket> gristTicketList = new ArrayList<>();
 		List<GristTicketEntity> gristTicketEntities = gristTicketDAO.listAllGristTickets();
 
@@ -42,7 +42,7 @@ public class GristTicketServiceImpl implements GristTicketService {
 	}
 
 	@Override
-	public void deleteGristTicket(Integer id) {
-		gristTicketDAO.deleteGristTicket(id);
+	public void deleteGristTicket(GristTicket gristTicket) {
+		gristTicketDAO.deleteGristTicket(gristTicketTransformer.fromModel(gristTicket));
 	}
 }

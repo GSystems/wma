@@ -29,7 +29,7 @@ public class GristTicketDAOImpl implements GristTicketDAO {
 	}
 
 	@Override
-	public void deleteGristTicket(Integer id) {
-		gristTicketRepository.deleteById(id);
+	public void deleteGristTicket(GristTicketEntity gristTicketEntity) {
+		gristTicketRepository.delete(gristTicketEntity);
 	}
 }

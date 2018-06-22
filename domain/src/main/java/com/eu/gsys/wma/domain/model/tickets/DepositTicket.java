@@ -6,4 +6,5 @@ import lombok.Data;
 public class DepositTicket extends BasicTicket {
 
 	private Double wheatQtyForDeposit;
+	private Boolean consumedFlag;
 }

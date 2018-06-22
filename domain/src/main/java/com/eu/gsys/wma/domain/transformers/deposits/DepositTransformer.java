@@ -1,6 +1,8 @@
-package com.eu.gsys.wma.domain.transformers;
+package com.eu.gsys.wma.domain.transformers.deposits;
 
 import com.eu.gsys.wma.domain.model.deposits.GenericDeposit;
+import com.eu.gsys.wma.domain.transformers.BaseTransformer;
+import com.eu.gsys.wma.domain.transformers.ClientTransformer;
 import com.eu.gsys.wma.domain.util.OperationTypeEnum;
 import com.eu.gsys.wma.infrastructure.entities.deposits.GenericDepositForEntities;
 import org.springframework.beans.factory.annotation.Autowired;

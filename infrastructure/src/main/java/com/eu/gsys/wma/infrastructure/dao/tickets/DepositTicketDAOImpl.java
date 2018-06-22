@@ -29,7 +29,7 @@ public class DepositTicketDAOImpl implements DepositTicketDAO {
 	}
 
 	@Override
-	public void deleteDepositTicket(Integer id) {
-		depositTicketRepository.deleteById(id);
+	public void deleteDepositTicket(DepositTicketEntity depositTicketEntity) {
+		depositTicketRepository.delete(depositTicketEntity);
 	}
 }

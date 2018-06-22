@@ -12,5 +12,5 @@ public interface GristTicketDAO {
 
 	void saveGristTicket(GristTicketEntity gristTicket);
 
-	void deleteGristTicket(Integer id);
+	void deleteGristTicket(GristTicketEntity gristTicketEntity);
 }

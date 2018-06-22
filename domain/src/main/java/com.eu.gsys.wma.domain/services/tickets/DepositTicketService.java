@@ -1,6 +1,7 @@
 package com.eu.gsys.wma.domain.services.tickets;
 
 import com.eu.gsys.wma.domain.model.tickets.DepositTicket;
+import com.eu.gsys.wma.domain.util.WmaException;
 
 public interface DepositTicketService {
 
@@ -10,5 +11,5 @@ public interface DepositTicketService {
 
 	void saveDepositTicket(DepositTicket gristTicket);
 
-	void deleteDepositTicket(Integer id);
+	void deleteDepositTicket(DepositTicket depositTicket) throws WmaException;
 }

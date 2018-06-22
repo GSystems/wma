@@ -4,11 +4,13 @@ import com.eu.gsys.wma.infrastructure.entities.ClientEntity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
 @MappedSuperclass
-public class GenericDepositForEntities {
+public class GenericDepositForEntities implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

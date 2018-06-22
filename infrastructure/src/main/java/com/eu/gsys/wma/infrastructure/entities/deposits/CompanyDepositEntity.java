@@ -3,8 +3,9 @@ package com.eu.gsys.wma.infrastructure.entities.deposits;
 import lombok.Data;
 
 import javax.persistence.Entity;
+import java.io.Serializable;
 
-@Data
 @Entity
-public class CompanyDepositEntity extends GenericDepositForEntities {
+public class CompanyDepositEntity extends GenericDepositForEntities implements Serializable {
+	private static final long serialVersionUID = 1L;
 }

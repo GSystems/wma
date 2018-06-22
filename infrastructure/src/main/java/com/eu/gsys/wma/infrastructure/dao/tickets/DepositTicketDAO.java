@@ -12,5 +12,5 @@ public interface DepositTicketDAO {
 
 	void saveDepositTicket(DepositTicketEntity gristTicket);
 
-	void deleteDepositTicket(Integer id);
+	void deleteDepositTicket(DepositTicketEntity depositTicketEntity);
 }

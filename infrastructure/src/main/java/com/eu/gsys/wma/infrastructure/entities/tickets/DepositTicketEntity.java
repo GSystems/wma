@@ -9,4 +9,5 @@ import javax.persistence.Entity;
 public class DepositTicketEntity extends BasicTicketMaster {
 
 	private Double wheatQtyForDeposit;
+	private Boolean consumedFlag;
 }

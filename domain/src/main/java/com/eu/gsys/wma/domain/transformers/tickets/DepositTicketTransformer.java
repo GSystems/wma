@@ -22,6 +22,7 @@ public class DepositTicketTransformer implements BaseTransformer<DepositTicketEn
         depositTicketEntity.setWheatQtyForDeposit(depositTicket.getWheatQtyForDeposit());
         depositTicketEntity.setTimestamp(depositTicket.getDate());
         depositTicketEntity.setTicketId(depositTicket.getTicketId());
+        depositTicketEntity.setConsumedFlag(depositTicket.getConsumedFlag());
 
         return depositTicketEntity;
     }
@@ -34,6 +35,7 @@ public class DepositTicketTransformer implements BaseTransformer<DepositTicketEn
         depositTicket.setWheatQtyForDeposit(depositTicketEntity.getWheatQtyForDeposit());
         depositTicket.setDate(depositTicketEntity.getTimestamp());
         depositTicket.setTicketId(depositTicketEntity.getTicketId());
+        depositTicket.setConsumedFlag(depositTicketEntity.getConsumedFlag());
 
         return depositTicket;
     }

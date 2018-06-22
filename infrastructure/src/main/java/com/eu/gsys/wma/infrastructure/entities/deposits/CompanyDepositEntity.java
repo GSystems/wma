@@ -6,9 +6,5 @@ import javax.persistence.Entity;
 
 @Data
 @Entity
-public class CompanyDepositEntity extends DepositMaster {
-
-	private Double profitWheatQty;
-	private Double profitFlourQty;
-	private Double profitBranQty;
+public class CompanyDepositEntity extends GenericDepositForEntities {
 }

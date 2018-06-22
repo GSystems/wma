@@ -2,7 +2,7 @@ package com.eu.gsys.wma.domain.services;
 
 import com.eu.gsys.wma.domain.model.GeneralDeposit;
 import com.eu.gsys.wma.domain.transformers.GeneralDepositTransformer;
-import com.eu.gsys.wma.infrastructure.dao.GeneralDepositDAO;
+import com.eu.gsys.wma.infrastructure.dao.deposits.GeneralDepositDAO;
 import com.eu.gsys.wma.infrastructure.entities.GeneralDepositEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class GeneralDepositServiceServiceImpl implements GeneralDepositService {
+public class GeneralDepositServiceImpl implements GeneralDepositService {
 
 	@Autowired
 	private GeneralDepositDAO generalDepositDAO;

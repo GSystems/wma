@@ -1,4 +1,4 @@
-package com.eu.gsys.wma.infrastructure.dao;
+package com.eu.gsys.wma.infrastructure.dao.deposits;
 
 import com.eu.gsys.wma.infrastructure.entities.GeneralDepositEntity;
 

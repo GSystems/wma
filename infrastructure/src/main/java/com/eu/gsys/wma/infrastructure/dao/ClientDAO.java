@@ -10,7 +10,7 @@ public interface ClientDAO {
 
 	ClientEntity getClientById(Integer id);
 
-	ClientEntity saveClient(ClientEntity clientEntity);
+	void saveClient(ClientEntity clientEntity);
 
 	void deleteClient(Integer id);
 }

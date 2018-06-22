@@ -10,7 +10,7 @@ public interface GristTicketDAO {
 
 	GristTicketEntity getGristTicketById(Integer id);
 
-	GristTicketEntity saveGristTicket(GristTicketEntity gristTicket);
+	void saveGristTicket(GristTicketEntity gristTicket);
 
 	void deleteGristTicket(Integer id);
 }

@@ -22,7 +22,7 @@ public class GristTicketServiceImpl implements GristTicketService {
 	@Override
 	public Iterable<GristTicket> listAllGristTickets() {
 		List<GristTicket> gristTicketList = new ArrayList<>();
-		List<GristTicketEntity> gristTicketEntities = (List<GristTicketEntity>) gristTicketDAO.listAllGristTickets();
+		List<GristTicketEntity> gristTicketEntities = gristTicketDAO.listAllGristTickets();
 
 		for (GristTicketEntity gristTicketEntity : gristTicketEntities) {
 			gristTicketList.add(gristTicketTransformer.toModel(gristTicketEntity));

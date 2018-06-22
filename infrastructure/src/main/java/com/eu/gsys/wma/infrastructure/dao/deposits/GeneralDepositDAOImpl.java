@@ -1,12 +1,15 @@
-package com.eu.gsys.wma.infrastructure.dao;
+package com.eu.gsys.wma.infrastructure.dao.deposits;
 
+import com.eu.gsys.wma.infrastructure.dao.BaseDAOBean;
 import com.eu.gsys.wma.infrastructure.entities.GeneralDepositEntity;
 import com.eu.gsys.wma.infrastructure.repositories.GeneralDepositRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
 import java.util.List;
 
+@Repository
 public class GeneralDepositDAOImpl extends BaseDAOBean<GeneralDepositEntity, Long> implements GeneralDepositDAO {
 
 	@Autowired

@@ -24,8 +24,8 @@ public class ClientDAOImpl implements ClientDAO {
 	}
 
 	@Override
-	public ClientEntity saveClient(ClientEntity clientEntity) {
-		return clientRepository.save(clientEntity);
+	public void saveClient(ClientEntity clientEntity) {
+		clientRepository.save(clientEntity);
 	}
 
 	@Override

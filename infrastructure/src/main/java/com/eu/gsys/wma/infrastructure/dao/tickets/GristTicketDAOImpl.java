@@ -24,8 +24,8 @@ public class GristTicketDAOImpl implements GristTicketDAO {
 	}
 
 	@Override
-	public GristTicketEntity saveGristTicket(GristTicketEntity gristTicket) {
-		return gristTicketRepository.save(gristTicket);
+	public void saveGristTicket(GristTicketEntity gristTicket) {
+		gristTicketRepository.save(gristTicket);
 	}
 
 	@Override

@@ -10,7 +10,7 @@ public interface DepositTicketDAO {
 
 	DepositTicketEntity getDepositTicketById(Integer id);
 
-	DepositTicketEntity saveDepositTicket(DepositTicketEntity gristTicket);
+	void saveDepositTicket(DepositTicketEntity gristTicket);
 
 	void deleteDepositTicket(Integer id);
 }

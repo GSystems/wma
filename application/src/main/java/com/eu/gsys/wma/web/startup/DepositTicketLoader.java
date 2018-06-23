@@ -1,6 +1,6 @@
 package com.eu.gsys.wma.web.startup;
 
-import com.eu.gsys.wma.domain.model.Client;
+import com.eu.gsys.wma.domain.model.users.GenericClient;
 import com.eu.gsys.wma.domain.model.tickets.DepositTicket;
 import com.eu.gsys.wma.domain.services.ClientService;
 import com.eu.gsys.wma.domain.services.tickets.DepositTicketService;
@@ -14,19 +14,23 @@ import java.time.LocalDate;
 @Component
 public class DepositTicketLoader implements ApplicationListener<ContextRefreshedEvent> {
 
-	@Autowired
-	private DepositTicketService depositTicketService;
+	private final DepositTicketService depositTicketService;
+
+	private final ClientService clientService;
 
 	@Autowired
-	private ClientService clientService;
+	public DepositTicketLoader(DepositTicketService depositTicketService, ClientService clientService) {
+		this.depositTicketService = depositTicketService;
+		this.clientService = clientService;
+	}
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 		DepositTicket depositTicket0 = new DepositTicket();
 
-		Client client0 = clientService.getClientById(1);
-		depositTicket0.setClient(client0);
-		depositTicket0.setTicketId(100L);
+		GenericClient genericClient0 = clientService.getClientById(1);
+		depositTicket0.setGenericClient(genericClient0);
+		depositTicket0.setTicketId(1L);
 		depositTicket0.setWheatQtyForDeposit(2000.0);
 		depositTicket0.setDate(LocalDate.now());
 		depositTicketService.saveDepositTicket(depositTicket0);
@@ -35,9 +39,9 @@ public class DepositTicketLoader implements ApplicationListener<ContextRefreshed
 
 		DepositTicket depositTicket1 = new DepositTicket();
 
-		Client client1 = clientService.getClientById(2);
-		depositTicket1.setClient(client1);
-		depositTicket1.setTicketId(101L);
+		GenericClient genericClient1 = clientService.getClientById(2);
+		depositTicket1.setGenericClient(genericClient1);
+		depositTicket1.setTicketId(1L);
 		depositTicket1.setWheatQtyForDeposit(1000.0);
 		depositTicket1.setDate(LocalDate.now());
 		depositTicketService.saveDepositTicket(depositTicket1);

@@ -1,6 +1,6 @@
 package com.eu.gsys.wma.domain.model.deposits;
 
-import com.eu.gsys.wma.domain.model.Client;
+import com.eu.gsys.wma.domain.model.users.GenericClient;
 import com.eu.gsys.wma.domain.util.OperationTypeEnum;
 import lombok.Data;
 
@@ -15,8 +15,8 @@ public class GenericDeposit implements Cloneable {
 	private Double branQty;
 	private OperationTypeEnum operationType;
 	private Long ticketId;
-	private LocalDate timestamp;
-	private Client client;
+	private LocalDate date;
+	private GenericClient genericClient;
 
 	public Object clone() {
 		try {

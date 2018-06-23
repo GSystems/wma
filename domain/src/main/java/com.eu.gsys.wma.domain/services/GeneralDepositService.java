@@ -1,6 +1,6 @@
 package com.eu.gsys.wma.domain.services;
 
-import com.eu.gsys.wma.domain.model.GeneralDeposit;
+import com.eu.gsys.wma.domain.model.deposits.GeneralDeposit;
 
 public interface GeneralDepositService {
 

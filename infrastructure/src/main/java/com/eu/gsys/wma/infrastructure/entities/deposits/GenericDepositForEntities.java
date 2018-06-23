@@ -1,6 +1,6 @@
 package com.eu.gsys.wma.infrastructure.entities.deposits;
 
-import com.eu.gsys.wma.infrastructure.entities.ClientEntity;
+import com.eu.gsys.wma.infrastructure.entities.clients.GenericClientEntity;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -23,5 +23,5 @@ public class GenericDepositForEntities implements Serializable {
 	private LocalDate timestamp;
 
 	@ManyToOne
-	private ClientEntity client;
+	private GenericClientEntity client;
 }

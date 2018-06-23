@@ -1,6 +1,6 @@
 package com.eu.gsys.wma.infrastructure.dao.deposits;
 
-import com.eu.gsys.wma.infrastructure.entities.GeneralDepositEntity;
+import com.eu.gsys.wma.infrastructure.entities.deposits.GeneralDepositEntity;
 
 import java.util.List;
 

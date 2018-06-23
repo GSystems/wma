@@ -1,15 +1,17 @@
 package com.eu.gsys.wma.domain.transformers.deposits;
 
-import com.eu.gsys.wma.domain.model.GeneralDeposit;
+import com.eu.gsys.wma.domain.model.deposits.GeneralDeposit;
 import com.eu.gsys.wma.domain.transformers.BaseTransformer;
 import com.eu.gsys.wma.domain.util.OperationTypeEnum;
-import com.eu.gsys.wma.infrastructure.entities.GeneralDepositEntity;
+import com.eu.gsys.wma.infrastructure.entities.deposits.GeneralDepositEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class GeneralDepositTransformer implements BaseTransformer<GeneralDepositEntity, GeneralDeposit> {
 
 	@Override
-	public com.eu.gsys.wma.domain.model.GeneralDeposit toModel(GeneralDepositEntity generalDepositEntity) {
-		com.eu.gsys.wma.domain.model.GeneralDeposit generalDeposit = new com.eu.gsys.wma.domain.model.GeneralDeposit();
+	public GeneralDeposit toModel(GeneralDepositEntity generalDepositEntity) {
+		GeneralDeposit generalDeposit = new GeneralDeposit();
 
 		generalDeposit.setBranQtyOfClients(generalDepositEntity.getBranQtyOfClients());
 		generalDeposit.setBranQtyOfCompany(generalDepositEntity.getBranQtyOfCompany());
@@ -29,7 +31,7 @@ public class GeneralDepositTransformer implements BaseTransformer<GeneralDeposit
 	}
 
 	@Override
-	public GeneralDepositEntity fromModel(com.eu.gsys.wma.domain.model.GeneralDeposit generalDeposit) {
+	public GeneralDepositEntity fromModel(GeneralDeposit generalDeposit) {
 		GeneralDepositEntity generalDepositEntity = new GeneralDepositEntity();
 
 		generalDepositEntity.setBranQtyOfClients(generalDeposit.getBranQtyOfClients());

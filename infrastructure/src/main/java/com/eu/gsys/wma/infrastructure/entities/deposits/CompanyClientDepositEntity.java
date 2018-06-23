@@ -6,6 +6,6 @@ import javax.persistence.Entity;
 import java.io.Serializable;
 
 @Entity
-public class CompanyDepositEntity extends GenericDepositForEntities implements Serializable {
+public class CompanyClientDepositEntity extends GenericDepositForEntities implements Serializable {
 	private static final long serialVersionUID = 1L;
 }

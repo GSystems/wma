@@ -1,7 +1,7 @@
 package com.eu.gsys.wma.infrastructure.repositories;
 
-import com.eu.gsys.wma.infrastructure.entities.ClientEntity;
+import com.eu.gsys.wma.infrastructure.entities.clients.GenericClientEntity;
 import org.springframework.data.repository.CrudRepository;
 
-public interface ClientRepository extends CrudRepository<ClientEntity, Integer> {
+public interface ClientRepository extends CrudRepository<GenericClientEntity, Integer> {
 }

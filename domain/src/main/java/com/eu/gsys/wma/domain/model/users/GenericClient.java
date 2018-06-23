@@ -1,4 +1,4 @@
-package com.eu.gsys.wma.domain.model;
+package com.eu.gsys.wma.domain.model.users;
 
 import com.eu.gsys.wma.domain.model.tickets.DepositTicket;
 import com.eu.gsys.wma.domain.model.tickets.GristTicket;
@@ -8,22 +8,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
-public class Client {
+public class GenericClient {
 
 	private Integer id;
-	private String firstName;
-	private String lastName;
-	private String companyName;
-	private Long clientId;
-	private String companyId;
 	private String address;
-	private Boolean isCompany;
 	private LocalDate joinDate;
-
 	private Double wheatQty;
 	private Double flourQty;
 	private Double branQty;
 
-	List<DepositTicket> depositTickets;
-	List<GristTicket> gristTickets;
+	private List<DepositTicket> depositTickets;
+	private List<GristTicket> gristTickets;
 }

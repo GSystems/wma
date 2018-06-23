@@ -1,6 +1,6 @@
 package com.eu.gsys.wma.infrastructure.dao;
 
-import com.eu.gsys.wma.infrastructure.entities.ClientEntity;
+import com.eu.gsys.wma.infrastructure.entities.clients.GenericClientEntity;
 import com.eu.gsys.wma.infrastructure.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -14,18 +14,18 @@ public class ClientDAOImpl implements ClientDAO {
 	private ClientRepository clientRepository;
 
 	@Override
-	public List<ClientEntity> listAllClients() {
-		return (List<ClientEntity>) clientRepository.findAll();
+	public List<GenericClientEntity> listAllClients() {
+		return (List<GenericClientEntity>) clientRepository.findAll();
 	}
 
 	@Override
-	public ClientEntity getClientById(Integer id) {
+	public GenericClientEntity getClientById(Integer id) {
 		return clientRepository.findById(id).get();
 	}
 
 	@Override
-	public void saveClient(ClientEntity clientEntity) {
-		clientRepository.save(clientEntity);
+	public void saveClient(GenericClientEntity genericClientEntity) {
+		clientRepository.save(genericClientEntity);
 	}
 
 	@Override

@@ -1,45 +1,43 @@
 package com.eu.gsys.wma.domain.transformers;
 
-import com.eu.gsys.wma.domain.model.Client;
-import com.eu.gsys.wma.infrastructure.entities.ClientEntity;
+import com.eu.gsys.wma.domain.model.users.GenericClient;
+import com.eu.gsys.wma.infrastructure.entities.clients.GenericClientEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ClientTransformer implements BaseTransformer<ClientEntity, Client> {
+public class ClientTransformer implements BaseTransformer<GenericClientEntity, GenericClient> {
 
 	@Override
-	public ClientEntity fromModel(Client client) {
-		ClientEntity clientEntity = new ClientEntity();
+	public GenericClientEntity fromModel(GenericClient genericClient) {
+		GenericClientEntity genericClientEntity = new GenericClientEntity();
 
-		clientEntity.setAddress(client.getAddress());
-		clientEntity.setCompanyId(client.getCompanyId());
-		clientEntity.setCompanyName(client.getCompanyName());
-		clientEntity.setClientId(client.getClientId());
-		clientEntity.setFirstName(client.getFirstName());
-		clientEntity.setLastName(client.getLastName());
-		clientEntity.setId(client.getId());
-		clientEntity.setJoinDate(client.getJoinDate());
+		genericClientEntity.setAddress(genericClient.getAddress());
+		genericClientEntity.setCompanyId(genericClient.getCompanyId());
+		genericClientEntity.setCompanyName(genericClient.getCompanyName());
+		genericClientEntity.setFirstName(genericClient.getFirstName());
+		genericClientEntity.setLastName(genericClient.getLastName());
+		genericClientEntity.setId(genericClient.getId());
+		genericClientEntity.setJoinDate(genericClient.getJoinDate());
 
-		return clientEntity;
+		return genericClientEntity;
 	}
 
 	@Override
-	public Client toModel(ClientEntity clientEntity) {
-		Client client = new Client();
+	public GenericClient toModel(GenericClientEntity genericClientEntity) {
+		GenericClient genericClient = new GenericClient();
 
-		client.setAddress(clientEntity.getAddress());
-		client.setClientId(clientEntity.getClientId());
-		client.setCompanyId(clientEntity.getCompanyId());
-		client.setCompanyName(clientEntity.getCompanyName());
-		client.setFirstName(clientEntity.getFirstName());
-		client.setLastName(clientEntity.getLastName());
-		client.setJoinDate(clientEntity.getJoinDate());
-		client.setId(clientEntity.getId());
+		genericClient.setAddress(genericClientEntity.getAddress());
+		genericClient.setCompanyId(genericClientEntity.getCompanyId());
+		genericClient.setCompanyName(genericClientEntity.getCompanyName());
+		genericClient.setFirstName(genericClientEntity.getFirstName());
+		genericClient.setLastName(genericClientEntity.getLastName());
+		genericClient.setJoinDate(genericClientEntity.getJoinDate());
+		genericClient.setId(genericClientEntity.getId());
 
-		if (clientEntity.getCompanyId() != null) {
-			client.setIsCompany(true);
+		if (genericClientEntity.getCompanyId() != null) {
+			genericClient.setIsCompany(true);
 		}
 
-		return client;
+		return genericClient;
 	}
 }

@@ -1,14 +1,14 @@
 package com.eu.gsys.wma.domain.services;
 
-import com.eu.gsys.wma.domain.model.Client;
+import com.eu.gsys.wma.domain.model.users.GenericClient;
 
 public interface ClientService {
 
-	Iterable<Client> listAllClients();
+	Iterable<GenericClient> listAllClients();
 
-	Client getClientById(Integer id);
+	GenericClient getClientById(Integer id);
 
-	void saveClientTicket(Client client);
+	void saveClientTicket(GenericClient genericClient);
 
 	void deleteClientTicket(Integer id);
 }

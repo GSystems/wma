@@ -13,11 +13,14 @@ import java.util.List;
 @Service
 public class GristTicketServiceImpl implements GristTicketService {
 
-	@Autowired
-	private GristTicketTransformer gristTicketTransformer;
+	private final GristTicketTransformer gristTicketTransformer;
+	private final GristTicketDAO gristTicketDAO;
 
 	@Autowired
-	private GristTicketDAO gristTicketDAO;
+	public GristTicketServiceImpl(GristTicketTransformer gristTicketTransformer, GristTicketDAO gristTicketDAO) {
+		this.gristTicketTransformer = gristTicketTransformer;
+		this.gristTicketDAO = gristTicketDAO;
+	}
 
 	@Override
 	public List<GristTicket> listAllGristTickets() {

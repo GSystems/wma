@@ -17,7 +17,7 @@ public class DepositTicketTransformer implements BaseTransformer<DepositTicketEn
     public DepositTicketEntity fromModel(DepositTicket depositTicket) {
         DepositTicketEntity depositTicketEntity = new DepositTicketEntity();
 
-        depositTicketEntity.setClient(clientTransformer.fromModel(depositTicket.getClient()));
+        depositTicketEntity.setClient(clientTransformer.fromModel(depositTicket.getGenericClient()));
 
         depositTicketEntity.setWheatQtyForDeposit(depositTicket.getWheatQtyForDeposit());
         depositTicketEntity.setTimestamp(depositTicket.getDate());
@@ -31,7 +31,7 @@ public class DepositTicketTransformer implements BaseTransformer<DepositTicketEn
     public DepositTicket toModel(DepositTicketEntity depositTicketEntity) {
         DepositTicket depositTicket = new DepositTicket();
 
-        depositTicket.setClient(clientTransformer.toModel(depositTicketEntity.getClient()));
+        depositTicket.setGenericClient(clientTransformer.toModel(depositTicketEntity.getClient()));
         depositTicket.setWheatQtyForDeposit(depositTicketEntity.getWheatQtyForDeposit());
         depositTicket.setDate(depositTicketEntity.getTimestamp());
         depositTicket.setTicketId(depositTicketEntity.getTicketId());

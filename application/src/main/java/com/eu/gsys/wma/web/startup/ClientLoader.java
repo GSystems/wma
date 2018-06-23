@@ -1,6 +1,6 @@
 package com.eu.gsys.wma.web.startup;
 
-import com.eu.gsys.wma.domain.model.Client;
+import com.eu.gsys.wma.domain.model.users.GenericClient;
 import com.eu.gsys.wma.domain.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -12,8 +12,12 @@ import java.time.LocalDate;
 @Component
 public class ClientLoader implements ApplicationListener<ContextRefreshedEvent> {
 
+	private final ClientService clientService;
+
 	@Autowired
-	private ClientService clientService;
+	public ClientLoader(ClientService clientService) {
+		this.clientService = clientService;
+	}
 
 	public int getOrder() {
 		return 1;
@@ -21,23 +25,22 @@ public class ClientLoader implements ApplicationListener<ContextRefreshedEvent> 
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-		Client client0 = new Client();
+		GenericClient genericClient0 = new GenericClient();
 
-		client0.setAddress("str Louis");
-		client0.setClientId(1890210226682L);
-		client0.setFirstName("Lesseter");
-		client0.setLastName("Gregory");
-		client0.setJoinDate(LocalDate.now());
+		genericClient0.setAddress("str Louis");
+		genericClient0.setFirstName("Lesseter");
+		genericClient0.setLastName("Gregory");
+		genericClient0.setJoinDate(LocalDate.now());
 
-		clientService.saveClientTicket(client0);
+		clientService.saveClientTicket(genericClient0);
 
-		Client client1 = new Client();
+		GenericClient genericClient1 = new GenericClient();
 
-		client1.setAddress("str Alca");
-		client1.setCompanyName("SC Example SRL");
-		client1.setCompanyId("RO21423");
-		client0.setJoinDate(LocalDate.now());
+		genericClient1.setAddress("str Alca");
+		genericClient1.setCompanyName("SC Example SRL");
+		genericClient1.setCompanyId("RO21423");
+		genericClient0.setJoinDate(LocalDate.now());
 
-		clientService.saveClientTicket(client1);
+		clientService.saveClientTicket(genericClient1);
 	}
 }

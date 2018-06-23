@@ -1,6 +1,6 @@
 package com.eu.gsys.wma.infrastructure.entities.tickets;
 
-import com.eu.gsys.wma.infrastructure.entities.ClientEntity;
+import com.eu.gsys.wma.infrastructure.entities.clients.GenericClientEntity;
 import lombok.Data;
 
 import javax.persistence.Id;
@@ -18,6 +18,6 @@ public class BasicTicketMaster implements Serializable {
 	private Long ticketId;
 
 	@ManyToOne
-	private ClientEntity client;
+	private GenericClientEntity client;
 	private LocalDate timestamp;
 }

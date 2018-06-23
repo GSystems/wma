@@ -27,7 +27,7 @@ public class GristTicketTransformer implements BaseTransformer<GristTicketEntity
         gristTicketEntity.setWheatQtyBrought(gristTicket.getWheatQtyBrought());
         gristTicketEntity.setWheatQtyForGrist(gristTicket.getWheatQtyForGrist());
         gristTicketEntity.setTimestamp(gristTicket.getDate());
-        gristTicketEntity.setClient(clientTransformer.fromModel(gristTicket.getClient()));
+        gristTicketEntity.setClient(clientTransformer.fromModel(gristTicket.getGenericClient()));
 
         return gristTicketEntity;
     }
@@ -37,7 +37,7 @@ public class GristTicketTransformer implements BaseTransformer<GristTicketEntity
         GristTicket gristTicket = new GristTicket();
 
         gristTicket.setBranQtyForClient(gristTicketEntity.getBranQtyForClient());
-        gristTicket.setClient(clientTransformer.toModel(gristTicketEntity.getClient()));
+        gristTicket.setGenericClient(clientTransformer.toModel(gristTicketEntity.getClient()));
         gristTicket.setFlourQtyForClient(gristTicketEntity.getFlourQtyForClient());
         gristTicket.setManufacturingLossesQty(gristTicketEntity.getManufacturingLossesQty());
         gristTicket.setOtherCorpusQty(gristTicketEntity.getOtherCorpusQty());

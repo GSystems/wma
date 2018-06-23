@@ -1,4 +1,4 @@
-package com.eu.gsys.wma.domain.model;
+package com.eu.gsys.wma.domain.model.deposits;
 
 import com.eu.gsys.wma.domain.util.OperationTypeEnum;
 import lombok.Data;

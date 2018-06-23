@@ -1,6 +1,6 @@
 package com.eu.gsys.wma.web.startup;
 
-import com.eu.gsys.wma.domain.model.Client;
+import com.eu.gsys.wma.domain.model.users.GenericClient;
 import com.eu.gsys.wma.domain.model.tickets.GristTicket;
 import com.eu.gsys.wma.domain.services.ClientService;
 import com.eu.gsys.wma.domain.services.tickets.GristTicketService;
@@ -14,18 +14,21 @@ import java.time.LocalDate;
 @Component
 public class GristTicketLoader implements ApplicationListener<ContextRefreshedEvent> {
 
-	@Autowired
-	private GristTicketService gristTicketService;
+	private final GristTicketService gristTicketService;
+	private final ClientService clientService;
 
 	@Autowired
-	private ClientService clientService;
+	public GristTicketLoader(GristTicketService gristTicketService, ClientService clientService) {
+		this.gristTicketService = gristTicketService;
+		this.clientService = clientService;
+	}
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 		GristTicket gristTicket0 = new GristTicket();
 
-		Client client0 = clientService.getClientById(1);
-		gristTicket0.setClient(client0);
+		GenericClient genericClient0 = clientService.getClientById(1);
+		gristTicket0.setGenericClient(genericClient0);
 		gristTicket0.setWheatQtyBrought(100.0);
 		gristTicket0.setTicketId(10L);
 		gristTicket0.setDate(LocalDate.now());
@@ -35,8 +38,8 @@ public class GristTicketLoader implements ApplicationListener<ContextRefreshedEv
 
 		GristTicket gristTicket1 = new GristTicket();
 
-		Client client1 = clientService.getClientById(2);
-		gristTicket1.setClient(client1);
+		GenericClient genericClient1 = clientService.getClientById(2);
+		gristTicket1.setGenericClient(genericClient1);
 		gristTicket1.setWheatQtyBrought(1000.0);
 		gristTicket1.setTicketId(11L);
 		gristTicket1.setDate(LocalDate.now());

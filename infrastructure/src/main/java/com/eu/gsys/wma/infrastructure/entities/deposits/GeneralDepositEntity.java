@@ -1,4 +1,4 @@
-package com.eu.gsys.wma.infrastructure.entities;
+package com.eu.gsys.wma.infrastructure.entities.deposits;
 
 import lombok.Data;
 
@@ -16,7 +16,7 @@ public class GeneralDepositEntity implements Serializable {
 
 	public static final String GET_MOST_RECENT_RECORD = "GeneralDepositEntity.getMostRecentRecord";
 	protected static final String GET_MOST_RECENT_RECORD_QRY_MYSQL =
-			"SELECT r FROM GeneralDepositEntity r ORDER BY ID DESC LIMIT 1;";
+			"SELECT g FROM GeneralDepositEntity g WHERE g.id = (SELECT MAX(gd.id) FROM GeneralDepositEntity gd)";
 	protected static final String GET_MOST_RECENT_RECORD_QRY_SQL =
 			"SELECT TOP 1 r FROM GeneralDepositEntity r ORDER BY ID DESC";
 

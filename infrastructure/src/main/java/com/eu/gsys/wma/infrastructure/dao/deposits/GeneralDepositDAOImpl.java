@@ -1,7 +1,6 @@
 package com.eu.gsys.wma.infrastructure.dao.deposits;
 
 import com.eu.gsys.wma.infrastructure.entities.deposits.GeneralDepositEntity;
-import com.eu.gsys.wma.infrastructure.repositories.deposits.CustomGeneralDepositRepository;
 import com.eu.gsys.wma.infrastructure.repositories.deposits.GeneralDepositRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -12,22 +11,20 @@ import java.util.List;
 public class GeneralDepositDAOImpl implements GeneralDepositDAO {
 
 	private final GeneralDepositRepository generalDepositRepository;
-	private final CustomGeneralDepositRepository customGeneralDepositRepository;
 
 	@Autowired
-	public GeneralDepositDAOImpl(GeneralDepositRepository generalDepositRepository, CustomGeneralDepositRepository customGeneralDepositRepository) {
+	public GeneralDepositDAOImpl(GeneralDepositRepository generalDepositRepository) {
 		this.generalDepositRepository = generalDepositRepository;
-		this.customGeneralDepositRepository = customGeneralDepositRepository;
 	}
 
 	@Override
 	public List<GeneralDepositEntity> listAllRecords() {
-		return (List<GeneralDepositEntity>) generalDepositRepository.findAll();
+		return generalDepositRepository.findAll();
 	}
 
 	@Override
 	public GeneralDepositEntity getRecordById(Integer id) {
-		return generalDepositRepository.findById(id).get();
+		return generalDepositRepository.findById(Long.valueOf(id)).get();
 	}
 
 	@Override
@@ -37,11 +34,11 @@ public class GeneralDepositDAOImpl implements GeneralDepositDAO {
 
 	@Override
 	public void deleteRecord(Integer id) {
-		generalDepositRepository.deleteById(id);
+		generalDepositRepository.deleteById(Long.valueOf(id));
 	}
 
 	@Override
 	public GeneralDepositEntity getMostRecentRecord() {
-		return customGeneralDepositRepository.getMostRecentRecord();
+		return generalDepositRepository.getMostRecentRecord();
 	}
 }

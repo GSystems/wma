@@ -11,9 +11,9 @@ public interface IndividualClientDepositDAO {
 
 	IndividualClientDepositEntity getClientDepositById(Integer id);
 
-	void saveClientDeposit(IndividualClientDepositEntity individualClientDepositEntity);
+	void saveDeposit(IndividualClientDepositEntity individualClientDepositEntity);
 
 	void deleteClientDeposit(Integer id);
 
-	IndividualClientDepositEntity getClientDepositByClient(GenericClientEntity genericClientEntity);
+	IndividualClientDepositEntity getDepositByClient(GenericClientEntity genericClientEntity);
 }

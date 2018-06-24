@@ -1,13 +1,13 @@
 package com.eu.gsys.wma.infrastructure.entities.clients;
 
-import com.eu.gsys.wma.infrastructure.entities.tickets.DepositTicketEntity;
-import com.eu.gsys.wma.infrastructure.entities.tickets.GristTicketEntity;
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @MappedSuperclass
@@ -20,13 +20,7 @@ public class GenericClientEntity implements Serializable {
 	private String address;
 	private LocalDate joinDate;
 
-	private Double wheatQty = Double.valueOf(0);
-	private Double flourQty = Double.valueOf(0);
-	private Double branQty = Double.valueOf(0);
-
-	@OneToMany
-	private List<DepositTicketEntity> depositTicketEntities;
-
-	@OneToMany
-	private List<GristTicketEntity> gristTicketEntities;
+	private Double wheatQty = 0d;
+	private Double flourQty = 0d;
+	private Double branQty = 0d;
 }

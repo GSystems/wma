@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 @Data
 @Entity
+@Table(name = "general_deposits")
 @NamedQueries({
 		@NamedQuery(name = GeneralDepositEntity.GET_MOST_RECENT_RECORD, query = GeneralDepositEntity.GET_MOST_RECENT_RECORD_QRY_MYSQL)
 })

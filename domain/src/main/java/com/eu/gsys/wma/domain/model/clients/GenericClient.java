@@ -1,4 +1,4 @@
-package com.eu.gsys.wma.domain.model.users;
+package com.eu.gsys.wma.domain.model.clients;
 
 import com.eu.gsys.wma.domain.model.tickets.DepositTicket;
 import com.eu.gsys.wma.domain.model.tickets.GristTicket;
@@ -17,6 +17,6 @@ public class GenericClient {
 	private Double flourQty;
 	private Double branQty;
 
-	private List<DepositTicket> depositTickets;
-	private List<GristTicket> gristTickets;
+//	private List<DepositTicket> depositTickets;
+//	private List<GristTicket> gristTickets;
 }

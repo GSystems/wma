@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 @Repository
-public abstract class CustomGeneralDepositRepositoryImpl implements CustomGeneralDepositRepository {
+public abstract class GeneralDepositRepositoryImpl implements GeneralDepositRepository {
 
 	@PersistenceContext
 	private EntityManager entityManager;

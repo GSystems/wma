@@ -1,8 +1,10 @@
 package com.eu.gsys.wma.web.startup;
 
-import com.eu.gsys.wma.domain.model.users.GenericClient;
-import com.eu.gsys.wma.domain.services.ClientService;
+import com.eu.gsys.wma.domain.model.clients.CompanyClient;
+import com.eu.gsys.wma.domain.model.clients.IndividualClient;
+import com.eu.gsys.wma.domain.services.clients.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -12,11 +14,14 @@ import java.time.LocalDate;
 @Component
 public class ClientLoader implements ApplicationListener<ContextRefreshedEvent> {
 
-	private final ClientService clientService;
+	private final ClientService companyClientService;
+	private final ClientService individualClientService;
 
 	@Autowired
-	public ClientLoader(ClientService clientService) {
-		this.clientService = clientService;
+	public ClientLoader(@Qualifier("companyClientService") ClientService companyClientService,
+	                    @Qualifier("individualClientService") ClientService individualClientService) {
+		this.companyClientService = companyClientService;
+		this.individualClientService = individualClientService;
 	}
 
 	public int getOrder() {
@@ -25,22 +30,22 @@ public class ClientLoader implements ApplicationListener<ContextRefreshedEvent> 
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-		GenericClient genericClient0 = new GenericClient();
+		IndividualClient individualClient = new IndividualClient();
 
-		genericClient0.setAddress("str Louis");
-		genericClient0.setFirstName("Lesseter");
-		genericClient0.setLastName("Gregory");
-		genericClient0.setJoinDate(LocalDate.now());
+		individualClient.setAddress("str Louis");
+		individualClient.setFirstName("Lesseter");
+		individualClient.setLastName("Gregory");
+		individualClient.setJoinDate(LocalDate.now());
 
-		clientService.saveClientTicket(genericClient0);
+		individualClientService.saveClientTicket(individualClient);
 
-		GenericClient genericClient1 = new GenericClient();
+		CompanyClient companyClient = new CompanyClient();
 
-		genericClient1.setAddress("str Alca");
-		genericClient1.setCompanyName("SC Example SRL");
-		genericClient1.setCompanyId("RO21423");
-		genericClient0.setJoinDate(LocalDate.now());
+		companyClient.setAddress("str Alca");
+		companyClient.setCompanyName("SC Example SRL");
+		companyClient.setCompanyId("RO21423");
+		companyClient.setJoinDate(LocalDate.now());
 
-		clientService.saveClientTicket(genericClient1);
+		companyClientService.saveClientTicket(companyClient);
 	}
 }

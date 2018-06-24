@@ -1,6 +1,6 @@
 package com.eu.gsys.wma.domain.model.deposits;
 
-import com.eu.gsys.wma.domain.model.users.GenericClient;
+import com.eu.gsys.wma.domain.model.clients.GenericClient;
 import com.eu.gsys.wma.domain.util.OperationTypeEnum;
 import lombok.Data;
 

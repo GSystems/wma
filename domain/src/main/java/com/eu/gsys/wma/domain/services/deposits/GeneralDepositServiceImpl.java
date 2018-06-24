@@ -1,7 +1,7 @@
-package com.eu.gsys.wma.domain.services;
+package com.eu.gsys.wma.domain.services.deposits;
 
 import com.eu.gsys.wma.domain.model.deposits.GeneralDeposit;
-import com.eu.gsys.wma.domain.transformers.deposits.GeneralDepositTransformer;
+import com.eu.gsys.wma.domain.transformers.GeneralDepositTransformer;
 import com.eu.gsys.wma.infrastructure.dao.deposits.GeneralDepositDAO;
 import com.eu.gsys.wma.infrastructure.entities.deposits.GeneralDepositEntity;
 import org.springframework.beans.factory.annotation.Autowired;

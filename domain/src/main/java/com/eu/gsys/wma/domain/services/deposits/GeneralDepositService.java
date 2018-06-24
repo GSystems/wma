@@ -1,4 +1,4 @@
-package com.eu.gsys.wma.domain.services;
+package com.eu.gsys.wma.domain.services.deposits;
 
 import com.eu.gsys.wma.domain.model.deposits.GeneralDeposit;
 

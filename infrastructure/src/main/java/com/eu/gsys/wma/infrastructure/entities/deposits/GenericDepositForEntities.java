@@ -1,9 +1,11 @@
 package com.eu.gsys.wma.infrastructure.entities.deposits;
 
-import com.eu.gsys.wma.infrastructure.entities.clients.GenericClientEntity;
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -21,7 +23,4 @@ public class GenericDepositForEntities implements Serializable {
 	private Integer operationType;
 	private Long ticketId;
 	private LocalDate timestamp;
-
-	@ManyToOne
-	private GenericClientEntity client;
 }

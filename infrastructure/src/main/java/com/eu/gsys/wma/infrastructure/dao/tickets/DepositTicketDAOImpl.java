@@ -24,8 +24,8 @@ public class DepositTicketDAOImpl implements DepositTicketDAO {
 	}
 
 	@Override
-	public void saveDepositTicket(DepositTicketEntity depositTicket) {
-		depositTicketRepository.save(depositTicket);
+	public void saveDepositTicket(DepositTicketEntity depositTicketEntity) {
+		depositTicketRepository.save(depositTicketEntity);
 	}
 
 	@Override

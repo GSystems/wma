@@ -1,10 +1,10 @@
 package com.eu.gsys.wma.infrastructure.entities.tickets;
 
-import com.eu.gsys.wma.infrastructure.entities.clients.GenericClientEntity;
 import lombok.Data;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -15,9 +15,8 @@ public class BasicTicketMaster implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 	private Long ticketId;
-
-	@ManyToOne
-	private GenericClientEntity client;
-	private LocalDate timestamp;
+	private LocalDate date;
 }

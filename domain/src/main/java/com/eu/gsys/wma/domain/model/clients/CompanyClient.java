@@ -1,4 +1,4 @@
-package com.eu.gsys.wma.domain.model.users;
+package com.eu.gsys.wma.domain.model.clients;
 
 import lombok.Data;
 

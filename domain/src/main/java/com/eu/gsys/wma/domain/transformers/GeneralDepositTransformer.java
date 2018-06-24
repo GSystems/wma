@@ -1,4 +1,4 @@
-package com.eu.gsys.wma.domain.transformers.deposits;
+package com.eu.gsys.wma.domain.transformers;
 
 import com.eu.gsys.wma.domain.model.deposits.GeneralDeposit;
 import com.eu.gsys.wma.domain.transformers.BaseTransformer;

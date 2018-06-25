@@ -22,8 +22,9 @@ public class DepositTicketLoader implements ApplicationListener<ContextRefreshed
 
 	@Autowired
 	public DepositTicketLoader(DepositTicketService depositTicketService,
-	                           @Qualifier("individualClientService") ClientService individualClientService,
-	                           @Qualifier("companyClientService") ClientService companyClientService) {
+			@Qualifier("individualClientService") ClientService individualClientService,
+			@Qualifier("companyClientService") ClientService companyClientService) {
+
 		this.depositTicketService = depositTicketService;
 		this.individualClientService = individualClientService;
 		this.companyClientService = companyClientService;
@@ -46,11 +47,34 @@ public class DepositTicketLoader implements ApplicationListener<ContextRefreshed
 
 		GenericClient genericClient1 = (GenericClient) companyClientService.getClientById(2);
 		depositTicket1.setGenericClient(genericClient1);
-		depositTicket1.setTicketId(1L);
+		depositTicket1.setTicketId(10L);
 		depositTicket1.setWheatQtyForDeposit(1000.0);
 		depositTicket1.setDate(LocalDate.now());
 		depositTicketService.saveDepositTicket(depositTicket1);
 
 		System.out.println("Saved DepositTicket - id: " + depositTicket1.getTicketId());
+
+		DepositTicket depositTicket2 = new DepositTicket();
+
+		GenericClient genericClient2 = (GenericClient) companyClientService.getClientById(2);
+		depositTicket2.setGenericClient(genericClient2);
+		depositTicket2.setTicketId(12L);
+		depositTicket2.setWheatQtyForDeposit(555.0);
+		depositTicket2.setDate(LocalDate.now());
+		depositTicketService.saveDepositTicket(depositTicket2);
+
+		System.out.println("Saved DepositTicket - id: " + depositTicket2.getTicketId());
+
+		DepositTicket depositTicket3 = new DepositTicket();
+
+		GenericClient genericClient3 = (GenericClient) individualClientService.getClientById(1);
+		depositTicket3.setGenericClient(genericClient3);
+		depositTicket3.setTicketId(9L);
+		depositTicket3.setWheatQtyForDeposit(1200.0);
+		depositTicket3.setDate(LocalDate.now());
+		depositTicketService.saveDepositTicket(depositTicket3);
+
+		System.out.println("Saved DepositTicket - id: " + depositTicket3.getTicketId());
+
 	}
 }

@@ -17,7 +17,7 @@ import javax.persistence.Table;
 public class DepositTicketEntity extends BasicTicketMaster {
 
 	private Double wheatQtyForDeposit;
-	private Boolean consumedFlag;
+	private int consumedFlag = 0;
 
 	@ManyToOne
 	@JoinColumn(name = "individual_client_id")

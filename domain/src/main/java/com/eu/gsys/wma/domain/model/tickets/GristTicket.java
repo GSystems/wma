@@ -5,12 +5,11 @@ import lombok.Data;
 @Data
 public class GristTicket extends BasicTicket {
 
-	private Integer referenceId;
 	private Double wheatQtyBrought;
-	private Double tollWheatQty;    // uium
-	private Double wheatQtyForGrist;
-	private Double flourQtyForClient;
-	private Double branQtyForClient; // tarate
-	private Double otherCorpusQty;    //corpuri straine
-	private Double manufacturingLossesQty;    // pierderi fabricatie
+	private Double tollWheatQty = 0d;    // uium
+	private Double wheatQtyForGrist= 0d;
+	private Double flourQtyForClient= 0d;
+	private Double branQtyForClient= 0d; // tarate
+	private Double otherCorpusQty= 0d;    //corpuri straine
+	private Double manufacturingLossesQty= 0d;    // pierderi fabricatie
 }

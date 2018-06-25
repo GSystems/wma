@@ -1,7 +1,6 @@
 package com.eu.gsys.wma.domain.transformers;
 
 import com.eu.gsys.wma.domain.model.deposits.GeneralDeposit;
-import com.eu.gsys.wma.domain.transformers.BaseTransformer;
 import com.eu.gsys.wma.domain.util.OperationTypeEnum;
 import com.eu.gsys.wma.infrastructure.entities.deposits.GeneralDepositEntity;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,7 @@ public class GeneralDepositTransformer implements BaseTransformer<GeneralDeposit
 		generalDeposit.setFlourQtyOfClients(generalDepositEntity.getFlourQtyOfClients());
 		generalDeposit.setFlourQtyOfCompany(generalDepositEntity.getFlourQtyOfCompany());
 		generalDeposit.setId(generalDepositEntity.getId());
-		generalDeposit.setOperationType(OperationTypeEnum.getTicketTypeByCode(generalDepositEntity.getTicketType()));
+		generalDeposit.setOperationType(OperationTypeEnum.getTicketTypeByCode(generalDepositEntity.getOperationType()));
 		generalDeposit.setTicketId(generalDepositEntity.getTicketId());
 		generalDeposit.setDate(generalDepositEntity.getDate());
 		generalDeposit.setTotalBranQty(generalDepositEntity.getTotalBranQty());
@@ -39,7 +38,7 @@ public class GeneralDepositTransformer implements BaseTransformer<GeneralDeposit
 		generalDepositEntity.setFlourQtyOfClients(generalDeposit.getFlourQtyOfClients());
 		generalDepositEntity.setFlourQtyOfCompany(generalDeposit.getFlourQtyOfCompany());
 		generalDepositEntity.setId(generalDeposit.getId());
-		generalDepositEntity.setTicketType(generalDeposit.getOperationType().getCode());
+		generalDepositEntity.setOperationType(generalDeposit.getOperationType().getCode());
 		generalDepositEntity.setTicketId(generalDeposit.getTicketId());
 		generalDepositEntity.setDate(generalDeposit.getDate());
 		generalDepositEntity.setTotalBranQty(generalDeposit.getTotalBranQty());

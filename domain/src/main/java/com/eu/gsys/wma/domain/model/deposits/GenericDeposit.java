@@ -18,6 +18,8 @@ public class GenericDeposit implements Cloneable {
 	private LocalDate date;
 	private GenericClient genericClient;
 
+	// TODO refactor this code
+
 	public Object clone() {
 		try {
 			return super.clone();

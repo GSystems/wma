@@ -41,10 +41,8 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 	@Autowired
 	public DepositTicketServiceImpl(DepositTicketTransformer depositTicketTransformer,
 			CompanyClientDepositDAO companyClientDepositDAO, IndividualClientDepositDAO individualClientDepositDAO,
-			GeneralDepositService generalDepositService,
-			DepositTicketDAO depositTicketDAO,
-			GenericDepositTransformer genericDepositTransformer,
-			GenericClientTransformer genericClientTransformer) {
+			GeneralDepositService generalDepositService, DepositTicketDAO depositTicketDAO,
+			GenericDepositTransformer genericDepositTransformer, GenericClientTransformer genericClientTransformer) {
 
 		this.depositTicketTransformer = depositTicketTransformer;
 		this.companyClientDepositDAO = companyClientDepositDAO;
@@ -105,7 +103,8 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 		}
 	}
 
-	private void updateDepositForIndividualClient(DepositTicket depositTicket, GenericClientEntity genericClientEntity) {
+	private void updateDepositForIndividualClient(DepositTicket depositTicket,
+			GenericClientEntity genericClientEntity) {
 
 		GenericDepositForEntities oldIndividualClientDepositEntity =
 				individualClientDepositDAO.getDepositByClient(genericClientEntity);
@@ -117,28 +116,30 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 			genericDepositForSave = mapFieldsFromOldDeposit(depositTicket, oldIndividualClientDepositEntity);
 		}
 
-		IndividualClientDepositEntity individualClientDepositEntity = (IndividualClientDepositEntity)
-				genericDepositTransformer.fromModel(genericDepositForSave);
+		IndividualClientDepositEntity individualClientDepositEntity =
+				(IndividualClientDepositEntity) genericDepositTransformer.fromModel(genericDepositForSave);
 
 		individualClientDepositDAO.saveDeposit(individualClientDepositEntity);
 	}
 
-	private void updateDepositForCompanyClient(DepositTicket depositTicket, GenericClientEntity genericClientEntity) {
-		GenericDepositForEntities oldIndividualClientDepositEntity =
-				companyClientDepositDAO.getDepositByClient(genericClientEntity);
+	private void updateDepositForCompanyClient(DepositTicket depositTicket, GenericClientEntity clientEntity) {
+		GenericDepositForEntities oldDepositEntity =
+				companyClientDepositDAO.getDepositByClient(clientEntity);
 		GenericDeposit genericDepositForSave;
 
-		if (oldIndividualClientDepositEntity == null) {
+		if (oldDepositEntity == null) {
 			genericDepositForSave = mapDepositFieldForNewClient(depositTicket, new CompanyClientDeposit());
 		} else {
-			genericDepositForSave = mapFieldsFromOldDeposit(depositTicket, oldIndividualClientDepositEntity);
+			genericDepositForSave = mapFieldsFromOldDeposit(depositTicket, oldDepositEntity);
 		}
 
-		CompanyClientDepositEntity companyClientDepositEntity = (CompanyClientDepositEntity)
-				genericDepositTransformer.fromModel(genericDepositForSave);
+		CompanyClientDepositEntity companyClientDepositEntity =
+				(CompanyClientDepositEntity) genericDepositTransformer.fromModel(genericDepositForSave);
 
 		companyClientDepositDAO.saveDeposit(companyClientDepositEntity);
 	}
+
+	// TODO refactor this code
 
 	private GenericDeposit mapFieldsFromOldDeposit(DepositTicket depositTicket,
 			GenericDepositForEntities oldIndividualClientDeposit) {
@@ -146,14 +147,22 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 		GenericDeposit genericDeposit = genericDepositTransformer.toModel(oldIndividualClientDeposit);
 		Double newWheatQtyForSave = genericDeposit.getWheatQty() + depositTicket.getWheatQtyForDeposit();
 
-		GenericDeposit genericDepositForSave = (IndividualClientDeposit) genericDeposit.clone();
+		GenericDeposit genericDepositForSave;
+
+		if (oldIndividualClientDeposit instanceof IndividualClientDepositEntity) {
+			genericDepositForSave = (IndividualClientDeposit) genericDeposit.clone();
+		} else {
+			genericDepositForSave = (CompanyClientDeposit) genericDeposit.clone();
+		}
+
+		genericDepositForSave.setId(null);
+		genericDepositForSave.setTicketId(depositTicket.getTicketId());
 		genericDepositForSave.setWheatQty(newWheatQtyForSave);
 
 		return genericDepositForSave;
 	}
 
-	private GenericDeposit mapDepositFieldForNewClient(DepositTicket depositTicket,
-			GenericDeposit genericDeposit) {
+	private GenericDeposit mapDepositFieldForNewClient(DepositTicket depositTicket, GenericDeposit genericDeposit) {
 
 		GenericDeposit newGenericDepositForSave = genericDeposit;
 
@@ -179,6 +188,7 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 		Double newTotalWheatQtyOfClients = oldTotalWheatQtyOfClients + wheatQtyForSave;
 
 		GeneralDeposit newGeneralDepositForSave = (GeneralDeposit) lastGeneralDeposit.clone();
+		newGeneralDepositForSave.setId(null);
 		newGeneralDepositForSave.setTotalWheatQty(newTotalWheatQtyForSave);
 		newGeneralDepositForSave.setWheatQtyOfClients(newTotalWheatQtyOfClients);
 		newGeneralDepositForSave.setTicketId(depositTicket.getTicketId());

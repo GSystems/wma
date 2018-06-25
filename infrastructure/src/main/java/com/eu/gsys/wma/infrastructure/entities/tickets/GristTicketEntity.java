@@ -5,10 +5,7 @@ import com.eu.gsys.wma.infrastructure.entities.clients.IndividualClientEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -16,14 +13,13 @@ import javax.persistence.Table;
 @Table(name = "grist_tickets")
 public class GristTicketEntity extends BasicTicketMaster {
 
-	private Integer referenceId;
-	private Double wheatQtyBrought;
-	private Double tollWheatQty;    // uium
-	private Double wheatQtyForGrist;
-	private Double flourQtyForClient;
-	private Double branQtyForClient; // tarate
-	private Double otherCorpusQty;    //corpuri straine
-	private Double manufacturingLossesQty;    // pierderi fabricatie
+	private Double wheatQtyBrought = 0d;
+	private Double tollWheatQty = 0d;    // uium
+	private Double wheatQtyForGrist = 0d;
+	private Double flourQtyForClient = 0d;
+	private Double branQtyForClient = 0d; // tarate
+	private Double otherCorpusQty = 0d;    //corpuri straine
+	private Double manufacturingLossesQty = 0d;    // pierderi fabricatie
 
 	@ManyToOne
 	@JoinColumn(name = "individual_client_id")

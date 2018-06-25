@@ -25,6 +25,8 @@ public class GeneralDeposit implements Cloneable {
 	private Double branQtyOfCompany;
 	private Double branQtyOfClients;
 
+	//TODO refactor this code
+
 	public Object clone() {
 		try {
 			return super.clone();

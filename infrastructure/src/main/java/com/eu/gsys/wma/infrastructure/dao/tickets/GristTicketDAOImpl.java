@@ -13,6 +13,10 @@ public class GristTicketDAOImpl implements GristTicketDAO {
 	@Autowired
 	private GristTicketRepository gristTicketRepository;
 
+	public GristTicketDAOImpl(GristTicketRepository gristTicketRepository) {
+		this.gristTicketRepository = gristTicketRepository;
+	}
+
 	@Override
 	public List<GristTicketEntity> listAllGristTickets() {
 		return (List<GristTicketEntity>) gristTicketRepository.findAll();

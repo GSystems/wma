@@ -19,8 +19,4 @@ public class GenericClientEntity implements Serializable {
 	private Integer id;
 	private String address;
 	private LocalDate joinDate;
-
-	private Double wheatQty = 0d;
-	private Double flourQty = 0d;
-	private Double branQty = 0d;
 }

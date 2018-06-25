@@ -21,8 +21,8 @@ public class GristTicketLoader implements ApplicationListener<ContextRefreshedEv
 
 	@Autowired
 	public GristTicketLoader(GristTicketService gristTicketService,
-	                         @Qualifier("individualClientService") ClientService individualClientService,
-	                         @Qualifier("companyClientService") ClientService companyClientService) {
+			@Qualifier("individualClientService") ClientService individualClientService,
+			@Qualifier("companyClientService") ClientService companyClientService) {
 		this.gristTicketService = gristTicketService;
 		this.individualClientService = individualClientService;
 		this.companyClientService = companyClientService;

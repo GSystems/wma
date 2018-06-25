@@ -25,7 +25,11 @@ public class GeneralDepositEntity implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private LocalDate date;
-	private Integer ticketType;
+
+//	@Id
+	private Integer operationType;
+
+//	@Id
 	private Long ticketId;
 
 	private Double totalWheatQty;

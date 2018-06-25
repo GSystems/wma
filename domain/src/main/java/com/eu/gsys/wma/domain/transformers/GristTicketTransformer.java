@@ -26,7 +26,6 @@ public class GristTicketTransformer implements BaseTransformer<GristTicketEntity
 		gristTicketEntity.setFlourQtyForClient(gristTicket.getFlourQtyForClient());
 		gristTicketEntity.setManufacturingLossesQty(gristTicket.getManufacturingLossesQty());
 		gristTicketEntity.setOtherCorpusQty(gristTicket.getOtherCorpusQty());
-		gristTicketEntity.setReferenceId(gristTicket.getReferenceId());
 		gristTicketEntity.setTicketId(gristTicket.getTicketId());
 		gristTicketEntity.setTollWheatQty(gristTicket.getTollWheatQty());
 		gristTicketEntity.setWheatQtyBrought(gristTicket.getWheatQtyBrought());
@@ -64,7 +63,6 @@ public class GristTicketTransformer implements BaseTransformer<GristTicketEntity
 		gristTicket.setFlourQtyForClient(gristTicketEntity.getFlourQtyForClient());
 		gristTicket.setManufacturingLossesQty(gristTicketEntity.getManufacturingLossesQty());
 		gristTicket.setOtherCorpusQty(gristTicketEntity.getOtherCorpusQty());
-		gristTicket.setReferenceId(gristTicketEntity.getReferenceId());
 		gristTicket.setTicketId(gristTicketEntity.getTicketId());
 		gristTicket.setTollWheatQty(gristTicketEntity.getTollWheatQty());
 		gristTicket.setWheatQtyBrought(gristTicketEntity.getWheatQtyBrought());

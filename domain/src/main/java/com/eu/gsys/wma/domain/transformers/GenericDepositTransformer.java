@@ -3,10 +3,9 @@ package com.eu.gsys.wma.domain.transformers;
 import com.eu.gsys.wma.domain.model.deposits.CompanyClientDeposit;
 import com.eu.gsys.wma.domain.model.deposits.GenericDeposit;
 import com.eu.gsys.wma.domain.model.deposits.IndividualClientDeposit;
-import com.eu.gsys.wma.domain.transformers.BaseTransformer;
-import com.eu.gsys.wma.domain.transformers.GenericClientTransformer;
 import com.eu.gsys.wma.domain.util.OperationTypeEnum;
 import com.eu.gsys.wma.infrastructure.entities.clients.CompanyClientEntity;
+import com.eu.gsys.wma.infrastructure.entities.clients.GenericClientEntity;
 import com.eu.gsys.wma.infrastructure.entities.clients.IndividualClientEntity;
 import com.eu.gsys.wma.infrastructure.entities.deposits.CompanyClientDepositEntity;
 import com.eu.gsys.wma.infrastructure.entities.deposits.GenericDepositForEntities;
@@ -40,8 +39,8 @@ public class GenericDepositTransformer implements BaseTransformer<GenericDeposit
 			individualClientDepositEntity.setTimestamp(genericDeposit.getDate());
 			individualClientDepositEntity.setWheatQty(genericDeposit.getWheatQty());
 
-			IndividualClientEntity individualClientEntity = (IndividualClientEntity)
-					genericClientTransformer.fromModel(individualClientDeposit.getGenericClient());
+			IndividualClientEntity individualClientEntity = (IndividualClientEntity) genericClientTransformer
+					.fromModel(individualClientDeposit.getGenericClient());
 
 			individualClientDepositEntity.setIndividualClientEntity(individualClientEntity);
 
@@ -59,8 +58,8 @@ public class GenericDepositTransformer implements BaseTransformer<GenericDeposit
 			companyClientDepositEntity.setTimestamp(genericDeposit.getDate());
 			companyClientDepositEntity.setWheatQty(genericDeposit.getWheatQty());
 
-			CompanyClientEntity companyClientEntity = (CompanyClientEntity)
-					genericClientTransformer.fromModel(companyClientDeposit.getGenericClient());
+			CompanyClientEntity companyClientEntity =
+					(CompanyClientEntity) genericClientTransformer.fromModel(companyClientDeposit.getGenericClient());
 
 			companyClientDepositEntity.setCompanyClientEntity(companyClientEntity);
 
@@ -70,10 +69,20 @@ public class GenericDepositTransformer implements BaseTransformer<GenericDeposit
 
 	@Override
 	public GenericDeposit toModel(GenericDepositForEntities genericDepositForEntities) {
-		GenericDeposit genericDeposit = new GenericDeposit();
+		GenericDeposit genericDeposit;
+		GenericClientEntity genericClientEntity;
 
+		if (genericDepositForEntities instanceof IndividualClientDepositEntity) {
+			genericDeposit = new IndividualClientDeposit();
+			genericClientEntity =
+					((IndividualClientDepositEntity) genericDepositForEntities).getIndividualClientEntity();
+		} else {
+			genericDeposit = new CompanyClientDeposit();
+			genericClientEntity = ((CompanyClientDepositEntity) genericDepositForEntities).getCompanyClientEntity();
+		}
 		genericDeposit.setBranQty(genericDepositForEntities.getBranQty());
 		genericDeposit.setFlourQty(genericDepositForEntities.getFlourQty());
+		genericDeposit.setGenericClient(genericClientTransformer.toModel(genericClientEntity));
 		genericDeposit.setId(genericDepositForEntities.getId());
 		genericDeposit
 				.setOperationType(OperationTypeEnum.getTicketTypeByCode(genericDepositForEntities.getOperationType()));

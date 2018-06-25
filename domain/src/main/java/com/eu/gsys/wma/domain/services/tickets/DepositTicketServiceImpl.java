@@ -6,21 +6,22 @@ import com.eu.gsys.wma.domain.model.deposits.GenericDeposit;
 import com.eu.gsys.wma.domain.model.deposits.IndividualClientDeposit;
 import com.eu.gsys.wma.domain.model.tickets.DepositTicket;
 import com.eu.gsys.wma.domain.services.deposits.GeneralDepositService;
-import com.eu.gsys.wma.domain.transformers.DepositTicketTransformer;
-import com.eu.gsys.wma.domain.transformers.GenericClientTransformer;
-import com.eu.gsys.wma.domain.transformers.GenericDepositTransformer;
+import com.eu.gsys.wma.domain.transformers.ClientTransformer;
+import com.eu.gsys.wma.domain.transformers.DepositTransformer;
+import com.eu.gsys.wma.domain.transformers.TicketTransformer;
 import com.eu.gsys.wma.domain.util.ErrorMessages;
 import com.eu.gsys.wma.domain.util.OperationTypeEnum;
 import com.eu.gsys.wma.domain.util.WmaException;
-import com.eu.gsys.wma.infrastructure.dao.deposits.CompanyClientDepositDAO;
-import com.eu.gsys.wma.infrastructure.dao.deposits.IndividualClientDepositDAO;
-import com.eu.gsys.wma.infrastructure.dao.tickets.DepositTicketDAO;
+import com.eu.gsys.wma.infrastructure.entities.clients.CompanyClientEntity;
 import com.eu.gsys.wma.infrastructure.entities.clients.GenericClientEntity;
 import com.eu.gsys.wma.infrastructure.entities.clients.IndividualClientEntity;
 import com.eu.gsys.wma.infrastructure.entities.deposits.CompanyClientDepositEntity;
 import com.eu.gsys.wma.infrastructure.entities.deposits.GenericDepositForEntities;
 import com.eu.gsys.wma.infrastructure.entities.deposits.IndividualClientDepositEntity;
 import com.eu.gsys.wma.infrastructure.entities.tickets.DepositTicketEntity;
+import com.eu.gsys.wma.infrastructure.repositories.deposits.CompanyDepositRepository;
+import com.eu.gsys.wma.infrastructure.repositories.deposits.IndividualDepositRepository;
+import com.eu.gsys.wma.infrastructure.repositories.tickets.DepositTicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,36 +31,36 @@ import java.util.List;
 @Service
 public class DepositTicketServiceImpl implements DepositTicketService {
 
-	private final DepositTicketTransformer depositTicketTransformer;
-	private final CompanyClientDepositDAO companyClientDepositDAO;
-	private final IndividualClientDepositDAO individualClientDepositDAO;
+	private final TicketTransformer ticketTransformer;
+	private final ClientTransformer clientTransformer;
+	private final CompanyDepositRepository companyDepositRepository;
+	private final DepositTicketRepository depositTicketRepository;
+	private final DepositTransformer depositTransformer;
+	private final IndividualDepositRepository individualDepositRepository;
 	private final GeneralDepositService generalDepositService;
-	private final DepositTicketDAO depositTicketDAO;
-	private final GenericDepositTransformer genericDepositTransformer;
-	private final GenericClientTransformer genericClientTransformer;
 
 	@Autowired
-	public DepositTicketServiceImpl(DepositTicketTransformer depositTicketTransformer,
-			CompanyClientDepositDAO companyClientDepositDAO, IndividualClientDepositDAO individualClientDepositDAO,
-			GeneralDepositService generalDepositService, DepositTicketDAO depositTicketDAO,
-			GenericDepositTransformer genericDepositTransformer, GenericClientTransformer genericClientTransformer) {
+	public DepositTicketServiceImpl(TicketTransformer ticketTransformer,
+			CompanyDepositRepository companyDepositRepository, IndividualDepositRepository individualDepositRepository,
+			GeneralDepositService generalDepositService, DepositTicketRepository depositTicketRepository,
+			ClientTransformer clientTransformer, DepositTransformer depositTransformer) {
 
-		this.depositTicketTransformer = depositTicketTransformer;
-		this.companyClientDepositDAO = companyClientDepositDAO;
-		this.individualClientDepositDAO = individualClientDepositDAO;
+		this.ticketTransformer = ticketTransformer;
+		this.companyDepositRepository = companyDepositRepository;
+		this.individualDepositRepository = individualDepositRepository;
 		this.generalDepositService = generalDepositService;
-		this.depositTicketDAO = depositTicketDAO;
-		this.genericDepositTransformer = genericDepositTransformer;
-		this.genericClientTransformer = genericClientTransformer;
+		this.depositTicketRepository = depositTicketRepository;
+		this.clientTransformer = clientTransformer;
+		this.depositTransformer = depositTransformer;
 	}
 
 	@Override
 	public Iterable<DepositTicket> listAllDepositTickets() {
 		List<DepositTicket> depositTicketList = new ArrayList<>();
-		List<DepositTicketEntity> depositTicketEntities = depositTicketDAO.listAllDepositTickets();
+		List<DepositTicketEntity> depositTicketEntities = (List<DepositTicketEntity>) depositTicketRepository.findAll();
 
 		for (DepositTicketEntity depositTicketEntity : depositTicketEntities) {
-			depositTicketList.add(depositTicketTransformer.toModel(depositTicketEntity));
+			depositTicketList.add((DepositTicket) ticketTransformer.toModel(depositTicketEntity));
 		}
 
 		return depositTicketList;
@@ -67,7 +68,7 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 
 	@Override
 	public DepositTicket getDepositTicketById(Integer id) {
-		return depositTicketTransformer.toModel(depositTicketDAO.getDepositTicketById(id));
+		return (DepositTicket) ticketTransformer.toModel(depositTicketRepository.findById(id).get());
 	}
 
 	@Override
@@ -77,7 +78,7 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 		calculateAndUpdateNewClientDeposit(depositTicket);
 		calculateAndUpdateGeneralDeposit(depositTicket);
 
-		depositTicketDAO.saveDepositTicket(depositTicketTransformer.fromModel(depositTicket));
+		depositTicketRepository.save((DepositTicketEntity) ticketTransformer.fromModel(depositTicket));
 	}
 
 	@Override
@@ -85,7 +86,7 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 		depositTicket.setOperationTypeEnum(OperationTypeEnum.REMOVE_DEPOSIT_TICKET);
 
 		if (!depositTicket.getConsumedFlag()) {
-			depositTicketDAO.deleteDepositTicket(depositTicketTransformer.fromModel(depositTicket));
+			depositTicketRepository.delete((DepositTicketEntity) ticketTransformer.fromModel(depositTicket));
 		} else {
 			throw new WmaException(ErrorMessages.INCONSISTENT_OPERATION);
 		}
@@ -94,7 +95,7 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 	// TODO refactor this code
 
 	private void calculateAndUpdateNewClientDeposit(DepositTicket depositTicket) {
-		GenericClientEntity genericClientEntity = genericClientTransformer.fromModel(depositTicket.getGenericClient());
+		GenericClientEntity genericClientEntity = clientTransformer.fromModel(depositTicket.getClient());
 
 		if (genericClientEntity instanceof IndividualClientEntity) {
 			updateDepositForIndividualClient(depositTicket, genericClientEntity);
@@ -106,8 +107,9 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 	private void updateDepositForIndividualClient(DepositTicket depositTicket,
 			GenericClientEntity genericClientEntity) {
 
-		GenericDepositForEntities oldIndividualClientDepositEntity =
-				individualClientDepositDAO.getDepositByClient(genericClientEntity);
+		GenericDepositForEntities oldIndividualClientDepositEntity = individualDepositRepository
+				.getDepositByIndividualClientEntity((IndividualClientEntity) genericClientEntity);
+
 		GenericDeposit genericDepositForSave;
 
 		if (oldIndividualClientDepositEntity == null) {
@@ -117,14 +119,15 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 		}
 
 		IndividualClientDepositEntity individualClientDepositEntity =
-				(IndividualClientDepositEntity) genericDepositTransformer.fromModel(genericDepositForSave);
+				(IndividualClientDepositEntity) depositTransformer.fromModel(genericDepositForSave);
 
-		individualClientDepositDAO.saveDeposit(individualClientDepositEntity);
+		individualDepositRepository.save(individualClientDepositEntity);
 	}
 
 	private void updateDepositForCompanyClient(DepositTicket depositTicket, GenericClientEntity clientEntity) {
 		GenericDepositForEntities oldDepositEntity =
-				companyClientDepositDAO.getDepositByClient(clientEntity);
+				companyDepositRepository.getDepositByCompanyClientEntity((CompanyClientEntity) clientEntity);
+
 		GenericDeposit genericDepositForSave;
 
 		if (oldDepositEntity == null) {
@@ -134,9 +137,9 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 		}
 
 		CompanyClientDepositEntity companyClientDepositEntity =
-				(CompanyClientDepositEntity) genericDepositTransformer.fromModel(genericDepositForSave);
+				(CompanyClientDepositEntity) depositTransformer.fromModel(genericDepositForSave);
 
-		companyClientDepositDAO.saveDeposit(companyClientDepositEntity);
+		companyDepositRepository.save(companyClientDepositEntity);
 	}
 
 	// TODO refactor this code
@@ -144,7 +147,7 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 	private GenericDeposit mapFieldsFromOldDeposit(DepositTicket depositTicket,
 			GenericDepositForEntities oldIndividualClientDeposit) {
 
-		GenericDeposit genericDeposit = genericDepositTransformer.toModel(oldIndividualClientDeposit);
+		GenericDeposit genericDeposit = depositTransformer.toModel(oldIndividualClientDeposit);
 		Double newWheatQtyForSave = genericDeposit.getWheatQty() + depositTicket.getWheatQtyForDeposit();
 
 		GenericDeposit genericDepositForSave;
@@ -167,7 +170,7 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 		GenericDeposit newGenericDepositForSave = genericDeposit;
 
 		newGenericDepositForSave.setBranQty(0d);
-		newGenericDepositForSave.setGenericClient(depositTicket.getGenericClient());
+		newGenericDepositForSave.setGenericClient(depositTicket.getClient());
 		newGenericDepositForSave.setFlourQty(0d);
 		newGenericDepositForSave.setOperationType(depositTicket.getOperationTypeEnum());
 		newGenericDepositForSave.setTicketId(depositTicket.getTicketId());

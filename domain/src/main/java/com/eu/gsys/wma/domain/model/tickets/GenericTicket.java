@@ -7,11 +7,11 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class BasicTicket {
+public class GenericTicket {
 
 	private Long id;
 	private Long ticketId;
 	private LocalDate date;
-	private GenericClient genericClient;
+	private GenericClient client;
 	private OperationTypeEnum operationTypeEnum;
 }

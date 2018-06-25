@@ -10,8 +10,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "general_deposits")
 @NamedQueries({
-		@NamedQuery(name = GeneralDepositEntity.GET_MOST_RECENT_RECORD, query = GeneralDepositEntity.GET_MOST_RECENT_RECORD_QRY_MYSQL)
-})
+		@NamedQuery(name = GeneralDepositEntity.GET_MOST_RECENT_RECORD, query = GeneralDepositEntity.GET_MOST_RECENT_RECORD_QRY_MYSQL) })
 public class GeneralDepositEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -26,10 +25,7 @@ public class GeneralDepositEntity implements Serializable {
 	private Long id;
 	private LocalDate date;
 
-//	@Id
 	private Integer operationType;
-
-//	@Id
 	private Long ticketId;
 
 	private Double totalWheatQty;

@@ -10,7 +10,7 @@ import com.eu.gsys.wma.infrastructure.entities.clients.IndividualClientEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GenericClientTransformer implements BaseTransformer<GenericClientEntity, GenericClient> {
+public class ClientTransformer implements BaseTransformer<GenericClientEntity, GenericClient> {
 
 	// TODO refactor this code
 

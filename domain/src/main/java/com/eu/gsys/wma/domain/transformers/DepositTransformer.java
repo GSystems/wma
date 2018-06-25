@@ -14,13 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GenericDepositTransformer implements BaseTransformer<GenericDepositForEntities, GenericDeposit> {
+public class DepositTransformer implements BaseTransformer<GenericDepositForEntities, GenericDeposit> {
 
-	private GenericClientTransformer genericClientTransformer;
+	private ClientTransformer clientTransformer;
 
 	@Autowired
-	public GenericDepositTransformer(GenericClientTransformer genericDepositForEntities) {
-		this.genericClientTransformer = genericDepositForEntities;
+	public DepositTransformer(ClientTransformer genericDepositForEntities) {
+		this.clientTransformer = genericDepositForEntities;
 	}
 
 	// TODO refactor this code
@@ -39,7 +39,7 @@ public class GenericDepositTransformer implements BaseTransformer<GenericDeposit
 			individualClientDepositEntity.setTimestamp(genericDeposit.getDate());
 			individualClientDepositEntity.setWheatQty(genericDeposit.getWheatQty());
 
-			IndividualClientEntity individualClientEntity = (IndividualClientEntity) genericClientTransformer
+			IndividualClientEntity individualClientEntity = (IndividualClientEntity) clientTransformer
 					.fromModel(individualClientDeposit.getGenericClient());
 
 			individualClientDepositEntity.setIndividualClientEntity(individualClientEntity);
@@ -59,7 +59,7 @@ public class GenericDepositTransformer implements BaseTransformer<GenericDeposit
 			companyClientDepositEntity.setWheatQty(genericDeposit.getWheatQty());
 
 			CompanyClientEntity companyClientEntity =
-					(CompanyClientEntity) genericClientTransformer.fromModel(companyClientDeposit.getGenericClient());
+					(CompanyClientEntity) clientTransformer.fromModel(companyClientDeposit.getGenericClient());
 
 			companyClientDepositEntity.setCompanyClientEntity(companyClientEntity);
 
@@ -82,7 +82,7 @@ public class GenericDepositTransformer implements BaseTransformer<GenericDeposit
 		}
 		genericDeposit.setBranQty(genericDepositForEntities.getBranQty());
 		genericDeposit.setFlourQty(genericDepositForEntities.getFlourQty());
-		genericDeposit.setGenericClient(genericClientTransformer.toModel(genericClientEntity));
+		genericDeposit.setGenericClient(clientTransformer.toModel(genericClientEntity));
 		genericDeposit.setId(genericDepositForEntities.getId());
 		genericDeposit
 				.setOperationType(OperationTypeEnum.getTicketTypeByCode(genericDepositForEntities.getOperationType()));

@@ -6,11 +6,11 @@ public interface GeneralDepositService {
 
 	Iterable<GeneralDeposit> listAllRecords();
 
-	GeneralDeposit getRecordById(Integer id);
+	GeneralDeposit getRecordById(Long id);
 
 	void saveRecord(GeneralDeposit generalDeposit);
 
-	void deleteRecord(Integer id);
+	void deleteRecord(Long id);
 
 	GeneralDeposit getMostRecentRecord();
 }

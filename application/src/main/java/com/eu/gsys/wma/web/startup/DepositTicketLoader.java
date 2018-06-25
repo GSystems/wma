@@ -5,7 +5,6 @@ import com.eu.gsys.wma.domain.model.tickets.DepositTicket;
 import com.eu.gsys.wma.domain.services.clients.ClientService;
 import com.eu.gsys.wma.domain.services.tickets.DepositTicketService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -17,25 +16,22 @@ public class DepositTicketLoader implements ApplicationListener<ContextRefreshed
 
 	private final DepositTicketService depositTicketService;
 
-	private final ClientService individualClientService;
-	private final ClientService companyClientService;
+	private final ClientService clientService;
 
 	@Autowired
 	public DepositTicketLoader(DepositTicketService depositTicketService,
-			@Qualifier("individualClientService") ClientService individualClientService,
-			@Qualifier("companyClientService") ClientService companyClientService) {
+			ClientService clientService) {
 
 		this.depositTicketService = depositTicketService;
-		this.individualClientService = individualClientService;
-		this.companyClientService = companyClientService;
+		this.clientService = clientService;
 	}
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 		DepositTicket depositTicket0 = new DepositTicket();
 
-		GenericClient genericClient0 = (GenericClient) individualClientService.getClientById(1);
-		depositTicket0.setGenericClient(genericClient0);
+		GenericClient genericClient0 = (GenericClient) clientService.getClientById(1);
+		depositTicket0.setClient(genericClient0);
 		depositTicket0.setTicketId(1L);
 		depositTicket0.setWheatQtyForDeposit(2000.0);
 		depositTicket0.setDate(LocalDate.now());
@@ -45,8 +41,8 @@ public class DepositTicketLoader implements ApplicationListener<ContextRefreshed
 
 		DepositTicket depositTicket1 = new DepositTicket();
 
-		GenericClient genericClient1 = (GenericClient) companyClientService.getClientById(2);
-		depositTicket1.setGenericClient(genericClient1);
+		GenericClient genericClient1 = (GenericClient) clientService.getClientById(2);
+		depositTicket1.setClient(genericClient1);
 		depositTicket1.setTicketId(10L);
 		depositTicket1.setWheatQtyForDeposit(1000.0);
 		depositTicket1.setDate(LocalDate.now());
@@ -56,8 +52,8 @@ public class DepositTicketLoader implements ApplicationListener<ContextRefreshed
 
 		DepositTicket depositTicket2 = new DepositTicket();
 
-		GenericClient genericClient2 = (GenericClient) companyClientService.getClientById(2);
-		depositTicket2.setGenericClient(genericClient2);
+		GenericClient genericClient2 = (GenericClient) clientService.getClientById(2);
+		depositTicket2.setClient(genericClient2);
 		depositTicket2.setTicketId(12L);
 		depositTicket2.setWheatQtyForDeposit(555.0);
 		depositTicket2.setDate(LocalDate.now());
@@ -67,8 +63,8 @@ public class DepositTicketLoader implements ApplicationListener<ContextRefreshed
 
 		DepositTicket depositTicket3 = new DepositTicket();
 
-		GenericClient genericClient3 = (GenericClient) individualClientService.getClientById(1);
-		depositTicket3.setGenericClient(genericClient3);
+		GenericClient genericClient3 = (GenericClient) clientService.getClientById(1);
+		depositTicket3.setClient(genericClient3);
 		depositTicket3.setTicketId(9L);
 		depositTicket3.setWheatQtyForDeposit(1200.0);
 		depositTicket3.setDate(LocalDate.now());

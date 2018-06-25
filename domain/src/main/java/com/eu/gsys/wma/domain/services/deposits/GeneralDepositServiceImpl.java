@@ -2,8 +2,8 @@ package com.eu.gsys.wma.domain.services.deposits;
 
 import com.eu.gsys.wma.domain.model.deposits.GeneralDeposit;
 import com.eu.gsys.wma.domain.transformers.GeneralDepositTransformer;
-import com.eu.gsys.wma.infrastructure.dao.deposits.GeneralDepositDAO;
 import com.eu.gsys.wma.infrastructure.entities.deposits.GeneralDepositEntity;
+import com.eu.gsys.wma.infrastructure.repositories.deposits.GeneralDepositRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,19 +13,21 @@ import java.util.List;
 @Service
 public class GeneralDepositServiceImpl implements GeneralDepositService {
 
-	private final GeneralDepositDAO generalDepositDAO;
+	private final GeneralDepositRepository generalDepositRepository;
 	private final GeneralDepositTransformer generalDepositTransformer;
 
 	@Autowired
-	public GeneralDepositServiceImpl(GeneralDepositDAO generalDepositDAO, GeneralDepositTransformer generalDepositTransformer) {
-		this.generalDepositDAO = generalDepositDAO;
+	public GeneralDepositServiceImpl(GeneralDepositRepository generalDepositRepository,
+			GeneralDepositTransformer generalDepositTransformer) {
+
+		this.generalDepositRepository = generalDepositRepository;
 		this.generalDepositTransformer = generalDepositTransformer;
 	}
 
 	@Override
 	public Iterable<GeneralDeposit> listAllRecords() {
 		List<GeneralDeposit> generalDeposits = new ArrayList<>();
-		List<GeneralDepositEntity> transactionEntities = generalDepositDAO.listAllRecords();
+		List<GeneralDepositEntity> transactionEntities = generalDepositRepository.findAll();
 
 		for (GeneralDepositEntity generalDepositEntity : transactionEntities) {
 			generalDeposits.add(generalDepositTransformer.toModel(generalDepositEntity));
@@ -35,24 +37,24 @@ public class GeneralDepositServiceImpl implements GeneralDepositService {
 	}
 
 	@Override
-	public GeneralDeposit getRecordById(Integer id) {
-		return generalDepositTransformer.toModel(generalDepositDAO.getRecordById(id));
+	public GeneralDeposit getRecordById(Long id) {
+		return generalDepositTransformer.toModel(generalDepositRepository.findById(id).get());
 	}
 
 	@Override
 	public void saveRecord(GeneralDeposit generalDeposit) {
-		generalDepositDAO.saveRecord(this.generalDepositTransformer.fromModel(generalDeposit));
+		generalDepositRepository.save(generalDepositTransformer.fromModel(generalDeposit));
 	}
 
 	@Override
-	public void deleteRecord(Integer id) {
-		generalDepositDAO.deleteRecord(id);
+	public void deleteRecord(Long id) {
+		generalDepositRepository.deleteById(id);
 	}
 
 	@Override
 	public GeneralDeposit getMostRecentRecord() {
 		GeneralDeposit generalDeposit;
-		GeneralDepositEntity generalDepositEntity = generalDepositDAO.getMostRecentRecord();
+		GeneralDepositEntity generalDepositEntity = generalDepositRepository.getMostRecentRecord();
 
 		if (generalDepositEntity == null) {
 			generalDeposit = initValuesForNewGeneralDeposit();

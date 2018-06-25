@@ -3,7 +3,7 @@ package com.eu.gsys.wma.domain.model.tickets;
 import lombok.Data;
 
 @Data
-public class GristTicket extends BasicTicket {
+public class GristTicket extends GenericTicket {
 
 	private Double wheatQtyBrought;
 	private Double tollWheatQty = 0d;    // uium

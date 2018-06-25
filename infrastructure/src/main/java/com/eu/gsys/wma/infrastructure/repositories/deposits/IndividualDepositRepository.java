@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface IndividualDepositRepository extends CrudRepository<IndividualClientDepositEntity, Integer> {
 
-	IndividualClientDepositEntity getDepositByIndividualClientEntity(IndividualClientEntity individualClientEntity);
+	IndividualClientDepositEntity getDepositByClientEntity(IndividualClientEntity clientEntity);
 }

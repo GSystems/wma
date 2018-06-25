@@ -8,8 +8,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
 @Entity
+@EqualsAndHashCode(callSuper = false)
 @Table(name = "deposit_tickets")
 public class DepositTicketEntity extends GenericTicketForEntities {
 

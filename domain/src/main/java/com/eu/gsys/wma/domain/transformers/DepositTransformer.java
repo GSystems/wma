@@ -31,18 +31,12 @@ public class DepositTransformer implements BaseTransformer<GenericDepositForEnti
 			IndividualClientDeposit deposit = (IndividualClientDeposit) genericDeposit;
 			IndividualClientDepositEntity depositEntity = new IndividualClientDepositEntity();
 
-			depositEntity.setBranQty(genericDeposit.getBranQty());
-			depositEntity.setFlourQty(genericDeposit.getFlourQty());
-			depositEntity.setId(genericDeposit.getId());
-			depositEntity.setOperationType(genericDeposit.getOperationType().getCode());
-			depositEntity.setTicketId(genericDeposit.getTicketId());
-			depositEntity.setDate(genericDeposit.getDate());
-			depositEntity.setWheatQty(genericDeposit.getWheatQty());
+			mapCommonFieldsForEntity(genericDeposit, depositEntity);
 
 			IndividualClientEntity individualClientEntity = (IndividualClientEntity) clientTransformer
-					.fromModel(deposit.getGenericClient());
+					.fromModel(deposit.getClient());
 
-			depositEntity.setIndividualClientEntity(individualClientEntity);
+			depositEntity.setClientEntity(individualClientEntity);
 
 			return depositEntity;
 		} else {
@@ -50,21 +44,25 @@ public class DepositTransformer implements BaseTransformer<GenericDepositForEnti
 			CompanyClientDeposit deposit = (CompanyClientDeposit) genericDeposit;
 			CompanyClientDepositEntity depositEntity = new CompanyClientDepositEntity();
 
-			depositEntity.setBranQty(deposit.getBranQty());
-			depositEntity.setFlourQty(deposit.getFlourQty());
-			depositEntity.setId(deposit.getId());
-			depositEntity.setOperationType(deposit.getOperationType().getCode());
-			depositEntity.setTicketId(deposit.getTicketId());
-			depositEntity.setDate(deposit.getDate());
-			depositEntity.setWheatQty(deposit.getWheatQty());
+			mapCommonFieldsForEntity(genericDeposit, depositEntity);
 
 			CompanyClientEntity companyClientEntity =
-					(CompanyClientEntity) clientTransformer.fromModel(deposit.getGenericClient());
+					(CompanyClientEntity) clientTransformer.fromModel(deposit.getClient());
 
 			depositEntity.setClientEntity(companyClientEntity);
 
 			return depositEntity;
 		}
+	}
+
+	private void mapCommonFieldsForEntity(GenericDeposit deposit, GenericDepositForEntities depositEntity) {
+		depositEntity.setBranQty(deposit.getBranQty());
+		depositEntity.setFlourQty(deposit.getFlourQty());
+		depositEntity.setId(deposit.getId());
+		depositEntity.setOperationType(deposit.getOperationType().getCode());
+		depositEntity.setTicketId(deposit.getTicketId());
+		depositEntity.setDate(deposit.getDate());
+		depositEntity.setWheatQty(deposit.getWheatQty());
 	}
 
 	@Override
@@ -75,14 +73,15 @@ public class DepositTransformer implements BaseTransformer<GenericDepositForEnti
 		if (depositEntity instanceof IndividualClientDepositEntity) {
 			deposit = new IndividualClientDeposit();
 			genericClientEntity =
-					((IndividualClientDepositEntity) depositEntity).getIndividualClientEntity();
+					((IndividualClientDepositEntity) depositEntity).getClientEntity();
 		} else {
 			deposit = new CompanyClientDeposit();
 			genericClientEntity = ((CompanyClientDepositEntity) depositEntity).getClientEntity();
 		}
+
 		deposit.setBranQty(depositEntity.getBranQty());
 		deposit.setFlourQty(depositEntity.getFlourQty());
-		deposit.setGenericClient(clientTransformer.toModel(genericClientEntity));
+		deposit.setClient(clientTransformer.toModel(genericClientEntity));
 		deposit.setId(depositEntity.getId());
 		deposit
 				.setOperationType(OperationTypeEnum.getTicketTypeByCode(depositEntity.getOperationType()));

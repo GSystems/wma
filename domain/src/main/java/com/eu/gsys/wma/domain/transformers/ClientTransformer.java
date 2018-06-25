@@ -20,12 +20,11 @@ public class ClientTransformer implements BaseTransformer<GenericClientEntity, G
 			IndividualClient individualClient = (IndividualClient) client;
 			IndividualClientEntity clientEntity = new IndividualClientEntity();
 
+			mapCommonFieldsForEntity(individualClient, clientEntity);
+
 			clientEntity.setFirstName(individualClient.getFirstName());
 			clientEntity.setLastName(individualClient.getLastName());
-
-			clientEntity.setAddress(individualClient.getAddress());
-			clientEntity.setId(individualClient.getId());
-			clientEntity.setJoinDate(individualClient.getJoinDate());
+			clientEntity.setPersonalId(individualClient.getPersonalId());
 
 			return clientEntity;
 
@@ -33,15 +32,19 @@ public class ClientTransformer implements BaseTransformer<GenericClientEntity, G
 			CompanyClient companyClient = (CompanyClient) client;
 			CompanyClientEntity clientEntity = new CompanyClientEntity();
 
+			mapCommonFieldsForEntity(companyClient, clientEntity);
+
 			clientEntity.setCompanyId(companyClient.getCompanyId());
 			clientEntity.setCompanyName(companyClient.getCompanyName());
 
-			clientEntity.setAddress(companyClient.getAddress());
-			clientEntity.setId(companyClient.getId());
-			clientEntity.setJoinDate(companyClient.getJoinDate());
-
 			return clientEntity;
 		}
+	}
+
+	private void mapCommonFieldsForEntity(GenericClient client, GenericClientEntity clientEntity) {
+		clientEntity.setAddress(client.getAddress());
+		clientEntity.setId(client.getId());
+		clientEntity.setJoinDate(client.getJoinDate());
 	}
 
 	@Override
@@ -51,12 +54,11 @@ public class ClientTransformer implements BaseTransformer<GenericClientEntity, G
 			IndividualClientEntity clientEntity = (IndividualClientEntity) genericClientEntity;
 			IndividualClient client = new IndividualClient();
 
+			mapCommonFieldsForModel(client, clientEntity);
+
 			client.setFirstName(clientEntity.getFirstName());
 			client.setLastName(clientEntity.getLastName());
-
-			client.setAddress(clientEntity.getAddress());
-			client.setId(clientEntity.getId());
-			client.setJoinDate(clientEntity.getJoinDate());
+			client.setPersonalId(clientEntity.getPersonalId());
 
 			return client;
 
@@ -64,14 +66,18 @@ public class ClientTransformer implements BaseTransformer<GenericClientEntity, G
 			CompanyClientEntity clientEntity = (CompanyClientEntity) genericClientEntity;
 			CompanyClient client = new CompanyClient();
 
+			mapCommonFieldsForModel(client, clientEntity);
+
 			client.setCompanyId(clientEntity.getCompanyId());
 			client.setCompanyName(clientEntity.getCompanyName());
 
-			client.setAddress(clientEntity.getAddress());
-			client.setId(clientEntity.getId());
-			client.setJoinDate(clientEntity.getJoinDate());
-
 			return client;
 		}
+	}
+
+	private void mapCommonFieldsForModel(GenericClient client, GenericClientEntity clientEntity) {
+		client.setAddress(clientEntity.getAddress());
+		client.setId(clientEntity.getId());
+		client.setJoinDate(clientEntity.getJoinDate());
 	}
 }

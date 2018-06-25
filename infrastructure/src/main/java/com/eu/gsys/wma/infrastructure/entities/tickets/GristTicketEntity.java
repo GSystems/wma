@@ -8,8 +8,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
 @Entity
+@EqualsAndHashCode(callSuper = false)
 @Table(name = "grist_tickets")
 public class GristTicketEntity extends GenericTicketForEntities {
 

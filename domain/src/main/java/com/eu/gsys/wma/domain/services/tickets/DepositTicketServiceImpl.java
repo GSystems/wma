@@ -1,11 +1,11 @@
 package com.eu.gsys.wma.domain.services.tickets;
 
+import com.eu.gsys.wma.domain.model.Transaction;
 import com.eu.gsys.wma.domain.model.deposits.CompanyClientDeposit;
-import com.eu.gsys.wma.domain.model.deposits.GeneralDeposit;
 import com.eu.gsys.wma.domain.model.deposits.GenericDeposit;
 import com.eu.gsys.wma.domain.model.deposits.IndividualClientDeposit;
 import com.eu.gsys.wma.domain.model.tickets.DepositTicket;
-import com.eu.gsys.wma.domain.services.deposits.GeneralDepositService;
+import com.eu.gsys.wma.domain.services.TransactionService;
 import com.eu.gsys.wma.domain.transformers.ClientTransformer;
 import com.eu.gsys.wma.domain.transformers.DepositTransformer;
 import com.eu.gsys.wma.domain.transformers.TicketTransformer;
@@ -37,18 +37,18 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 	private final DepositTicketRepository depositTicketRepository;
 	private final DepositTransformer depositTransformer;
 	private final IndividualDepositRepository individualDepositRepository;
-	private final GeneralDepositService generalDepositService;
+	private final TransactionService transactionService;
 
 	@Autowired
 	public DepositTicketServiceImpl(TicketTransformer ticketTransformer,
 			CompanyDepositRepository companyDepositRepository, IndividualDepositRepository individualDepositRepository,
-			GeneralDepositService generalDepositService, DepositTicketRepository depositTicketRepository,
+			TransactionService transactionService, DepositTicketRepository depositTicketRepository,
 			ClientTransformer clientTransformer, DepositTransformer depositTransformer) {
 
 		this.ticketTransformer = ticketTransformer;
 		this.companyDepositRepository = companyDepositRepository;
 		this.individualDepositRepository = individualDepositRepository;
-		this.generalDepositService = generalDepositService;
+		this.transactionService = transactionService;
 		this.depositTicketRepository = depositTicketRepository;
 		this.clientTransformer = clientTransformer;
 		this.depositTransformer = depositTransformer;
@@ -73,11 +73,6 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 
 	@Override
 	public void saveDepositTicket(DepositTicket depositTicket) {
-		depositTicket.setOperationTypeEnum(OperationTypeEnum.ADD_DEPOSIT_TICKET);
-
-		calculateAndUpdateNewClientDeposit(depositTicket);
-		calculateAndUpdateGeneralDeposit(depositTicket);
-
 		depositTicketRepository.save((DepositTicketEntity) ticketTransformer.fromModel(depositTicket));
 	}
 
@@ -90,6 +85,16 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 		} else {
 			throw new WmaException(ErrorMessages.INCONSISTENT_OPERATION);
 		}
+	}
+
+	@Override
+	public void addNewDepositTicket(DepositTicket depositTicket) {
+		depositTicket.setOperationTypeEnum(OperationTypeEnum.ADD_DEPOSIT_TICKET);
+
+		calculateAndUpdateNewClientDeposit(depositTicket);
+		calculateAndUpdateGeneralDeposit(depositTicket);
+
+		saveDepositTicket(depositTicket);
 	}
 
 	// TODO refactor this code
@@ -108,7 +113,7 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 			GenericClientEntity genericClientEntity) {
 
 		GenericDepositForEntities oldIndividualClientDepositEntity = individualDepositRepository
-				.getDepositByIndividualClientEntity((IndividualClientEntity) genericClientEntity);
+				.getDepositByClientEntity((IndividualClientEntity) genericClientEntity);
 
 		GenericDeposit genericDepositForSave;
 
@@ -126,7 +131,7 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 
 	private void updateDepositForCompanyClient(DepositTicket depositTicket, GenericClientEntity clientEntity) {
 		GenericDepositForEntities oldDepositEntity =
-				companyDepositRepository.getDepositByCompanyClientEntity((CompanyClientEntity) clientEntity);
+				companyDepositRepository.getDepositByClientEntity((CompanyClientEntity) clientEntity);
 
 		GenericDeposit genericDepositForSave;
 
@@ -170,7 +175,7 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 		GenericDeposit newGenericDepositForSave = genericDeposit;
 
 		newGenericDepositForSave.setBranQty(0d);
-		newGenericDepositForSave.setGenericClient(depositTicket.getClient());
+		newGenericDepositForSave.setClient(depositTicket.getClient());
 		newGenericDepositForSave.setFlourQty(0d);
 		newGenericDepositForSave.setOperationType(depositTicket.getOperationTypeEnum());
 		newGenericDepositForSave.setTicketId(depositTicket.getTicketId());
@@ -181,23 +186,23 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 	}
 
 	private void calculateAndUpdateGeneralDeposit(DepositTicket depositTicket) {
-		GeneralDeposit lastGeneralDeposit = generalDepositService.getMostRecentRecord();
+		Transaction lastTransaction = transactionService.getMostRecentTransaction();
 
-		Double oldTotalWheatQty = lastGeneralDeposit.getTotalWheatQty();
-		Double oldTotalWheatQtyOfClients = lastGeneralDeposit.getWheatQtyOfClients();
+		Double oldTotalWheatQty = lastTransaction.getTotalWheatQty();
+		Double oldTotalWheatQtyOfClients = lastTransaction.getWheatQtyOfClients();
 
 		Double wheatQtyForSave = depositTicket.getWheatQtyForDeposit();
 		Double newTotalWheatQtyForSave = oldTotalWheatQty + wheatQtyForSave;
 		Double newTotalWheatQtyOfClients = oldTotalWheatQtyOfClients + wheatQtyForSave;
 
-		GeneralDeposit newGeneralDepositForSave = (GeneralDeposit) lastGeneralDeposit.clone();
-		newGeneralDepositForSave.setId(null);
-		newGeneralDepositForSave.setTotalWheatQty(newTotalWheatQtyForSave);
-		newGeneralDepositForSave.setWheatQtyOfClients(newTotalWheatQtyOfClients);
-		newGeneralDepositForSave.setTicketId(depositTicket.getTicketId());
-		newGeneralDepositForSave.setOperationType(depositTicket.getOperationTypeEnum());
-		newGeneralDepositForSave.setDate(depositTicket.getDate());
+		Transaction newTransactionForSave = (Transaction) lastTransaction.clone();
+		newTransactionForSave.setId(null);
+		newTransactionForSave.setTotalWheatQty(newTotalWheatQtyForSave);
+		newTransactionForSave.setWheatQtyOfClients(newTotalWheatQtyOfClients);
+		newTransactionForSave.setTicketId(depositTicket.getTicketId());
+		newTransactionForSave.setOperationType(depositTicket.getOperationTypeEnum());
+		newTransactionForSave.setDate(depositTicket.getDate());
 
-		generalDepositService.saveRecord(newGeneralDepositForSave);
+		transactionService.saveTransaction(newTransactionForSave);
 	}
 }

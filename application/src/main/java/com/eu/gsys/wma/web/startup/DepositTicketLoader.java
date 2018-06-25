@@ -35,7 +35,7 @@ public class DepositTicketLoader implements ApplicationListener<ContextRefreshed
 		depositTicket0.setTicketId(1L);
 		depositTicket0.setWheatQtyForDeposit(2000.0);
 		depositTicket0.setDate(LocalDate.now());
-		depositTicketService.saveDepositTicket(depositTicket0);
+		depositTicketService.addNewDepositTicket(depositTicket0);
 
 		System.out.println("Saved DepositTicket - id: " + depositTicket0.getTicketId());
 
@@ -46,7 +46,7 @@ public class DepositTicketLoader implements ApplicationListener<ContextRefreshed
 		depositTicket1.setTicketId(10L);
 		depositTicket1.setWheatQtyForDeposit(1000.0);
 		depositTicket1.setDate(LocalDate.now());
-		depositTicketService.saveDepositTicket(depositTicket1);
+		depositTicketService.addNewDepositTicket(depositTicket1);
 
 		System.out.println("Saved DepositTicket - id: " + depositTicket1.getTicketId());
 
@@ -57,7 +57,7 @@ public class DepositTicketLoader implements ApplicationListener<ContextRefreshed
 		depositTicket2.setTicketId(12L);
 		depositTicket2.setWheatQtyForDeposit(555.0);
 		depositTicket2.setDate(LocalDate.now());
-		depositTicketService.saveDepositTicket(depositTicket2);
+		depositTicketService.addNewDepositTicket(depositTicket2);
 
 		System.out.println("Saved DepositTicket - id: " + depositTicket2.getTicketId());
 
@@ -68,7 +68,7 @@ public class DepositTicketLoader implements ApplicationListener<ContextRefreshed
 		depositTicket3.setTicketId(9L);
 		depositTicket3.setWheatQtyForDeposit(1200.0);
 		depositTicket3.setDate(LocalDate.now());
-		depositTicketService.saveDepositTicket(depositTicket3);
+		depositTicketService.addNewDepositTicket(depositTicket3);
 
 		System.out.println("Saved DepositTicket - id: " + depositTicket3.getTicketId());
 

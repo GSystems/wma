@@ -32,7 +32,7 @@ public class GristTicketLoader implements ApplicationListener<ContextRefreshedEv
 		gristTicket0.setWheatQtyBrought(100.0);
 		gristTicket0.setTicketId(10L);
 		gristTicket0.setDate(LocalDate.now());
-		gristTicketService.saveGristTicket(gristTicket0);
+		gristTicketService.addNewGristTicket(gristTicket0);
 
 		System.out.println("Saved GristTicket - id: " + gristTicket0.getTicketId());
 
@@ -43,7 +43,7 @@ public class GristTicketLoader implements ApplicationListener<ContextRefreshedEv
 		gristTicket1.setWheatQtyBrought(1000.0);
 		gristTicket1.setTicketId(11L);
 		gristTicket1.setDate(LocalDate.now());
-		gristTicketService.saveGristTicket(gristTicket1);
+		gristTicketService.addNewGristTicket(gristTicket1);
 
 		System.out.println("Saved GristTicket - id: " + gristTicket1.getTicketId());
 	}

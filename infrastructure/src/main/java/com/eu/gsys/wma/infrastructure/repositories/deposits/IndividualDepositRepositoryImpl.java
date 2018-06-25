@@ -17,11 +17,11 @@ public abstract class IndividualDepositRepositoryImpl implements IndividualDepos
 	private EntityManager entityManager;
 
 	@Override
-	public IndividualClientDepositEntity getDepositByIndividualClientEntity(IndividualClientEntity individualClientEntity) {
+	public IndividualClientDepositEntity getDepositByClientEntity(IndividualClientEntity clientEntity) {
 		TypedQuery<IndividualClientDepositEntity> query = entityManager.createNamedQuery(
 				IndividualClientDepositEntity.GET_DEPOSIT_BY_CLIENT, IndividualClientDepositEntity.class);
 
-		query.setParameter(1, individualClientEntity);
+		query.setParameter(1, clientEntity);
 
 		return query.getSingleResult();
 	}

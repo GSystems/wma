@@ -15,11 +15,11 @@ public abstract class CompanyDepositRepositoryImpl implements CompanyDepositRepo
 	private EntityManager entityManager;
 
 	@Override
-	public CompanyClientDepositEntity getDepositByCompanyClientEntity(CompanyClientEntity companyClientEntity) {
+	public CompanyClientDepositEntity getDepositByClientEntity(CompanyClientEntity clientEntity) {
 		TypedQuery<CompanyClientDepositEntity> query = entityManager.createNamedQuery(
 				CompanyClientDepositEntity.GET_DEPOSIT_BY_CLIENT, CompanyClientDepositEntity.class);
 
-		query.setParameter(1, companyClientEntity);
+		query.setParameter(1, clientEntity);
 
 		return query.getSingleResult();
 	}

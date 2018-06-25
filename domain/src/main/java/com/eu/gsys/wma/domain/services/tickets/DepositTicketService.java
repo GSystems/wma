@@ -12,4 +12,6 @@ public interface DepositTicketService {
 	void saveDepositTicket(DepositTicket gristTicket);
 
 	void deleteDepositTicket(DepositTicket depositTicket) throws WmaException;
+
+	void addNewDepositTicket(DepositTicket depositTicket);
 }

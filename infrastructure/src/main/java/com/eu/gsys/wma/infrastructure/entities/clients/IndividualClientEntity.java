@@ -9,8 +9,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
 @Entity
+@EqualsAndHashCode(callSuper = false)
 @Table(name = "individual_clients")
 public class IndividualClientEntity extends GenericClientEntity {
 
@@ -20,6 +20,6 @@ public class IndividualClientEntity extends GenericClientEntity {
 	@NotNull
 	private String lastName;
 
-	@OneToOne
-	private IndividualClientEntity clientEntity;
+	@NotNull
+	private String personalId;
 }

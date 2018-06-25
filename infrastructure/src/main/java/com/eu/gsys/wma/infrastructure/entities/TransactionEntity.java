@@ -1,4 +1,4 @@
-package com.eu.gsys.wma.infrastructure.entities.deposits;
+package com.eu.gsys.wma.infrastructure.entities;
 
 import lombok.Data;
 
@@ -9,17 +9,15 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-@Table(name = "general_deposits")
+@Table(name = "transactions")
 @NamedQueries({
-		@NamedQuery(name = GeneralDepositEntity.GET_MOST_RECENT_RECORD, query = GeneralDepositEntity.GET_MOST_RECENT_RECORD_QRY_MYSQL) })
-public class GeneralDepositEntity implements Serializable {
+		@NamedQuery(name = TransactionEntity.GET_MOST_RECENT_TRANSACTION, query = TransactionEntity.GET_MOST_RECENT_TRANSACTION_QRY_MYSQL) })
+public class TransactionEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public static final String GET_MOST_RECENT_RECORD = "GeneralDepositEntity.getMostRecentRecord";
-	protected static final String GET_MOST_RECENT_RECORD_QRY_MYSQL =
-			"SELECT g FROM GeneralDepositEntity g WHERE g.id = (SELECT MAX(gd.id) FROM GeneralDepositEntity gd)";
-	protected static final String GET_MOST_RECENT_RECORD_QRY_SQL =
-			"SELECT TOP 1 r FROM GeneralDepositEntity r ORDER BY ID DESC";
+	public static final String GET_MOST_RECENT_TRANSACTION = "TransactionEntity.getMostRecentTransaction";
+	protected static final String GET_MOST_RECENT_TRANSACTION_QRY_MYSQL =
+			"SELECT t FROM TransactionEntity t WHERE t.id = (SELECT MAX(te.id) FROM TransactionEntity te)";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

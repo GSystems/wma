@@ -1,4 +1,4 @@
-package com.eu.gsys.wma.domain.model.deposits;
+package com.eu.gsys.wma.domain.model;
 
 import com.eu.gsys.wma.domain.util.OperationTypeEnum;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class GeneralDeposit implements Cloneable {
+public class Transaction implements Cloneable {
 
 	private Long id;
 	private LocalDate date;

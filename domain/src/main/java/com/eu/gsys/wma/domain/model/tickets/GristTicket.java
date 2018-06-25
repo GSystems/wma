@@ -1,8 +1,10 @@
 package com.eu.gsys.wma.domain.model.tickets;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class GristTicket extends GenericTicket {
 
 	private Double wheatQtyBrought;
@@ -13,3 +15,4 @@ public class GristTicket extends GenericTicket {
 	private Double otherCorpusQty= 0d;    //corpuri straine
 	private Double manufacturingLossesQty= 0d;    // pierderi fabricatie
 }
+

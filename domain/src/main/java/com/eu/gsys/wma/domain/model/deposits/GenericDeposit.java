@@ -16,7 +16,7 @@ public class GenericDeposit implements Cloneable {
 	private OperationTypeEnum operationType;
 	private Long ticketId;
 	private LocalDate date;
-	private GenericClient genericClient;
+	private GenericClient client;
 
 	// TODO refactor this code
 

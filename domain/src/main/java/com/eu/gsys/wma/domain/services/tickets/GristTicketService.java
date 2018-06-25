@@ -13,4 +13,6 @@ public interface GristTicketService {
 	void saveGristTicket(GristTicket gristTicket);
 
 	void deleteGristTicket(GristTicket gristTicket);
+
+	void addNewGristTicket(GristTicket gristTicket);
 }

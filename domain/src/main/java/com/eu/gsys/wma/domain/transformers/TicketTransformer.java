@@ -45,8 +45,9 @@ public class TicketTransformer implements BaseTransformer<GenericTicketForEntiti
 
 	private GenericTicketForEntities fromDepositTicketToEntity(GenericTicket ticket) {
 		DepositTicket depositTicket = (DepositTicket) ticket;
-		DepositTicketEntity ticketEntity =
-				(DepositTicketEntity) mapCommonFieldsOnEntity(ticket, new DepositTicketEntity());
+		DepositTicketEntity ticketEntity = new DepositTicketEntity();
+
+		mapCommonFieldsForEntity(ticket, ticketEntity);
 
 		if (depositTicket.getConsumedFlag()) {
 			ticketEntity.setConsumedFlag(1);
@@ -59,7 +60,9 @@ public class TicketTransformer implements BaseTransformer<GenericTicketForEntiti
 
 	private GenericTicketForEntities fromGristTicketToEntity(GenericTicket ticket) {
 		GristTicket gristTicket = (GristTicket) ticket;
-		GristTicketEntity ticketEntity = (GristTicketEntity) mapCommonFieldsOnEntity(ticket, new GristTicketEntity());
+		GristTicketEntity ticketEntity = new GristTicketEntity();
+
+		mapCommonFieldsForEntity(ticket, ticketEntity);
 
 		ticketEntity.setBranQtyForClient(gristTicket.getBranQtyForClient());
 		ticketEntity.setFlourQtyForClient(gristTicket.getFlourQtyForClient());
@@ -72,8 +75,7 @@ public class TicketTransformer implements BaseTransformer<GenericTicketForEntiti
 		return ticketEntity;
 	}
 
-	private GenericTicketForEntities mapCommonFieldsOnEntity(GenericTicket ticket,
-			GenericTicketForEntities ticketEntity) {
+	private void mapCommonFieldsForEntity(GenericTicket ticket, GenericTicketForEntities ticketEntity) {
 
 		ticketEntity.setDate(ticket.getDate());
 		ticketEntity.setId(ticket.getId());
@@ -86,13 +88,13 @@ public class TicketTransformer implements BaseTransformer<GenericTicketForEntiti
 		} else {
 			ticketEntity.setCompanyClientEntity((CompanyClientEntity) clientEntity);
 		}
-
-		return ticketEntity;
 	}
 
 	private GenericTicket toDepositTicketFromEntity(GenericTicketForEntities ticketEntity) {
 		DepositTicketEntity depositTicketEntity = (DepositTicketEntity) ticketEntity;
-		DepositTicket ticket = (DepositTicket) mapCommonFieldsOnModel(depositTicketEntity, new DepositTicket());
+		DepositTicket ticket = new DepositTicket();
+
+		mapCommonFieldsForModel(ticket, depositTicketEntity);
 
 		if (depositTicketEntity.getConsumedFlag() == 1) {
 			ticket.setConsumedFlag(true);
@@ -105,7 +107,9 @@ public class TicketTransformer implements BaseTransformer<GenericTicketForEntiti
 
 	private GenericTicket toGristTicketFromEntity(GenericTicketForEntities ticketEntity) {
 		GristTicketEntity gristTicketEntity = (GristTicketEntity) ticketEntity;
-		GristTicket ticket = (GristTicket) mapCommonFieldsOnModel(gristTicketEntity, new GristTicket());
+		GristTicket ticket = new GristTicket();
+
+		mapCommonFieldsForModel(ticket, gristTicketEntity);
 
 		ticket.setBranQtyForClient(gristTicketEntity.getBranQtyForClient());
 		ticket.setFlourQtyForClient(gristTicketEntity.getFlourQtyForClient());
@@ -118,7 +122,7 @@ public class TicketTransformer implements BaseTransformer<GenericTicketForEntiti
 		return ticket;
 	}
 
-	private GenericTicket mapCommonFieldsOnModel(GenericTicketForEntities ticketEntity, GenericTicket ticket) {
+	private void mapCommonFieldsForModel(GenericTicket ticket, GenericTicketForEntities ticketEntity) {
 		GenericClientEntity genericClientEntity;
 
 		if (ticketEntity.getIndividualClientEntity() != null) {
@@ -132,7 +136,5 @@ public class TicketTransformer implements BaseTransformer<GenericTicketForEntiti
 		ticket.setId(ticketEntity.getId());
 		ticket.setOperationTypeEnum(OperationTypeEnum.getTicketTypeByCode(ticketEntity.getOperationType()));
 		ticket.setTicketId(ticketEntity.getTicketId());
-
-		return ticket;
 	}
 }

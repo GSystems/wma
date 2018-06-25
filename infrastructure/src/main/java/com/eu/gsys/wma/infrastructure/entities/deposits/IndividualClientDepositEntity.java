@@ -8,8 +8,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
 @Entity
+@EqualsAndHashCode(callSuper = false)
 @Table(name = "individual_clients_deposits")
 @NamedQueries({
 		@NamedQuery(name = IndividualClientDepositEntity.GET_DEPOSIT_BY_CLIENT, query = IndividualClientDepositEntity.GET_DEPOSIT_BY_CLIENT_QRY) })
@@ -17,11 +17,11 @@ public class IndividualClientDepositEntity extends GenericDepositForEntities imp
 	private static final long serialVersionUID = 1L;
 
 	public static final String GET_DEPOSIT_BY_CLIENT =
-			"IndividualClientDepositEntity.getDepositByIndividualClientEntity";
+			"IndividualClientDepositEntity.getDepositByClientEntity";
 	protected static final String GET_DEPOSIT_BY_CLIENT_QRY =
-			"SELECT ic FROM IndividualClientDepositEntity ic WHERE ic.individualClientEntity = ?1";
+			"SELECT ic FROM IndividualClientDepositEntity ic WHERE ic.clientEntity = ?1";
 
 	@ManyToOne
 	@JoinColumn(name = "client_id", nullable = false)
-	private IndividualClientEntity individualClientEntity;
+	private IndividualClientEntity clientEntity;
 }

@@ -31,6 +31,7 @@ public class ClientLoader implements ApplicationListener<ContextRefreshedEvent> 
 		individualClient.setAddress("str Louis");
 		individualClient.setFirstName("Lesseter");
 		individualClient.setLastName("Gregory");
+		individualClient.setPersonalId("1761234123123");
 		individualClient.setJoinDate(LocalDate.now());
 
 		clientService.saveClientTicket(individualClient);

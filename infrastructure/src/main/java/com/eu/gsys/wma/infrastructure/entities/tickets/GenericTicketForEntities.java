@@ -5,6 +5,7 @@ import com.eu.gsys.wma.infrastructure.entities.clients.IndividualClientEntity;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -16,8 +17,14 @@ public class GenericTicketForEntities implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
+	@NotNull
 	private Long ticketId;
+
+	@NotNull
 	private LocalDate date;
+
+	@NotNull
 	private int operationType;
 
 	@ManyToOne

@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -20,7 +21,13 @@ public class GenericDepositForEntities implements Serializable {
 	private Double wheatQty;
 	private Double flourQty;
 	private Double branQty;
+
+	@NotNull
 	private Integer operationType;
+
+	@NotNull
 	private Long ticketId;
-	private LocalDate timestamp;
+
+	@NotNull
+	private LocalDate date;
 }

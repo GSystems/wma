@@ -18,8 +18,8 @@ public class CompanyClientDepositEntity extends GenericDepositForEntities implem
 
 	public static final String GET_DEPOSIT_BY_CLIENT = "CompanyClientDepositEntity.getDepositByIndividualClientEntity";
 	protected static final String GET_DEPOSIT_BY_CLIENT_QRY =
-			"SELECT cc FROM CompanyClientDepositEntity cc WHERE cc.companyClientEntity = ?1";
+			"SELECT cc FROM CompanyClientDepositEntity cc WHERE cc.clientEntity = ?1";
 
 	@OneToOne
-	private CompanyClientEntity companyClientEntity;
+	private CompanyClientEntity clientEntity;
 }

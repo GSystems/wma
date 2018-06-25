@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -12,6 +13,7 @@ import javax.persistence.Table;
 @Table(name = "grist_tickets")
 public class GristTicketEntity extends GenericTicketForEntities {
 
+	@NotNull
 	private Double wheatQtyBrought = 0d;
 	private Double tollWheatQty = 0d;    // uium
 	private Double wheatQtyForGrist = 0d;

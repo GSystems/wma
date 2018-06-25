@@ -3,7 +3,6 @@ package com.eu.gsys.wma.domain.transformers;
 import com.eu.gsys.wma.domain.model.clients.CompanyClient;
 import com.eu.gsys.wma.domain.model.clients.GenericClient;
 import com.eu.gsys.wma.domain.model.clients.IndividualClient;
-import com.eu.gsys.wma.domain.transformers.BaseTransformer;
 import com.eu.gsys.wma.infrastructure.entities.clients.CompanyClientEntity;
 import com.eu.gsys.wma.infrastructure.entities.clients.GenericClientEntity;
 import com.eu.gsys.wma.infrastructure.entities.clients.IndividualClientEntity;
@@ -15,33 +14,33 @@ public class ClientTransformer implements BaseTransformer<GenericClientEntity, G
 	// TODO refactor this code
 
 	@Override
-	public GenericClientEntity fromModel(GenericClient genericClient) {
+	public GenericClientEntity fromModel(GenericClient client) {
 
-		if (genericClient instanceof IndividualClient) {
-			IndividualClient individualClient = (IndividualClient) genericClient;
-			IndividualClientEntity individualClientEntity = new IndividualClientEntity();
+		if (client instanceof IndividualClient) {
+			IndividualClient individualClient = (IndividualClient) client;
+			IndividualClientEntity clientEntity = new IndividualClientEntity();
 
-			individualClientEntity.setFirstName(individualClient.getFirstName());
-			individualClientEntity.setLastName(individualClient.getLastName());
+			clientEntity.setFirstName(individualClient.getFirstName());
+			clientEntity.setLastName(individualClient.getLastName());
 
-			individualClientEntity.setAddress(individualClient.getAddress());
-			individualClientEntity.setId(individualClient.getId());
-			individualClientEntity.setJoinDate(individualClient.getJoinDate());
+			clientEntity.setAddress(individualClient.getAddress());
+			clientEntity.setId(individualClient.getId());
+			clientEntity.setJoinDate(individualClient.getJoinDate());
 
-			return individualClientEntity;
+			return clientEntity;
 
 		} else {
-			CompanyClient companyClient = (CompanyClient) genericClient;
-			CompanyClientEntity companyClientEntity = new CompanyClientEntity();
+			CompanyClient companyClient = (CompanyClient) client;
+			CompanyClientEntity clientEntity = new CompanyClientEntity();
 
-			companyClientEntity.setCompanyId(companyClient.getCompanyId());
-			companyClientEntity.setCompanyName(companyClient.getCompanyName());
+			clientEntity.setCompanyId(companyClient.getCompanyId());
+			clientEntity.setCompanyName(companyClient.getCompanyName());
 
-			companyClientEntity.setAddress(companyClient.getAddress());
-			companyClientEntity.setId(companyClient.getId());
-			companyClientEntity.setJoinDate(companyClient.getJoinDate());
+			clientEntity.setAddress(companyClient.getAddress());
+			clientEntity.setId(companyClient.getId());
+			clientEntity.setJoinDate(companyClient.getJoinDate());
 
-			return companyClientEntity;
+			return clientEntity;
 		}
 	}
 
@@ -49,30 +48,30 @@ public class ClientTransformer implements BaseTransformer<GenericClientEntity, G
 	public GenericClient toModel(GenericClientEntity genericClientEntity) {
 
 		if (genericClientEntity instanceof IndividualClientEntity) {
-			IndividualClientEntity individualClientEntity = (IndividualClientEntity) genericClientEntity;
-			IndividualClient individualClient = new IndividualClient();
+			IndividualClientEntity clientEntity = (IndividualClientEntity) genericClientEntity;
+			IndividualClient client = new IndividualClient();
 
-			individualClient.setFirstName(individualClientEntity.getFirstName());
-			individualClient.setLastName(individualClientEntity.getLastName());
+			client.setFirstName(clientEntity.getFirstName());
+			client.setLastName(clientEntity.getLastName());
 
-			individualClient.setAddress(individualClientEntity.getAddress());
-			individualClient.setId(individualClientEntity.getId());
-			individualClient.setJoinDate(individualClientEntity.getJoinDate());
+			client.setAddress(clientEntity.getAddress());
+			client.setId(clientEntity.getId());
+			client.setJoinDate(clientEntity.getJoinDate());
 
-			return individualClient;
+			return client;
 
 		} else {
-			CompanyClientEntity companyClientEntity = (CompanyClientEntity) genericClientEntity;
-			CompanyClient companyClient = new CompanyClient();
+			CompanyClientEntity clientEntity = (CompanyClientEntity) genericClientEntity;
+			CompanyClient client = new CompanyClient();
 
-			companyClient.setCompanyId(companyClientEntity.getCompanyId());
-			companyClient.setCompanyName(companyClientEntity.getCompanyName());
+			client.setCompanyId(clientEntity.getCompanyId());
+			client.setCompanyName(clientEntity.getCompanyName());
 
-			companyClient.setAddress(companyClientEntity.getAddress());
-			companyClient.setId(companyClientEntity.getId());
-			companyClient.setJoinDate(companyClientEntity.getJoinDate());
+			client.setAddress(clientEntity.getAddress());
+			client.setId(clientEntity.getId());
+			client.setJoinDate(clientEntity.getJoinDate());
 
-			return companyClient;
+			return client;
 		}
 	}
 }

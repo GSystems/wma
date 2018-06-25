@@ -1,12 +1,12 @@
 package com.eu.gsys.wma.infrastructure.entities.clients;
 
-import com.eu.gsys.wma.infrastructure.entities.tickets.DepositTicketEntity;
-import com.eu.gsys.wma.infrastructure.entities.tickets.GristTicketEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -14,6 +14,12 @@ import java.util.List;
 @Table(name = "individual_clients")
 public class IndividualClientEntity extends GenericClientEntity {
 
+	@NotNull
 	private String firstName;
+
+	@NotNull
 	private String lastName;
+
+	@OneToOne
+	private IndividualClientEntity clientEntity;
 }

@@ -3,6 +3,7 @@ package com.eu.gsys.wma.infrastructure.entities.deposits;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -23,20 +24,40 @@ public class GeneralDepositEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
+	@NotNull
 	private LocalDate date;
 
+	@NotNull
 	private Integer operationType;
+
+	@NotNull
 	private Long ticketId;
 
+	@NotNull
 	private Double totalWheatQty;
+
+	@NotNull
 	private Double wheatQtyOfCompany;
+
+	@NotNull
 	private Double wheatQtyOfClients;
 
+	@NotNull
 	private Double totalFlourQty;
+
+	@NotNull
 	private Double flourQtyOfCompany;
+
+	@NotNull
 	private Double flourQtyOfClients;
 
+	@NotNull
 	private Double totalBranQty;
+
+	@NotNull
 	private Double branQtyOfCompany;
+
+	@NotNull
 	private Double branQtyOfClients;
 }

@@ -28,68 +28,68 @@ public class DepositTransformer implements BaseTransformer<GenericDepositForEnti
 	@Override
 	public GenericDepositForEntities fromModel(GenericDeposit genericDeposit) {
 		if (genericDeposit instanceof IndividualClientDeposit) {
-			IndividualClientDeposit individualClientDeposit = (IndividualClientDeposit) genericDeposit;
-			IndividualClientDepositEntity individualClientDepositEntity = new IndividualClientDepositEntity();
+			IndividualClientDeposit deposit = (IndividualClientDeposit) genericDeposit;
+			IndividualClientDepositEntity depositEntity = new IndividualClientDepositEntity();
 
-			individualClientDepositEntity.setBranQty(genericDeposit.getBranQty());
-			individualClientDepositEntity.setFlourQty(genericDeposit.getFlourQty());
-			individualClientDepositEntity.setId(genericDeposit.getId());
-			individualClientDepositEntity.setOperationType(genericDeposit.getOperationType().getCode());
-			individualClientDepositEntity.setTicketId(genericDeposit.getTicketId());
-			individualClientDepositEntity.setTimestamp(genericDeposit.getDate());
-			individualClientDepositEntity.setWheatQty(genericDeposit.getWheatQty());
+			depositEntity.setBranQty(genericDeposit.getBranQty());
+			depositEntity.setFlourQty(genericDeposit.getFlourQty());
+			depositEntity.setId(genericDeposit.getId());
+			depositEntity.setOperationType(genericDeposit.getOperationType().getCode());
+			depositEntity.setTicketId(genericDeposit.getTicketId());
+			depositEntity.setDate(genericDeposit.getDate());
+			depositEntity.setWheatQty(genericDeposit.getWheatQty());
 
 			IndividualClientEntity individualClientEntity = (IndividualClientEntity) clientTransformer
-					.fromModel(individualClientDeposit.getGenericClient());
+					.fromModel(deposit.getGenericClient());
 
-			individualClientDepositEntity.setIndividualClientEntity(individualClientEntity);
+			depositEntity.setIndividualClientEntity(individualClientEntity);
 
-			return individualClientDepositEntity;
+			return depositEntity;
 		} else {
 
-			CompanyClientDeposit companyClientDeposit = (CompanyClientDeposit) genericDeposit;
-			CompanyClientDepositEntity companyClientDepositEntity = new CompanyClientDepositEntity();
+			CompanyClientDeposit deposit = (CompanyClientDeposit) genericDeposit;
+			CompanyClientDepositEntity depositEntity = new CompanyClientDepositEntity();
 
-			companyClientDepositEntity.setBranQty(genericDeposit.getBranQty());
-			companyClientDepositEntity.setFlourQty(genericDeposit.getFlourQty());
-			companyClientDepositEntity.setId(genericDeposit.getId());
-			companyClientDepositEntity.setOperationType(genericDeposit.getOperationType().getCode());
-			companyClientDepositEntity.setTicketId(genericDeposit.getTicketId());
-			companyClientDepositEntity.setTimestamp(genericDeposit.getDate());
-			companyClientDepositEntity.setWheatQty(genericDeposit.getWheatQty());
+			depositEntity.setBranQty(deposit.getBranQty());
+			depositEntity.setFlourQty(deposit.getFlourQty());
+			depositEntity.setId(deposit.getId());
+			depositEntity.setOperationType(deposit.getOperationType().getCode());
+			depositEntity.setTicketId(deposit.getTicketId());
+			depositEntity.setDate(deposit.getDate());
+			depositEntity.setWheatQty(deposit.getWheatQty());
 
 			CompanyClientEntity companyClientEntity =
-					(CompanyClientEntity) clientTransformer.fromModel(companyClientDeposit.getGenericClient());
+					(CompanyClientEntity) clientTransformer.fromModel(deposit.getGenericClient());
 
-			companyClientDepositEntity.setCompanyClientEntity(companyClientEntity);
+			depositEntity.setClientEntity(companyClientEntity);
 
-			return companyClientDepositEntity;
+			return depositEntity;
 		}
 	}
 
 	@Override
-	public GenericDeposit toModel(GenericDepositForEntities genericDepositForEntities) {
-		GenericDeposit genericDeposit;
+	public GenericDeposit toModel(GenericDepositForEntities depositEntity) {
+		GenericDeposit deposit;
 		GenericClientEntity genericClientEntity;
 
-		if (genericDepositForEntities instanceof IndividualClientDepositEntity) {
-			genericDeposit = new IndividualClientDeposit();
+		if (depositEntity instanceof IndividualClientDepositEntity) {
+			deposit = new IndividualClientDeposit();
 			genericClientEntity =
-					((IndividualClientDepositEntity) genericDepositForEntities).getIndividualClientEntity();
+					((IndividualClientDepositEntity) depositEntity).getIndividualClientEntity();
 		} else {
-			genericDeposit = new CompanyClientDeposit();
-			genericClientEntity = ((CompanyClientDepositEntity) genericDepositForEntities).getCompanyClientEntity();
+			deposit = new CompanyClientDeposit();
+			genericClientEntity = ((CompanyClientDepositEntity) depositEntity).getClientEntity();
 		}
-		genericDeposit.setBranQty(genericDepositForEntities.getBranQty());
-		genericDeposit.setFlourQty(genericDepositForEntities.getFlourQty());
-		genericDeposit.setGenericClient(clientTransformer.toModel(genericClientEntity));
-		genericDeposit.setId(genericDepositForEntities.getId());
-		genericDeposit
-				.setOperationType(OperationTypeEnum.getTicketTypeByCode(genericDepositForEntities.getOperationType()));
-		genericDeposit.setTicketId(genericDepositForEntities.getTicketId());
-		genericDeposit.setDate(genericDepositForEntities.getTimestamp());
-		genericDeposit.setWheatQty(genericDepositForEntities.getWheatQty());
+		deposit.setBranQty(depositEntity.getBranQty());
+		deposit.setFlourQty(depositEntity.getFlourQty());
+		deposit.setGenericClient(clientTransformer.toModel(genericClientEntity));
+		deposit.setId(depositEntity.getId());
+		deposit
+				.setOperationType(OperationTypeEnum.getTicketTypeByCode(depositEntity.getOperationType()));
+		deposit.setTicketId(depositEntity.getTicketId());
+		deposit.setDate(depositEntity.getDate());
+		deposit.setWheatQty(depositEntity.getWheatQty());
 
-		return genericDeposit;
+		return deposit;
 	}
 }

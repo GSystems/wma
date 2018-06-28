@@ -7,6 +7,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class DepositTicket extends GenericTicket {
 
-	private Double wheatQtyForDeposit;
+	private Double wheatQty;
 	private Boolean consumedFlag = false;
 }

@@ -2,13 +2,15 @@ package com.eu.gsys.wma.domain.services.clients;
 
 import java.util.List;
 
+//TODO refactor this class
+
 public interface ClientService<T> {
 
-	List<T> listAllClients();
+	List<T> listAll();
 
-	T getClientById(Integer id);
+	T findById(Long id);
 
-	void saveClientTicket(T t);
+	void save(T t);
 
-	void deleteClientTicket(Integer id);
+	void deleteById(Long id);
 }

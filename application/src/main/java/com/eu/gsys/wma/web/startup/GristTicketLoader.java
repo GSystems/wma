@@ -27,24 +27,24 @@ public class GristTicketLoader implements ApplicationListener<ContextRefreshedEv
 	public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 		GristTicket gristTicket0 = new GristTicket();
 
-		GenericClient genericClient0 = (GenericClient) clientService.getClientById(1);
+		GenericClient genericClient0 = (GenericClient) clientService.findById(1L);
 		gristTicket0.setClient(genericClient0);
 		gristTicket0.setWheatQtyBrought(100.0);
-		gristTicket0.setTicketId(10L);
+		gristTicket0.setTicketNumber(10L);
 		gristTicket0.setDate(LocalDate.now());
-		gristTicketService.addNewGristTicket(gristTicket0);
+		gristTicketService.addNew(gristTicket0);
 
-		System.out.println("Saved GristTicket - id: " + gristTicket0.getTicketId());
+		System.out.println("Saved GristTicket - id: " + gristTicket0.getTicketNumber());
 
 		GristTicket gristTicket1 = new GristTicket();
 
-		GenericClient genericClient1 = (GenericClient) clientService.getClientById(2);
+		GenericClient genericClient1 = (GenericClient) clientService.findById(2L);
 		gristTicket1.setClient(genericClient1);
 		gristTicket1.setWheatQtyBrought(1000.0);
-		gristTicket1.setTicketId(11L);
+		gristTicket1.setTicketNumber(11L);
 		gristTicket1.setDate(LocalDate.now());
-		gristTicketService.addNewGristTicket(gristTicket1);
+		gristTicketService.addNew(gristTicket1);
 
-		System.out.println("Saved GristTicket - id: " + gristTicket1.getTicketId());
+		System.out.println("Saved GristTicket - id: " + gristTicket1.getTicketNumber());
 	}
 }

@@ -19,13 +19,15 @@ public class GenericTicketForEntities implements Serializable {
 	private Long id;
 
 	@NotNull
-	private Long ticketId;
+	private Long ticketNumber;
 
 	@NotNull
 	private LocalDate date;
 
 	@NotNull
 	private int operationType;
+
+	private String comment;
 
 	@ManyToOne
 	@JoinColumn(name = "individual_client_id")

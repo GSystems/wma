@@ -1,17 +1,24 @@
 package com.eu.gsys.wma.domain.services.tickets;
 
+import com.eu.gsys.wma.domain.model.deposits.GenericDeposit;
 import com.eu.gsys.wma.domain.model.tickets.DepositTicket;
 import com.eu.gsys.wma.domain.util.WmaException;
 
 public interface DepositTicketService {
 
-	Iterable<DepositTicket> listAllDepositTickets();
+	Iterable<DepositTicket> listAll();
 
-	DepositTicket getDepositTicketById(Integer id);
+	DepositTicket findById(Long id);
 
-	void saveDepositTicket(DepositTicket gristTicket);
+	void save(DepositTicket gristTicket);
 
-	void deleteDepositTicket(DepositTicket depositTicket) throws WmaException;
+	void deleteById(Long id);
 
-	void addNewDepositTicket(DepositTicket depositTicket);
+	void deleteByDepositTicket(DepositTicket depositTicket) throws WmaException;
+
+	DepositTicket findByTicketNumber(Long ticketNumber);
+
+	void addNew(DepositTicket depositTicket) throws WmaException;
+
+	void withdrawWithDepositTicket(DepositTicket depositTicket);
 }

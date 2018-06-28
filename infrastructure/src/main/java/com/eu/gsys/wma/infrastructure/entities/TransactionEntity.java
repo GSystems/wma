@@ -30,7 +30,7 @@ public class TransactionEntity implements Serializable {
 	private Integer operationType;
 
 	@NotNull
-	private Long ticketId;
+	private Long ticketNumber;
 
 	@NotNull
 	private Double totalWheatQty;

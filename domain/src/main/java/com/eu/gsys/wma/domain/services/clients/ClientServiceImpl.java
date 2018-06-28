@@ -31,7 +31,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public List<GenericClient> listAllClients() {
+	public List<GenericClient> listAll() {
 		List<GenericClient> clients = new ArrayList<>();
 		List<CompanyClientEntity> companyClientEntities = (List<CompanyClientEntity>) companyClientRepository.findAll();
 
@@ -50,23 +50,26 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public GenericClient getClientById(Integer id) {
-		try {
+	public GenericClient findById(Long id) {
+
+		GenericClient client;
+
+		if (individualClientRepository.findById(id).isPresent()) {
 			IndividualClientEntity individualClientEntity = individualClientRepository.findById(id).get();
-			GenericClient genericClient = clientTransformer.toModel(individualClientEntity);
-
-			return genericClient;
-
-		} catch (NoSuchElementException e) {
+			client = clientTransformer.toModel(individualClientEntity);
+		} else if (companyClientRepository.findById(id).isPresent()) {
 			CompanyClientEntity companyClientEntity = companyClientRepository.findById(id).get();
-			GenericClient genericClient = clientTransformer.toModel(companyClientEntity);
-
-			return genericClient;
+			client = clientTransformer.toModel(companyClientEntity);
+		} else {
+			// TODO return o proper message
+			return null;
 		}
+
+		return client;
 	}
 
 	@Override
-	public void saveClientTicket(Object o) {
+	public void save(Object o) {
 
 		GenericClientEntity genericClientEntity = clientTransformer.fromModel((GenericClient) o);
 
@@ -78,7 +81,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void deleteClientTicket(Integer id) {
+	public void deleteById(Long id) {
 		try {
 			individualClientRepository.deleteById(id);
 		} catch (NoSuchElementException e) {

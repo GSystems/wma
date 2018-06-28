@@ -22,6 +22,7 @@ import com.eu.gsys.wma.infrastructure.entities.tickets.DepositTicketEntity;
 import com.eu.gsys.wma.infrastructure.repositories.deposits.CompanyDepositRepository;
 import com.eu.gsys.wma.infrastructure.repositories.deposits.IndividualDepositRepository;
 import com.eu.gsys.wma.infrastructure.repositories.tickets.DepositTicketRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,7 +56,7 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 	}
 
 	@Override
-	public Iterable<DepositTicket> listAllDepositTickets() {
+	public Iterable<DepositTicket> listAll() {
 		List<DepositTicket> depositTicketList = new ArrayList<>();
 		List<DepositTicketEntity> depositTicketEntities = (List<DepositTicketEntity>) depositTicketRepository.findAll();
 
@@ -67,142 +68,200 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 	}
 
 	@Override
-	public DepositTicket getDepositTicketById(Integer id) {
-		return (DepositTicket) ticketTransformer.toModel(depositTicketRepository.findById(id).get());
+	public DepositTicket findById(Long id) {
+		if (depositTicketRepository.findById(id).isPresent()) {
+			return (DepositTicket) ticketTransformer.toModel(depositTicketRepository.findById(id).get());
+		}
+
+		return null;
 	}
 
 	@Override
-	public void saveDepositTicket(DepositTicket depositTicket) {
+	public void save(DepositTicket depositTicket) {
 		depositTicketRepository.save((DepositTicketEntity) ticketTransformer.fromModel(depositTicket));
 	}
 
 	@Override
-	public void deleteDepositTicket(DepositTicket depositTicket) throws WmaException {
-		depositTicket.setOperationTypeEnum(OperationTypeEnum.REMOVE_DEPOSIT_TICKET);
+	public void deleteById(Long id) {
+		depositTicketRepository.deleteById(id);
+	}
 
-		if (!depositTicket.getConsumedFlag()) {
-			depositTicketRepository.delete((DepositTicketEntity) ticketTransformer.fromModel(depositTicket));
+	@Override
+	public DepositTicket findByTicketNumber(Long ticketNumber) {
+		return (DepositTicket) ticketTransformer.toModel(depositTicketRepository.findByTicketNumber(ticketNumber));
+	}
+
+	@Override
+	public void addNew(DepositTicket depositTicket) throws WmaException {
+		depositTicket.setOperationType(OperationTypeEnum.ADD_DEPOSIT_TICKET);
+
+		calculateAndUpdateClientDeposit(depositTicket);
+		calculateAndUpdateTransactionLedger(depositTicket);
+
+		save(depositTicket);
+	}
+
+	@Override
+	public void deleteByDepositTicket(DepositTicket depositTicket) throws WmaException {
+		String comment = depositTicket.getComment();
+
+		if (!depositTicket.getConsumedFlag() && comment != null && !StringUtils.EMPTY.equals(comment)) {
+			depositTicket.setOperationType(OperationTypeEnum.REMOVE_DEPOSIT_TICKET);
+
+			calculateAndUpdateClientDeposit(depositTicket);
+			calculateAndUpdateTransactionLedger(depositTicket);
+
+			depositTicket.setId(null);
+			depositTicketRepository.save((DepositTicketEntity) ticketTransformer.fromModel(depositTicket));
 		} else {
 			throw new WmaException(ErrorMessages.INCONSISTENT_OPERATION);
 		}
 	}
 
 	@Override
-	public void addNewDepositTicket(DepositTicket depositTicket) {
-		depositTicket.setOperationTypeEnum(OperationTypeEnum.ADD_DEPOSIT_TICKET);
+	public void withdrawWithDepositTicket(DepositTicket depositTicket) {
+		if (!depositTicket.getConsumedFlag()) {
+			depositTicket.setOperationType(OperationTypeEnum.WITHDRAW_WITH_DEPOSIT_TICKET);
 
-		calculateAndUpdateNewClientDeposit(depositTicket);
-		calculateAndUpdateGeneralDeposit(depositTicket);
-
-		saveDepositTicket(depositTicket);
+		}
 	}
 
-	// TODO refactor this code
+	private void calculateAndUpdateClientDeposit(DepositTicket depositTicket) throws WmaException {
+		GenericClientEntity clientEntity = clientTransformer.fromModel(depositTicket.getClient());
 
-	private void calculateAndUpdateNewClientDeposit(DepositTicket depositTicket) {
-		GenericClientEntity genericClientEntity = clientTransformer.fromModel(depositTicket.getClient());
+		// TODO refactor this code
 
-		if (genericClientEntity instanceof IndividualClientEntity) {
-			updateDepositForIndividualClient(depositTicket, genericClientEntity);
+		if (clientEntity instanceof IndividualClientEntity) {
+			updateDepositForIndividualClient(depositTicket, clientEntity);
 		} else {
-			updateDepositForCompanyClient(depositTicket, genericClientEntity);
+			updateDepositForCompanyClient(depositTicket, clientEntity);
 		}
 	}
 
 	private void updateDepositForIndividualClient(DepositTicket depositTicket,
-			GenericClientEntity genericClientEntity) {
+			GenericClientEntity clientEntity) throws WmaException {
 
 		GenericDepositForEntities oldIndividualClientDepositEntity = individualDepositRepository
-				.getDepositByClientEntity((IndividualClientEntity) genericClientEntity);
+				.getDepositByClient((IndividualClientEntity) clientEntity);
 
-		GenericDeposit genericDepositForSave;
+		GenericDeposit depositForSave;
 
 		if (oldIndividualClientDepositEntity == null) {
-			genericDepositForSave = mapDepositFieldForNewClient(depositTicket, new IndividualClientDeposit());
+			depositForSave = mapDepositFieldForNewClient(depositTicket, new IndividualClientDeposit());
 		} else {
-			genericDepositForSave = mapFieldsFromOldDeposit(depositTicket, oldIndividualClientDepositEntity);
+			depositForSave = mapFieldsFromOldDeposit(oldIndividualClientDepositEntity);
+			mapFieldsForAddOrRemoveOperation(depositForSave, depositTicket);
 		}
 
 		IndividualClientDepositEntity individualClientDepositEntity =
-				(IndividualClientDepositEntity) depositTransformer.fromModel(genericDepositForSave);
+				(IndividualClientDepositEntity) depositTransformer.fromModel(depositForSave);
 
 		individualDepositRepository.save(individualClientDepositEntity);
 	}
 
-	private void updateDepositForCompanyClient(DepositTicket depositTicket, GenericClientEntity clientEntity) {
+	private void mapFieldsForAddOrRemoveOperation(GenericDeposit depositForSave, DepositTicket depositTicket) throws WmaException {
+		Double newWheatQtyForSave = calculateNewWheatValueByOperationType(
+				depositTicket.getOperationType(), depositForSave.getWheatQty(), depositTicket.getWheatQty());
+
+		depositForSave.setId(null);
+		depositForSave.setTicketNumber(depositTicket.getTicketNumber());
+		depositForSave.setWheatQty(newWheatQtyForSave);
+		depositForSave.setOperationType(depositTicket.getOperationType());
+	}
+
+	private void updateDepositForCompanyClient(DepositTicket depositTicket, GenericClientEntity clientEntity) throws WmaException {
 		GenericDepositForEntities oldDepositEntity =
 				companyDepositRepository.getDepositByClientEntity((CompanyClientEntity) clientEntity);
 
-		GenericDeposit genericDepositForSave;
+		GenericDeposit depositForSave;
 
 		if (oldDepositEntity == null) {
-			genericDepositForSave = mapDepositFieldForNewClient(depositTicket, new CompanyClientDeposit());
+			depositForSave = mapDepositFieldForNewClient(depositTicket, new CompanyClientDeposit());
 		} else {
-			genericDepositForSave = mapFieldsFromOldDeposit(depositTicket, oldDepositEntity);
+			depositForSave = mapFieldsFromOldDeposit(oldDepositEntity);
+			mapFieldsForAddOrRemoveOperation(depositForSave, depositTicket);
 		}
 
 		CompanyClientDepositEntity companyClientDepositEntity =
-				(CompanyClientDepositEntity) depositTransformer.fromModel(genericDepositForSave);
+				(CompanyClientDepositEntity) depositTransformer.fromModel(depositForSave);
 
 		companyDepositRepository.save(companyClientDepositEntity);
 	}
 
-	// TODO refactor this code
+	private GenericDeposit mapFieldsFromOldDeposit(GenericDepositForEntities oldDepositEntity) {
+		GenericDeposit deposit = depositTransformer.toModel(oldDepositEntity);
 
-	private GenericDeposit mapFieldsFromOldDeposit(DepositTicket depositTicket,
-			GenericDepositForEntities oldIndividualClientDeposit) {
+		// TODO refactor this code
 
-		GenericDeposit genericDeposit = depositTransformer.toModel(oldIndividualClientDeposit);
-		Double newWheatQtyForSave = genericDeposit.getWheatQty() + depositTicket.getWheatQtyForDeposit();
+		GenericDeposit oldDeposit;
 
-		GenericDeposit genericDepositForSave;
-
-		if (oldIndividualClientDeposit instanceof IndividualClientDepositEntity) {
-			genericDepositForSave = (IndividualClientDeposit) genericDeposit.clone();
+		if (oldDepositEntity instanceof IndividualClientDepositEntity) {
+			oldDeposit = (IndividualClientDeposit) deposit.clone();
 		} else {
-			genericDepositForSave = (CompanyClientDeposit) genericDeposit.clone();
+			oldDeposit = (CompanyClientDeposit) deposit.clone();
 		}
 
-		genericDepositForSave.setId(null);
-		genericDepositForSave.setTicketId(depositTicket.getTicketId());
-		genericDepositForSave.setWheatQty(newWheatQtyForSave);
-
-		return genericDepositForSave;
+		return oldDeposit;
 	}
 
-	private GenericDeposit mapDepositFieldForNewClient(DepositTicket depositTicket, GenericDeposit genericDeposit) {
+	private GenericDeposit mapDepositFieldForNewClient(DepositTicket depositTicket, GenericDeposit deposit) {
+		deposit.setBranQty(0d);
+		deposit.setClient(depositTicket.getClient());
+		deposit.setFlourQty(0d);
+		deposit.setOperationType(depositTicket.getOperationType());
+		deposit.setTicketNumber(depositTicket.getTicketNumber());
+		deposit.setDate(depositTicket.getDate());
+		deposit.setWheatQty(depositTicket.getWheatQty());
 
-		GenericDeposit newGenericDepositForSave = genericDeposit;
-
-		newGenericDepositForSave.setBranQty(0d);
-		newGenericDepositForSave.setClient(depositTicket.getClient());
-		newGenericDepositForSave.setFlourQty(0d);
-		newGenericDepositForSave.setOperationType(depositTicket.getOperationTypeEnum());
-		newGenericDepositForSave.setTicketId(depositTicket.getTicketId());
-		newGenericDepositForSave.setDate(depositTicket.getDate());
-		newGenericDepositForSave.setWheatQty(depositTicket.getWheatQtyForDeposit());
-
-		return newGenericDepositForSave;
+		return deposit;
 	}
 
-	private void calculateAndUpdateGeneralDeposit(DepositTicket depositTicket) {
+	private void calculateAndUpdateTransactionLedger(DepositTicket depositTicket) throws WmaException {
 		Transaction lastTransaction = transactionService.getMostRecentTransaction();
 
 		Double oldTotalWheatQty = lastTransaction.getTotalWheatQty();
 		Double oldTotalWheatQtyOfClients = lastTransaction.getWheatQtyOfClients();
 
-		Double wheatQtyForSave = depositTicket.getWheatQtyForDeposit();
-		Double newTotalWheatQtyForSave = oldTotalWheatQty + wheatQtyForSave;
-		Double newTotalWheatQtyOfClients = oldTotalWheatQtyOfClients + wheatQtyForSave;
+		Double wheatQtyForSave = depositTicket.getWheatQty();
+
+		Double newTotalWheatQtyForSave = calculateNewWheatValueByOperationType(
+				depositTicket.getOperationType(), oldTotalWheatQty, wheatQtyForSave);
+
+		Double newTotalWheatQtyOfClients = calculateNewWheatValueByOperationType(
+				depositTicket.getOperationType(), oldTotalWheatQtyOfClients, wheatQtyForSave);
 
 		Transaction newTransactionForSave = (Transaction) lastTransaction.clone();
 		newTransactionForSave.setId(null);
 		newTransactionForSave.setTotalWheatQty(newTotalWheatQtyForSave);
 		newTransactionForSave.setWheatQtyOfClients(newTotalWheatQtyOfClients);
-		newTransactionForSave.setTicketId(depositTicket.getTicketId());
-		newTransactionForSave.setOperationType(depositTicket.getOperationTypeEnum());
+		newTransactionForSave.setTicketNumber(depositTicket.getTicketNumber());
+		newTransactionForSave.setOperationType(depositTicket.getOperationType());
 		newTransactionForSave.setDate(depositTicket.getDate());
 
-		transactionService.saveTransaction(newTransactionForSave);
+		transactionService.save(newTransactionForSave);
+	}
+
+	private Double calculateNewWheatValueByOperationType(OperationTypeEnum operationType, Double oldValue, Double newValue) throws WmaException {
+		Double valueForSave;
+
+		switch (operationType) {
+			case ADD_DEPOSIT_TICKET:
+				valueForSave = oldValue + newValue;
+				break;
+			case REMOVE_DEPOSIT_TICKET:
+				valueForSave = oldValue - newValue;
+				break;
+			case WITHDRAW_WITH_DEPOSIT_TICKET:
+				valueForSave = oldValue - newValue;
+				break;
+			default:
+				throw new WmaException(ErrorMessages.INCONSISTENT_OPERATION);
+		}
+
+		if (valueForSave.compareTo(0d) < 0) {
+			throw new WmaException(ErrorMessages.INCONSISTENT_OPERATION);
+		}
+
+		return valueForSave;
 	}
 }

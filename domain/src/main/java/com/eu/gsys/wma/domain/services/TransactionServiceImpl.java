@@ -25,7 +25,7 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public List<Transaction> listAllTransactions() {
+	public List<Transaction> listAll() {
 		List<Transaction> transactions = new ArrayList<>();
 		List<TransactionEntity> transactionEntities = transactionRepository.findAll();
 
@@ -37,17 +37,21 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public Transaction getTransactionById(Long id) {
-		return transactionTransformer.toModel(transactionRepository.findById(id).get());
+	public Transaction findById(Long id) {
+		if (transactionRepository.findById(id).isPresent()) {
+			return transactionTransformer.toModel(transactionRepository.findById(id).get());
+		}
+
+		return null;
 	}
 
 	@Override
-	public void saveTransaction(Transaction transaction) {
+	public void save(Transaction transaction) {
 		transactionRepository.save(transactionTransformer.fromModel(transaction));
 	}
 
 	@Override
-	public void deleteTransaction(Long id) {
+	public void deleteById(Long id) {
 		transactionRepository.deleteById(id);
 	}
 
@@ -68,18 +72,18 @@ public class TransactionServiceImpl implements TransactionService {
 	private Transaction initValuesForNewTransaction() {
 		Transaction transaction = new Transaction();
 
-		transaction.setBranQtyOfClients(Double.valueOf(0));
-		transaction.setBranQtyOfCompany(Double.valueOf(0));
+		transaction.setBranQtyOfClients(0d);
+		transaction.setBranQtyOfCompany(0d);
 
-		transaction.setFlourQtyOfClients(Double.valueOf(0));
-		transaction.setFlourQtyOfCompany(Double.valueOf(0));
+		transaction.setFlourQtyOfClients(0d);
+		transaction.setFlourQtyOfCompany(0d);
 
-		transaction.setTotalBranQty(Double.valueOf(0));
-		transaction.setTotalFlourQty(Double.valueOf(0));
-		transaction.setTotalWheatQty(Double.valueOf(0));
+		transaction.setTotalBranQty(0d);
+		transaction.setTotalFlourQty(0d);
+		transaction.setTotalWheatQty(0d);
 
-		transaction.setWheatQtyOfClients(Double.valueOf(0));
-		transaction.setWheatQtyOfCompany(Double.valueOf(0));
+		transaction.setWheatQtyOfClients(0d);
+		transaction.setWheatQtyOfCompany(0d);
 
 		return transaction;
 	}

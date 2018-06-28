@@ -10,8 +10,9 @@ import java.time.LocalDate;
 public class GenericTicket {
 
 	private Long id;
-	private Long ticketId;
+	private Long ticketNumber;
 	private LocalDate date;
 	private GenericClient client;
-	private OperationTypeEnum operationTypeEnum;
+	private OperationTypeEnum operationType;
+	private String comment;
 }

@@ -24,7 +24,7 @@ public class GristTicketServiceImpl implements GristTicketService {
 	}
 
 	@Override
-	public List<GristTicket> listAllGristTickets() {
+	public List<GristTicket> listAll() {
 		List<GristTicket> gristTicketList = new ArrayList<>();
 		List<GristTicketEntity> gristTicketEntities = (List<GristTicketEntity>) gristTicketRepository.findAll();
 
@@ -36,23 +36,27 @@ public class GristTicketServiceImpl implements GristTicketService {
 	}
 
 	@Override
-	public GristTicket getGristTicketById(Integer id) {
-		return (GristTicket) ticketTransformer.toModel(gristTicketRepository.findById(id).get());
+	public GristTicket findById(Long id) {
+		if (gristTicketRepository.findById(id).isPresent()) {
+			return (GristTicket) ticketTransformer.toModel(gristTicketRepository.findById(id).get());
+		}
+
+		return null;
 	}
 
 	@Override
-	public void saveGristTicket(GristTicket gristTicket) {
+	public void save(GristTicket gristTicket) {
 		gristTicketRepository.save((GristTicketEntity) ticketTransformer.fromModel(gristTicket));
 	}
 
 	@Override
-	public void deleteGristTicket(GristTicket gristTicket) {
+	public void deleteByGristTicket(GristTicket gristTicket) {
 		gristTicketRepository.delete((GristTicketEntity) ticketTransformer.fromModel(gristTicket));
 	}
 
 	@Override
-	public void addNewGristTicket(GristTicket gristTicket) {
-		gristTicket.setOperationTypeEnum(OperationTypeEnum.ADD_GRIST_TICKET);
-		saveGristTicket(gristTicket);
+	public void addNew(GristTicket gristTicket) {
+		gristTicket.setOperationType(OperationTypeEnum.ADD_GRIST_TICKET);
+		save(gristTicket);
 	}
 }

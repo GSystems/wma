@@ -9,12 +9,12 @@ import java.time.LocalDate;
 @Data
 public class GenericDeposit implements Cloneable {
 
-	private Integer id;
+	private Long id;
 	private Double wheatQty;
 	private Double flourQty;
 	private Double branQty;
 	private OperationTypeEnum operationType;
-	private Long ticketId;
+	private Long ticketNumber;
 	private LocalDate date;
 	private GenericClient client;
 

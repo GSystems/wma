@@ -60,7 +60,7 @@ public class DepositTransformer implements BaseTransformer<GenericDepositForEnti
 		depositEntity.setFlourQty(deposit.getFlourQty());
 		depositEntity.setId(deposit.getId());
 		depositEntity.setOperationType(deposit.getOperationType().getCode());
-		depositEntity.setTicketId(deposit.getTicketId());
+		depositEntity.setTicketNumber(deposit.getTicketNumber());
 		depositEntity.setDate(deposit.getDate());
 		depositEntity.setWheatQty(deposit.getWheatQty());
 	}
@@ -85,7 +85,7 @@ public class DepositTransformer implements BaseTransformer<GenericDepositForEnti
 		deposit.setId(depositEntity.getId());
 		deposit
 				.setOperationType(OperationTypeEnum.getTicketTypeByCode(depositEntity.getOperationType()));
-		deposit.setTicketId(depositEntity.getTicketId());
+		deposit.setTicketNumber(depositEntity.getTicketNumber());
 		deposit.setDate(depositEntity.getDate());
 		deposit.setWheatQty(depositEntity.getWheatQty());
 

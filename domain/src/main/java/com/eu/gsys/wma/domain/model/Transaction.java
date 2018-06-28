@@ -11,7 +11,7 @@ public class Transaction implements Cloneable {
 	private Long id;
 	private LocalDate date;
 	private OperationTypeEnum operationType;
-	private Long ticketId;
+	private Long ticketNumber;
 
 	private Double totalWheatQty;
 	private Double wheatQtyOfCompany;

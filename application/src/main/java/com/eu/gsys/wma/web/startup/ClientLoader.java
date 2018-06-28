@@ -34,7 +34,7 @@ public class ClientLoader implements ApplicationListener<ContextRefreshedEvent> 
 		individualClient.setPersonalId("1761234123123");
 		individualClient.setJoinDate(LocalDate.now());
 
-		clientService.saveClientTicket(individualClient);
+		clientService.save(individualClient);
 
 		CompanyClient companyClient = new CompanyClient();
 
@@ -43,6 +43,6 @@ public class ClientLoader implements ApplicationListener<ContextRefreshedEvent> 
 		companyClient.setCompanyId("RO21423");
 		companyClient.setJoinDate(LocalDate.now());
 
-		clientService.saveClientTicket(companyClient);
+		clientService.save(companyClient);
 	}
 }

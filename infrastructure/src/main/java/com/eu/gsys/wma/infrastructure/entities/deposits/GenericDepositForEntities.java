@@ -17,7 +17,7 @@ public class GenericDepositForEntities implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	private Long id;
 	private Double wheatQty;
 	private Double flourQty;
 	private Double branQty;
@@ -26,7 +26,7 @@ public class GenericDepositForEntities implements Serializable {
 	private Integer operationType;
 
 	@NotNull
-	private Long ticketId;
+	private Long ticketNumber;
 
 	@NotNull
 	private LocalDate date;

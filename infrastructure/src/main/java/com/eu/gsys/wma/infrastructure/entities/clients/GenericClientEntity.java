@@ -17,7 +17,7 @@ public class GenericClientEntity implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	private Long id;
 
 	@NotNull
 	private String address;

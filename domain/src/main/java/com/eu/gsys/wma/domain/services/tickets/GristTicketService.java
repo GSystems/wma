@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface GristTicketService {
 
-	List<GristTicket> listAllGristTickets();
+	List<GristTicket> listAll();
 
-	GristTicket getGristTicketById(Integer id);
+	GristTicket findById(Long id);
 
-	void saveGristTicket(GristTicket gristTicket);
+	void save(GristTicket gristTicket);
 
-	void deleteGristTicket(GristTicket gristTicket);
+	void deleteByGristTicket(GristTicket gristTicket);
 
-	void addNewGristTicket(GristTicket gristTicket);
+	void addNew(GristTicket gristTicket);
 }

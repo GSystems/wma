@@ -7,7 +7,7 @@ import java.time.LocalDate;
 @Data
 public class GenericClient {
 
-	private Integer id;
+	private Long id;
 	private String address;
 	private LocalDate joinDate;
 }

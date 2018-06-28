@@ -9,7 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-@Qualifier("individualDepositRepository")
 @Repository
 public abstract class IndividualDepositRepositoryImpl implements IndividualDepositRepository {
 
@@ -17,7 +16,7 @@ public abstract class IndividualDepositRepositoryImpl implements IndividualDepos
 	private EntityManager entityManager;
 
 	@Override
-	public IndividualClientDepositEntity getDepositByClientEntity(IndividualClientEntity clientEntity) {
+	public IndividualClientDepositEntity getDepositByClient(IndividualClientEntity clientEntity) {
 		TypedQuery<IndividualClientDepositEntity> query = entityManager.createNamedQuery(
 				IndividualClientDepositEntity.GET_DEPOSIT_BY_CLIENT, IndividualClientDepositEntity.class);
 

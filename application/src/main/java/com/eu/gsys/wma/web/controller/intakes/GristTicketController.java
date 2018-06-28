@@ -39,7 +39,7 @@ public class GristTicketController {
 
 	@RequestMapping("gristTicket/delete/{gristTicket}")
 	public String delete(@PathVariable GristTicket gristTicket) {
-		gristTicketService.deleteGristTicket(gristTicket);
+		gristTicketService.deleteByGristTicket(gristTicket);
 		return "redirect:/gristTickets";
 	}
 }

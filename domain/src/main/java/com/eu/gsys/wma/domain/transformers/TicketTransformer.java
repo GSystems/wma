@@ -3,6 +3,7 @@ package com.eu.gsys.wma.domain.transformers;
 import com.eu.gsys.wma.domain.model.tickets.DepositTicket;
 import com.eu.gsys.wma.domain.model.tickets.GenericTicket;
 import com.eu.gsys.wma.domain.model.tickets.GristTicket;
+import com.eu.gsys.wma.domain.model.tickets.WithdrawTicket;
 import com.eu.gsys.wma.domain.util.OperationTypeEnum;
 import com.eu.gsys.wma.infrastructure.entities.clients.CompanyClientEntity;
 import com.eu.gsys.wma.infrastructure.entities.clients.GenericClientEntity;
@@ -10,6 +11,7 @@ import com.eu.gsys.wma.infrastructure.entities.clients.IndividualClientEntity;
 import com.eu.gsys.wma.infrastructure.entities.tickets.DepositTicketEntity;
 import com.eu.gsys.wma.infrastructure.entities.tickets.GenericTicketForEntities;
 import com.eu.gsys.wma.infrastructure.entities.tickets.GristTicketEntity;
+import com.eu.gsys.wma.infrastructure.entities.tickets.WithdrawTicketEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,8 +30,10 @@ public class TicketTransformer implements BaseTransformer<GenericTicketForEntiti
 
 		if (ticket instanceof DepositTicket) {
 			return fromDepositTicketToEntity(ticket);
-		} else {
+		} else if (ticket instanceof GristTicket){
 			return fromGristTicketToEntity(ticket);
+		} else {
+			return fromWithdrawTicketToEntity(ticket);
 		}
 	}
 
@@ -38,8 +42,10 @@ public class TicketTransformer implements BaseTransformer<GenericTicketForEntiti
 
 		if (ticketEntity instanceof DepositTicketEntity) {
 			return toDepositTicketFromEntity(ticketEntity);
-		} else {
+		} else if (ticketEntity instanceof GristTicketEntity){
 			return toGristTicketFromEntity(ticketEntity);
+		} else {
+			return toWithdrawTicketFromEntity(ticketEntity);
 		}
 	}
 
@@ -53,7 +59,7 @@ public class TicketTransformer implements BaseTransformer<GenericTicketForEntiti
 			ticketEntity.setConsumedFlag(1);
 		}
 
-		ticketEntity.setWheatQtyForDeposit(depositTicket.getWheatQtyForDeposit());
+		ticketEntity.setWheatQty(depositTicket.getWheatQty());
 
 		return ticketEntity;
 	}
@@ -67,6 +73,7 @@ public class TicketTransformer implements BaseTransformer<GenericTicketForEntiti
 		ticketEntity.setBranQtyForClient(gristTicket.getBranQtyForClient());
 		ticketEntity.setFlourQtyForClient(gristTicket.getFlourQtyForClient());
 		ticketEntity.setManufacturingLossesQty(gristTicket.getManufacturingLossesQty());
+		ticketEntity.setOperationType(gristTicket.getOperationType().getCode());
 		ticketEntity.setOtherCorpusQty(gristTicket.getOtherCorpusQty());
 		ticketEntity.setTollWheatQty(gristTicket.getTollWheatQty());
 		ticketEntity.setWheatQtyBrought(gristTicket.getWheatQtyBrought());
@@ -75,11 +82,25 @@ public class TicketTransformer implements BaseTransformer<GenericTicketForEntiti
 		return ticketEntity;
 	}
 
+	private GenericTicketForEntities fromWithdrawTicketToEntity(GenericTicket ticket) {
+		WithdrawTicket withdrawTicket = (WithdrawTicket) ticket;
+		WithdrawTicketEntity ticketEntity = new WithdrawTicketEntity();
+
+		mapCommonFieldsForEntity(ticket, ticketEntity);
+		ticketEntity.setBranQty(withdrawTicket.getBranQty());
+		ticketEntity.setFlourQty(withdrawTicket.getFlourQty());
+		ticketEntity.setWheatQty(withdrawTicket.getWheatQty());
+
+		return ticketEntity;
+	}
+
 	private void mapCommonFieldsForEntity(GenericTicket ticket, GenericTicketForEntities ticketEntity) {
 
+		ticketEntity.setComment(ticket.getComment());
 		ticketEntity.setDate(ticket.getDate());
 		ticketEntity.setId(ticket.getId());
-		ticketEntity.setTicketId(ticket.getTicketId());
+		ticketEntity.setTicketNumber(ticket.getTicketNumber());
+		ticketEntity.setOperationType(ticket.getOperationType().getCode());
 
 		GenericClientEntity clientEntity = clientTransformer.fromModel(ticket.getClient());
 
@@ -90,19 +111,19 @@ public class TicketTransformer implements BaseTransformer<GenericTicketForEntiti
 		}
 	}
 
-	private GenericTicket toDepositTicketFromEntity(GenericTicketForEntities ticketEntity) {
-		DepositTicketEntity depositTicketEntity = (DepositTicketEntity) ticketEntity;
-		DepositTicket ticket = new DepositTicket();
+	private GenericTicket toDepositTicketFromEntity(GenericTicketForEntities depositEntity) {
+		DepositTicketEntity depositTicketEntity = (DepositTicketEntity) depositEntity;
+		DepositTicket deposit = new DepositTicket();
 
-		mapCommonFieldsForModel(ticket, depositTicketEntity);
+		mapCommonFieldsForModel(deposit, depositTicketEntity);
 
 		if (depositTicketEntity.getConsumedFlag() == 1) {
-			ticket.setConsumedFlag(true);
+			deposit.setConsumedFlag(true);
 		}
 
-		ticket.setWheatQtyForDeposit(depositTicketEntity.getWheatQtyForDeposit());
+		deposit.setWheatQty(depositTicketEntity.getWheatQty());
 
-		return ticket;
+		return deposit;
 	}
 
 	private GenericTicket toGristTicketFromEntity(GenericTicketForEntities ticketEntity) {
@@ -114,10 +135,24 @@ public class TicketTransformer implements BaseTransformer<GenericTicketForEntiti
 		ticket.setBranQtyForClient(gristTicketEntity.getBranQtyForClient());
 		ticket.setFlourQtyForClient(gristTicketEntity.getFlourQtyForClient());
 		ticket.setManufacturingLossesQty(gristTicketEntity.getManufacturingLossesQty());
+		ticket.setOperationType(OperationTypeEnum.getTicketTypeByCode(gristTicketEntity.getOperationType()));
 		ticket.setOtherCorpusQty(gristTicketEntity.getOtherCorpusQty());
 		ticket.setTollWheatQty(gristTicketEntity.getTollWheatQty());
 		ticket.setWheatQtyBrought(gristTicketEntity.getWheatQtyBrought());
 		ticket.setWheatQtyForGrist(gristTicketEntity.getWheatQtyForGrist());
+
+		return ticket;
+	}
+
+	private GenericTicket toWithdrawTicketFromEntity(GenericTicketForEntities ticketEntity) {
+		WithdrawTicketEntity withdrawTicketEntity = (WithdrawTicketEntity) ticketEntity;
+		WithdrawTicket ticket = new WithdrawTicket();
+
+		mapCommonFieldsForModel(ticket, withdrawTicketEntity);
+
+		ticket.setBranQty(withdrawTicketEntity.getBranQty());
+		ticket.setFlourQty(withdrawTicketEntity.getFlourQty());
+		ticket.setWheatQty(withdrawTicketEntity.getWheatQty());
 
 		return ticket;
 	}
@@ -131,10 +166,11 @@ public class TicketTransformer implements BaseTransformer<GenericTicketForEntiti
 			genericClientEntity = ticketEntity.getCompanyClientEntity();
 		}
 
+		ticket.setComment(ticketEntity.getComment());
 		ticket.setClient(clientTransformer.toModel(genericClientEntity));
 		ticket.setDate(ticketEntity.getDate());
 		ticket.setId(ticketEntity.getId());
-		ticket.setOperationTypeEnum(OperationTypeEnum.getTicketTypeByCode(ticketEntity.getOperationType()));
-		ticket.setTicketId(ticketEntity.getTicketId());
+		ticket.setOperationType(OperationTypeEnum.getTicketTypeByCode(ticketEntity.getOperationType()));
+		ticket.setTicketNumber(ticketEntity.getTicketNumber());
 	}
 }

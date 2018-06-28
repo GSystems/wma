@@ -18,7 +18,7 @@ public class TransactionTransformer implements BaseTransformer<TransactionEntity
 		transaction.setFlourQtyOfCompany(transactionEntity.getFlourQtyOfCompany());
 		transaction.setId(transactionEntity.getId());
 		transaction.setOperationType(OperationTypeEnum.getTicketTypeByCode(transactionEntity.getOperationType()));
-		transaction.setTicketId(transactionEntity.getTicketId());
+		transaction.setTicketNumber(transactionEntity.getTicketNumber());
 		transaction.setDate(transactionEntity.getDate());
 		transaction.setTotalBranQty(transactionEntity.getTotalBranQty());
 		transaction.setTotalFlourQty(transactionEntity.getTotalFlourQty());
@@ -39,7 +39,7 @@ public class TransactionTransformer implements BaseTransformer<TransactionEntity
 		transactionEntity.setFlourQtyOfCompany(transaction.getFlourQtyOfCompany());
 		transactionEntity.setId(transaction.getId());
 		transactionEntity.setOperationType(transaction.getOperationType().getCode());
-		transactionEntity.setTicketId(transaction.getTicketId());
+		transactionEntity.setTicketNumber(transaction.getTicketNumber());
 		transactionEntity.setDate(transaction.getDate());
 		transactionEntity.setTotalBranQty(transaction.getTotalBranQty());
 		transactionEntity.setTotalFlourQty(transaction.getTotalFlourQty());

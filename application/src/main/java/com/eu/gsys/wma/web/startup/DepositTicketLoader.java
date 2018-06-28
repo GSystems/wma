@@ -4,6 +4,7 @@ import com.eu.gsys.wma.domain.model.clients.GenericClient;
 import com.eu.gsys.wma.domain.model.tickets.DepositTicket;
 import com.eu.gsys.wma.domain.services.clients.ClientService;
 import com.eu.gsys.wma.domain.services.tickets.DepositTicketService;
+import com.eu.gsys.wma.domain.util.WmaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -28,49 +29,61 @@ public class DepositTicketLoader implements ApplicationListener<ContextRefreshed
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+		addDepositTickets();
+		removeDepositTicket();
+	}
+
+	private void addDepositTickets() {
 		DepositTicket depositTicket0 = new DepositTicket();
 
-		GenericClient genericClient0 = (GenericClient) clientService.getClientById(1);
+		GenericClient genericClient0 = (GenericClient) clientService.findById(1L);
 		depositTicket0.setClient(genericClient0);
-		depositTicket0.setTicketId(1L);
-		depositTicket0.setWheatQtyForDeposit(2000.0);
+		depositTicket0.setTicketNumber(1L);
+		depositTicket0.setWheatQty(2000.0);
 		depositTicket0.setDate(LocalDate.now());
-		depositTicketService.addNewDepositTicket(depositTicket0);
-
-		System.out.println("Saved DepositTicket - id: " + depositTicket0.getTicketId());
 
 		DepositTicket depositTicket1 = new DepositTicket();
 
-		GenericClient genericClient1 = (GenericClient) clientService.getClientById(2);
+		GenericClient genericClient1 = (GenericClient) clientService.findById(2L);
 		depositTicket1.setClient(genericClient1);
-		depositTicket1.setTicketId(10L);
-		depositTicket1.setWheatQtyForDeposit(1000.0);
+		depositTicket1.setTicketNumber(10L);
+		depositTicket1.setWheatQty(1000.0);
 		depositTicket1.setDate(LocalDate.now());
-		depositTicketService.addNewDepositTicket(depositTicket1);
-
-		System.out.println("Saved DepositTicket - id: " + depositTicket1.getTicketId());
 
 		DepositTicket depositTicket2 = new DepositTicket();
 
-		GenericClient genericClient2 = (GenericClient) clientService.getClientById(2);
+		GenericClient genericClient2 = (GenericClient) clientService.findById(2L);
 		depositTicket2.setClient(genericClient2);
-		depositTicket2.setTicketId(12L);
-		depositTicket2.setWheatQtyForDeposit(555.0);
+		depositTicket2.setTicketNumber(12L);
+		depositTicket2.setWheatQty(555.0);
 		depositTicket2.setDate(LocalDate.now());
-		depositTicketService.addNewDepositTicket(depositTicket2);
-
-		System.out.println("Saved DepositTicket - id: " + depositTicket2.getTicketId());
 
 		DepositTicket depositTicket3 = new DepositTicket();
 
-		GenericClient genericClient3 = (GenericClient) clientService.getClientById(1);
+		GenericClient genericClient3 = (GenericClient) clientService.findById(1L);
 		depositTicket3.setClient(genericClient3);
-		depositTicket3.setTicketId(9L);
-		depositTicket3.setWheatQtyForDeposit(1200.0);
+		depositTicket3.setTicketNumber(9L);
+		depositTicket3.setWheatQty(1200.0);
 		depositTicket3.setDate(LocalDate.now());
-		depositTicketService.addNewDepositTicket(depositTicket3);
 
-		System.out.println("Saved DepositTicket - id: " + depositTicket3.getTicketId());
+		try {
+			depositTicketService.addNew(depositTicket0);
+			depositTicketService.addNew(depositTicket1);
+			depositTicketService.addNew(depositTicket2);
+			depositTicketService.addNew(depositTicket3);
+		} catch (WmaException e) {
+			e.printStackTrace();
+		}
+	}
 
+	private void removeDepositTicket() {
+		DepositTicket depositTicket = depositTicketService.findByTicketNumber(1L);
+		depositTicket.setComment("Wrong qty");
+
+		try {
+			depositTicketService.deleteByDepositTicket(depositTicket);
+		} catch (WmaException e) {
+			e.printStackTrace();
+		}
 	}
 }

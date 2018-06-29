@@ -13,4 +13,5 @@ public class WithdrawTicketEntity extends GenericTicketForEntities {
 	private Double branQty;
 	private Double flourQty;
 	private Double wheatQty;
+	private Long referenceTicketNumber;
 }

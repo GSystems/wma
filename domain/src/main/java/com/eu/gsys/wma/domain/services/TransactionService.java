@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TransactionService {
 
-	List<Transaction> listAll();
+	List<Transaction> findAll();
 
 	Transaction findById(Long id);
 

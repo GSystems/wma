@@ -31,7 +31,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public List<GenericClient> listAll() {
+	public List<GenericClient> findAll() {
 		List<GenericClient> clients = new ArrayList<>();
 		List<CompanyClientEntity> companyClientEntities = (List<CompanyClientEntity>) companyClientRepository.findAll();
 
@@ -69,14 +69,14 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void save(Object o) {
+	public void save(GenericClient client) {
 
-		GenericClientEntity genericClientEntity = clientTransformer.fromModel((GenericClient) o);
+		GenericClientEntity companyClientEntity = clientTransformer.fromModel(client);
 
-		if (genericClientEntity instanceof IndividualClientEntity) {
-			individualClientRepository.save((IndividualClientEntity) genericClientEntity);
+		if (companyClientEntity instanceof IndividualClientEntity) {
+			individualClientRepository.save((IndividualClientEntity) companyClientEntity);
 		} else {
-			companyClientRepository.save((CompanyClientEntity) genericClientEntity);
+			companyClientRepository.save((CompanyClientEntity) companyClientEntity);
 		}
 	}
 

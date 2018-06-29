@@ -2,6 +2,7 @@ package com.eu.gsys.wma.infrastructure.repositories.deposits;
 
 import com.eu.gsys.wma.infrastructure.entities.clients.IndividualClientEntity;
 import com.eu.gsys.wma.infrastructure.entities.deposits.IndividualClientDepositEntity;
+import com.eu.gsys.wma.infrastructure.entities.tickets.DepositTicketEntity;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 

@@ -1,16 +1,16 @@
 package com.eu.gsys.wma.domain.services.clients;
 
+import com.eu.gsys.wma.domain.model.clients.GenericClient;
+
 import java.util.List;
 
-//TODO refactor this class
+public interface ClientService {
 
-public interface ClientService<T> {
+	List<GenericClient> findAll();
 
-	List<T> listAll();
+	GenericClient findById(Long id);
 
-	T findById(Long id);
-
-	void save(T t);
+	void save(GenericClient genericClient);
 
 	void deleteById(Long id);
 }

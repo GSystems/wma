@@ -89,6 +89,7 @@ public class TicketTransformer implements BaseTransformer<GenericTicketForEntiti
 		mapCommonFieldsForEntity(ticket, ticketEntity);
 		ticketEntity.setBranQty(withdrawTicket.getBranQty());
 		ticketEntity.setFlourQty(withdrawTicket.getFlourQty());
+		ticketEntity.setReferenceTicketNumber(withdrawTicket.getReferenceTicketNumber());
 		ticketEntity.setWheatQty(withdrawTicket.getWheatQty());
 
 		return ticketEntity;
@@ -152,6 +153,7 @@ public class TicketTransformer implements BaseTransformer<GenericTicketForEntiti
 
 		ticket.setBranQty(withdrawTicketEntity.getBranQty());
 		ticket.setFlourQty(withdrawTicketEntity.getFlourQty());
+		ticket.setReferenceTicketNumber(withdrawTicketEntity.getReferenceTicketNumber());
 		ticket.setWheatQty(withdrawTicketEntity.getWheatQty());
 
 		return ticket;

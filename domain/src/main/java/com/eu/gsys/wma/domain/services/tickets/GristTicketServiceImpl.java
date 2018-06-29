@@ -24,7 +24,7 @@ public class GristTicketServiceImpl implements GristTicketService {
 	}
 
 	@Override
-	public List<GristTicket> listAll() {
+	public List<GristTicket> findAll() {
 		List<GristTicket> gristTicketList = new ArrayList<>();
 		List<GristTicketEntity> gristTicketEntities = (List<GristTicketEntity>) gristTicketRepository.findAll();
 

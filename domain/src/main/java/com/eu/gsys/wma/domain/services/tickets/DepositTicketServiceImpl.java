@@ -22,7 +22,6 @@ import com.eu.gsys.wma.infrastructure.entities.tickets.DepositTicketEntity;
 import com.eu.gsys.wma.infrastructure.repositories.deposits.CompanyDepositRepository;
 import com.eu.gsys.wma.infrastructure.repositories.deposits.IndividualDepositRepository;
 import com.eu.gsys.wma.infrastructure.repositories.tickets.DepositTicketRepository;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,12 +31,12 @@ import java.util.List;
 @Service
 public class DepositTicketServiceImpl implements DepositTicketService {
 
-	private final TicketTransformer ticketTransformer;
 	private final ClientTransformer clientTransformer;
 	private final CompanyDepositRepository companyDepositRepository;
 	private final DepositTicketRepository depositTicketRepository;
 	private final DepositTransformer depositTransformer;
 	private final IndividualDepositRepository individualDepositRepository;
+	private final TicketTransformer ticketTransformer;
 	private final TransactionService transactionService;
 
 	@Autowired
@@ -56,15 +55,15 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 	}
 
 	@Override
-	public Iterable<DepositTicket> listAll() {
-		List<DepositTicket> depositTicketList = new ArrayList<>();
+	public Iterable<DepositTicket> findAll() {
+		List<DepositTicket> depositTickets = new ArrayList<>();
 		List<DepositTicketEntity> depositTicketEntities = (List<DepositTicketEntity>) depositTicketRepository.findAll();
 
 		for (DepositTicketEntity depositTicketEntity : depositTicketEntities) {
-			depositTicketList.add((DepositTicket) ticketTransformer.toModel(depositTicketEntity));
+			depositTickets.add((DepositTicket) ticketTransformer.toModel(depositTicketEntity));
 		}
 
-		return depositTicketList;
+		return depositTickets;
 	}
 
 	@Override
@@ -103,10 +102,12 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 
 	@Override
 	public void deleteByDepositTicket(DepositTicket depositTicket) throws WmaException {
+		DepositTicket lastDepositTicket = findByTicketNumber(depositTicket.getTicketNumber());
 		String comment = depositTicket.getComment();
 
-		if (!depositTicket.getConsumedFlag() && comment != null && !StringUtils.EMPTY.equals(comment)) {
+		if (!lastDepositTicket.getConsumedFlag() && comment != null && !"".equals(comment)) {
 			depositTicket.setOperationType(OperationTypeEnum.REMOVE_DEPOSIT_TICKET);
+			depositTicket.setConsumedFlag(true);
 
 			calculateAndUpdateClientDeposit(depositTicket);
 			calculateAndUpdateTransactionLedger(depositTicket);
@@ -115,14 +116,6 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 			depositTicketRepository.save((DepositTicketEntity) ticketTransformer.fromModel(depositTicket));
 		} else {
 			throw new WmaException(ErrorMessages.INCONSISTENT_OPERATION);
-		}
-	}
-
-	@Override
-	public void withdrawWithDepositTicket(DepositTicket depositTicket) {
-		if (!depositTicket.getConsumedFlag()) {
-			depositTicket.setOperationType(OperationTypeEnum.WITHDRAW_WITH_DEPOSIT_TICKET);
-
 		}
 	}
 
@@ -161,11 +154,11 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 
 	private void mapFieldsForAddOrRemoveOperation(GenericDeposit depositForSave, DepositTicket depositTicket) throws WmaException {
 		Double newWheatQtyForSave = calculateNewWheatValueByOperationType(
-				depositTicket.getOperationType(), depositForSave.getWheatQty(), depositTicket.getWheatQty());
+				depositTicket.getOperationType(), depositForSave.getCurrentWheatQty(), depositTicket.getWheatQty());
 
 		depositForSave.setId(null);
 		depositForSave.setTicketNumber(depositTicket.getTicketNumber());
-		depositForSave.setWheatQty(newWheatQtyForSave);
+		depositForSave.setCurrentWheatQty(newWheatQtyForSave);
 		depositForSave.setOperationType(depositTicket.getOperationType());
 	}
 
@@ -205,13 +198,11 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 	}
 
 	private GenericDeposit mapDepositFieldForNewClient(DepositTicket depositTicket, GenericDeposit deposit) {
-		deposit.setBranQty(0d);
 		deposit.setClient(depositTicket.getClient());
-		deposit.setFlourQty(0d);
 		deposit.setOperationType(depositTicket.getOperationType());
 		deposit.setTicketNumber(depositTicket.getTicketNumber());
 		deposit.setDate(depositTicket.getDate());
-		deposit.setWheatQty(depositTicket.getWheatQty());
+		deposit.setCurrentWheatQty(depositTicket.getWheatQty());
 
 		return deposit;
 	}
@@ -249,9 +240,6 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 				valueForSave = oldValue + newValue;
 				break;
 			case REMOVE_DEPOSIT_TICKET:
-				valueForSave = oldValue - newValue;
-				break;
-			case WITHDRAW_WITH_DEPOSIT_TICKET:
 				valueForSave = oldValue - newValue;
 				break;
 			default:

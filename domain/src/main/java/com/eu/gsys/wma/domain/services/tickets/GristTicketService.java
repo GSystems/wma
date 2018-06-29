@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface GristTicketService {
 
-	List<GristTicket> listAll();
+	List<GristTicket> findAll();
 
 	GristTicket findById(Long id);
 

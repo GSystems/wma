@@ -5,5 +5,6 @@ import com.eu.gsys.wma.domain.model.deposits.GenericDeposit;
 
 public interface DepositService {
 
+	void save(GenericDeposit deposit);
 	GenericDeposit findByClient(GenericClient client);
 }

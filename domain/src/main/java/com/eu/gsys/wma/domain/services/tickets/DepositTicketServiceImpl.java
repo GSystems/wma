@@ -9,7 +9,6 @@ import com.eu.gsys.wma.domain.services.TransactionService;
 import com.eu.gsys.wma.domain.transformers.ClientTransformer;
 import com.eu.gsys.wma.domain.transformers.DepositTransformer;
 import com.eu.gsys.wma.domain.transformers.TicketTransformer;
-import com.eu.gsys.wma.domain.util.ErrorMessages;
 import com.eu.gsys.wma.domain.util.OperationTypeEnum;
 import com.eu.gsys.wma.domain.util.WmaException;
 import com.eu.gsys.wma.infrastructure.entities.clients.CompanyClientEntity;
@@ -27,6 +26,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.eu.gsys.wma.domain.util.ErrorMessages.INCONSISTENT_OPERATION;
 
 @Service
 public class DepositTicketServiceImpl implements DepositTicketService {
@@ -94,8 +95,12 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 	public void addNew(DepositTicket depositTicket) throws WmaException {
 		depositTicket.setOperationType(OperationTypeEnum.ADD_DEPOSIT_TICKET);
 
-		calculateAndUpdateClientDeposit(depositTicket);
-		calculateAndUpdateTransactionLedger(depositTicket);
+		if (depositTicket.getWheatQty() > 0d) {
+			calculateAndUpdateClientDeposit(depositTicket);
+			calculateAndUpdateTransactionLedger(depositTicket);
+		} else {
+			throw new WmaException(INCONSISTENT_OPERATION);
+		}
 
 		save(depositTicket);
 	}
@@ -115,7 +120,7 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 			depositTicket.setId(null);
 			depositTicketRepository.save((DepositTicketEntity) ticketTransformer.fromModel(depositTicket));
 		} else {
-			throw new WmaException(ErrorMessages.INCONSISTENT_OPERATION);
+			throw new WmaException(INCONSISTENT_OPERATION);
 		}
 	}
 
@@ -154,11 +159,11 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 
 	private void mapFieldsForAddOrRemoveOperation(GenericDeposit depositForSave, DepositTicket depositTicket) throws WmaException {
 		Double newWheatQtyForSave = calculateNewWheatValueByOperationType(
-				depositTicket.getOperationType(), depositForSave.getCurrentWheatQty(), depositTicket.getWheatQty());
+				depositTicket.getOperationType(), depositForSave.getWheatQty(), depositTicket.getWheatQty());
 
 		depositForSave.setId(null);
 		depositForSave.setTicketNumber(depositTicket.getTicketNumber());
-		depositForSave.setCurrentWheatQty(newWheatQtyForSave);
+		depositForSave.setWheatQty(newWheatQtyForSave);
 		depositForSave.setOperationType(depositTicket.getOperationType());
 	}
 
@@ -202,7 +207,7 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 		deposit.setOperationType(depositTicket.getOperationType());
 		deposit.setTicketNumber(depositTicket.getTicketNumber());
 		deposit.setDate(depositTicket.getDate());
-		deposit.setCurrentWheatQty(depositTicket.getWheatQty());
+		deposit.setWheatQty(depositTicket.getWheatQty());
 
 		return deposit;
 	}
@@ -243,11 +248,11 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 				valueForSave = oldValue - newValue;
 				break;
 			default:
-				throw new WmaException(ErrorMessages.INCONSISTENT_OPERATION);
+				throw new WmaException(INCONSISTENT_OPERATION);
 		}
 
 		if (valueForSave.compareTo(0d) < 0) {
-			throw new WmaException(ErrorMessages.INCONSISTENT_OPERATION);
+			throw new WmaException(INCONSISTENT_OPERATION);
 		}
 
 		return valueForSave;

@@ -3,6 +3,7 @@ package com.eu.gsys.wma.domain.services;
 import com.eu.gsys.wma.domain.model.clients.GenericClient;
 import com.eu.gsys.wma.domain.model.clients.IndividualClient;
 import com.eu.gsys.wma.domain.model.deposits.GenericDeposit;
+import com.eu.gsys.wma.domain.model.deposits.IndividualClientDeposit;
 import com.eu.gsys.wma.domain.transformers.ClientTransformer;
 import com.eu.gsys.wma.domain.transformers.DepositTransformer;
 import com.eu.gsys.wma.infrastructure.entities.clients.CompanyClientEntity;
@@ -32,6 +33,15 @@ public class DepositServiceImpl implements DepositService {
 		this.individualDepositRepository = individualDepositRepository;
 	}
 
+
+	@Override
+	public void save(GenericDeposit deposit) {
+		if (deposit instanceof IndividualClientDeposit) {
+			individualDepositRepository.save((IndividualClientDepositEntity) depositTransformer.fromModel(deposit));
+		} else {
+			companyDepositRepository.save((CompanyClientDepositEntity) depositTransformer.fromModel(deposit));
+		}
+	}
 
 	@Override
 	public GenericDeposit findByClient(GenericClient client) {

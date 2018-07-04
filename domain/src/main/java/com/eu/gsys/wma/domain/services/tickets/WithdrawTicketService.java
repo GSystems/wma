@@ -13,7 +13,7 @@ public interface WithdrawTicketService {
 
 	void save(WithdrawTicket withdrawTicket);
 
-	void totalWithdraw(WithdrawTicket withdrawTicket) throws WmaException;
+	void grindAndWithdrawFromDeposit(WithdrawTicket withdrawTicket) throws WmaException;
 
 	void deleteById(Long id);
 

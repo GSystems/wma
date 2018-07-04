@@ -10,9 +10,9 @@ import java.time.LocalDate;
 public class GenericDeposit implements Cloneable {
 
 	private Long id;
-	private Double currentWheatQty = 0d;
-	private Double flourQtyTaken = 0d;
-	private Double branQtyTaken = 0d;
+	private Double wheatQty = 0d;
+	private Double flourQty = 0d;
+	private Double branQty = 0d;
 	private OperationTypeEnum operationType;
 	private Long ticketNumber;
 	private LocalDate date;

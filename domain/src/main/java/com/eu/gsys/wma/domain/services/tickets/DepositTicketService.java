@@ -9,7 +9,7 @@ public interface DepositTicketService {
 
 	DepositTicket findById(Long id);
 
-	void save(DepositTicket gristTicket);
+	void save(DepositTicket depositTicket);
 
 	void deleteById(Long id);
 

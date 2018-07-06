@@ -19,7 +19,8 @@ import javax.validation.constraints.NotNull;
 public class DepositTicketEntity extends GenericTicketForEntities {
 
 	public static final String GET_TICKET_BY_TICKET_NUMBER = "DepositTicketEntity.getTicketByTicketNumber";
-	protected static final String GET_TICKET_BY_TICKET_NUMBER_QRY = "SELECT d FROM DepositTicketEntity d WHERE d.ticketNumber = ?1";
+	protected static final String GET_TICKET_BY_TICKET_NUMBER_QRY =
+			"SELECT d FROM DepositTicketEntity d WHERE (d.ticketNumber = ?1 AND d.id = (SELECT MAX(dte.id) FROM DepositTicketEntity dte))";
 
 	@NotNull
 	private Double wheatQty;

@@ -42,20 +42,8 @@ public class TransactionEntity implements Serializable {
 	private Double wheatQtyOfClients;
 
 	@NotNull
-	private Double totalFlourQty;
-
-	@NotNull
 	private Double flourQtyOfCompany;
 
 	@NotNull
-	private Double flourQtyOfClients;
-
-	@NotNull
-	private Double totalBranQty;
-
-	@NotNull
 	private Double branQtyOfCompany;
-
-	@NotNull
-	private Double branQtyOfClients;
 }

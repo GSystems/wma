@@ -16,7 +16,7 @@ import java.io.Serializable;
 public class CompanyClientDepositEntity extends GenericDepositForEntities implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public static final String GET_DEPOSIT_BY_CLIENT = "CompanyClientDepositEntity.getDepositByClient";
+	public static final String GET_DEPOSIT_BY_CLIENT = "CompanyClientDepositEntity.findDepositByClient";
 	protected static final String GET_DEPOSIT_BY_CLIENT_QRY =
 			"SELECT cc FROM CompanyClientDepositEntity cc WHERE (cc.clientEntity = ?1 AND cc.id = (SELECT MAX(cce.id) FROM CompanyClientDepositEntity cce))";
 

@@ -9,6 +9,7 @@ import com.eu.gsys.wma.domain.transformers.DepositTransformer;
 import com.eu.gsys.wma.infrastructure.entities.clients.CompanyClientEntity;
 import com.eu.gsys.wma.infrastructure.entities.clients.IndividualClientEntity;
 import com.eu.gsys.wma.infrastructure.entities.deposits.CompanyClientDepositEntity;
+import com.eu.gsys.wma.infrastructure.entities.deposits.GenericDepositForEntities;
 import com.eu.gsys.wma.infrastructure.entities.deposits.IndividualClientDepositEntity;
 import com.eu.gsys.wma.infrastructure.repositories.deposits.CompanyDepositRepository;
 import com.eu.gsys.wma.infrastructure.repositories.deposits.IndividualDepositRepository;
@@ -33,9 +34,11 @@ public class DepositServiceImpl implements DepositService {
 		this.individualDepositRepository = individualDepositRepository;
 	}
 
-
 	@Override
 	public void save(GenericDeposit deposit) {
+
+		// TODO refactor this code
+
 		if (deposit instanceof IndividualClientDeposit) {
 			individualDepositRepository.save((IndividualClientDepositEntity) depositTransformer.fromModel(deposit));
 		} else {
@@ -50,7 +53,7 @@ public class DepositServiceImpl implements DepositService {
 
 		if (client instanceof IndividualClient) {
 			IndividualClientDepositEntity depositEntity =
-					individualDepositRepository.getDepositByClient((IndividualClientEntity) clientTransformer.fromModel(client));
+					individualDepositRepository.findDepositByClient((IndividualClientEntity) clientTransformer.fromModel(client));
 
 			return depositTransformer.toModel(depositEntity);
 
@@ -60,5 +63,15 @@ public class DepositServiceImpl implements DepositService {
 
 			return depositTransformer.toModel(depositEntity);
 		}
+	}
+
+	@Override
+	public GenericDeposit findByTicketNumber(Long ticketNumber) {
+
+		// TODO see company scenario
+
+		GenericDepositForEntities depositEntity = individualDepositRepository.findDepositByTicketNumber(ticketNumber);
+
+		return depositTransformer.toModel(depositEntity);
 	}
 }

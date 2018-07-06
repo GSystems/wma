@@ -23,10 +23,11 @@ public class DepositTransformer implements BaseTransformer<GenericDepositForEnti
 		this.clientTransformer = genericDepositForEntities;
 	}
 
-	// TODO refactor this code
-
 	@Override
 	public GenericDepositForEntities fromModel(GenericDeposit genericDeposit) {
+
+		// TODO refactor this code
+
 		if (genericDeposit instanceof IndividualClientDeposit) {
 			IndividualClientDeposit deposit = (IndividualClientDeposit) genericDeposit;
 			IndividualClientDepositEntity depositEntity = new IndividualClientDepositEntity();
@@ -69,6 +70,8 @@ public class DepositTransformer implements BaseTransformer<GenericDepositForEnti
 	public GenericDeposit toModel(GenericDepositForEntities depositEntity) {
 		GenericDeposit deposit;
 		GenericClientEntity genericClientEntity;
+
+		// TODO refactor this code
 
 		if (depositEntity instanceof IndividualClientDepositEntity) {
 			deposit = new IndividualClientDeposit();

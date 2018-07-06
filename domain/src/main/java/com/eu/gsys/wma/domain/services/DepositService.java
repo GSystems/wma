@@ -7,4 +7,6 @@ public interface DepositService {
 
 	void save(GenericDeposit deposit);
 	GenericDeposit findByClient(GenericClient client);
+
+	GenericDeposit findByTicketNumber(Long ticketNumber);
 }

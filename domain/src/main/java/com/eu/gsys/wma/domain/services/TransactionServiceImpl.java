@@ -61,29 +61,10 @@ public class TransactionServiceImpl implements TransactionService {
 		TransactionEntity transactionEntity = transactionRepository.getMostRecentTransaction();
 
 		if (transactionEntity == null) {
-			transaction = initValuesForNewTransaction();
+			transaction = new Transaction();
 		} else {
 			transaction = transactionTransformer.toModel(transactionEntity);
 		}
-
-		return transaction;
-	}
-
-	private Transaction initValuesForNewTransaction() {
-		Transaction transaction = new Transaction();
-
-		transaction.setBranQtyOfClients(0d);
-		transaction.setBranQtyOfCompany(0d);
-
-		transaction.setFlourQtyOfClients(0d);
-		transaction.setFlourQtyOfCompany(0d);
-
-		transaction.setTotalBranQty(0d);
-		transaction.setTotalFlourQty(0d);
-		transaction.setTotalWheatQty(0d);
-
-		transaction.setWheatQtyOfClients(0d);
-		transaction.setWheatQtyOfCompany(0d);
 
 		return transaction;
 	}

@@ -23,11 +23,15 @@ public class GristTicketLoader implements ApplicationListener<ContextRefreshedEv
 		this.clientService = clientService;
 	}
 
+	public int getOrder() {
+		return 3;
+	}
+
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 		GristTicket gristTicket0 = new GristTicket();
 
-		GenericClient genericClient0 = (GenericClient) clientService.findById(1L);
+		GenericClient genericClient0 = clientService.findById(1L);
 		gristTicket0.setClient(genericClient0);
 		gristTicket0.setWheatQtyBrought(100.0);
 		gristTicket0.setTicketNumber(10L);
@@ -38,7 +42,7 @@ public class GristTicketLoader implements ApplicationListener<ContextRefreshedEv
 
 		GristTicket gristTicket1 = new GristTicket();
 
-		GenericClient genericClient1 = (GenericClient) clientService.findById(2L);
+		GenericClient genericClient1 = clientService.findById(2L);
 		gristTicket1.setClient(genericClient1);
 		gristTicket1.setWheatQtyBrought(1000.0);
 		gristTicket1.setTicketNumber(11L);

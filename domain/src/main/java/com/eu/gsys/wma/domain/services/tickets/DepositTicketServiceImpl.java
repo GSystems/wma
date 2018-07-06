@@ -140,7 +140,7 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 			GenericClientEntity clientEntity) throws WmaException {
 
 		GenericDepositForEntities oldIndividualClientDepositEntity = individualDepositRepository
-				.getDepositByClient((IndividualClientEntity) clientEntity);
+				.findDepositByClient((IndividualClientEntity) clientEntity);
 
 		GenericDeposit depositForSave;
 
@@ -226,8 +226,8 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 		Double newTotalWheatQtyOfClients = calculateNewWheatValueByOperationType(
 				depositTicket.getOperationType(), oldTotalWheatQtyOfClients, wheatQtyForSave);
 
-		Transaction newTransactionForSave = (Transaction) lastTransaction.clone();
-		newTransactionForSave.setId(null);
+		Transaction newTransactionForSave = new Transaction();
+
 		newTransactionForSave.setTotalWheatQty(newTotalWheatQtyForSave);
 		newTransactionForSave.setWheatQtyOfClients(newTotalWheatQtyOfClients);
 		newTransactionForSave.setTicketNumber(depositTicket.getTicketNumber());

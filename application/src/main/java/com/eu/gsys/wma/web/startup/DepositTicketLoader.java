@@ -16,7 +16,6 @@ import java.time.LocalDate;
 public class DepositTicketLoader implements ApplicationListener<ContextRefreshedEvent> {
 
 	private final DepositTicketService depositTicketService;
-
 	private final ClientService clientService;
 
 	@Autowired
@@ -25,6 +24,10 @@ public class DepositTicketLoader implements ApplicationListener<ContextRefreshed
 
 		this.depositTicketService = depositTicketService;
 		this.clientService = clientService;
+	}
+
+	public int getOrder() {
+		return 2;
 	}
 
 	@Override
@@ -36,7 +39,7 @@ public class DepositTicketLoader implements ApplicationListener<ContextRefreshed
 	private void addDepositTickets() {
 		DepositTicket depositTicket0 = new DepositTicket();
 
-		GenericClient genericClient0 = (GenericClient) clientService.findById(1L);
+		GenericClient genericClient0 = clientService.findById(1L);
 		depositTicket0.setClient(genericClient0);
 		depositTicket0.setTicketNumber(1L);
 		depositTicket0.setWheatQty(2000.0);
@@ -44,7 +47,7 @@ public class DepositTicketLoader implements ApplicationListener<ContextRefreshed
 
 		DepositTicket depositTicket1 = new DepositTicket();
 
-		GenericClient genericClient1 = (GenericClient) clientService.findById(2L);
+		GenericClient genericClient1 = clientService.findById(2L);
 		depositTicket1.setClient(genericClient1);
 		depositTicket1.setTicketNumber(10L);
 		depositTicket1.setWheatQty(1000.0);
@@ -52,7 +55,7 @@ public class DepositTicketLoader implements ApplicationListener<ContextRefreshed
 
 		DepositTicket depositTicket2 = new DepositTicket();
 
-		GenericClient genericClient2 = (GenericClient) clientService.findById(2L);
+		GenericClient genericClient2 = clientService.findById(2L);
 		depositTicket2.setClient(genericClient2);
 		depositTicket2.setTicketNumber(12L);
 		depositTicket2.setWheatQty(555.0);
@@ -60,7 +63,7 @@ public class DepositTicketLoader implements ApplicationListener<ContextRefreshed
 
 		DepositTicket depositTicket3 = new DepositTicket();
 
-		GenericClient genericClient3 = (GenericClient) clientService.findById(1L);
+		GenericClient genericClient3 = clientService.findById(1L);
 		depositTicket3.setClient(genericClient3);
 		depositTicket3.setTicketNumber(9L);
 		depositTicket3.setWheatQty(1200.0);

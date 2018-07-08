@@ -15,7 +15,7 @@ public class GenericTicketForEntities implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 
 	@NotNull
@@ -28,6 +28,10 @@ public class GenericTicketForEntities implements Serializable {
 	private int operationType;
 
 	private String comment;
+
+	/* TODO do the correct mappings for the clients
+		* maybe a one-to-many
+	 */
 
 	@ManyToOne
 	@JoinColumn(name = "individual_client_id")

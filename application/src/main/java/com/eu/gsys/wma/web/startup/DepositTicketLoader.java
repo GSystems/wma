@@ -80,7 +80,7 @@ public class DepositTicketLoader implements ApplicationListener<ContextRefreshed
 	}
 
 	private void removeDepositTicket() {
-		DepositTicket depositTicket = depositTicketService.findByTicketNumber(1L);
+		DepositTicket depositTicket = depositTicketService.findByTicketNumber(9L);
 		depositTicket.setComment("Wrong qty");
 
 		try {

@@ -87,10 +87,13 @@ public class TicketTransformer implements BaseTransformer<GenericTicketForEntiti
 		WithdrawTicketEntity ticketEntity = new WithdrawTicketEntity();
 
 		mapCommonFieldsForEntity(ticket, ticketEntity);
-		ticketEntity.setBranQty(withdrawTicket.getBranQty());
-		ticketEntity.setFlourQty(withdrawTicket.getFlourQty());
+		ticketEntity.setBranQtyWithdrawn(withdrawTicket.getBranQtyWithdrawn());
+		ticketEntity.setFlourQtyWithdrawn(withdrawTicket.getFlourQtyWithdrawn());
 		ticketEntity.setReferenceTicketNumber(withdrawTicket.getReferenceTicketNumber());
-		ticketEntity.setWheatQty(withdrawTicket.getWheatQty());
+		ticketEntity.setWheatQtyWithdrawn(withdrawTicket.getWheatQtyWithdrawn());
+		ticketEntity.setManufacturingLossesQty(withdrawTicket.getManufacturingLossesQty());
+		ticketEntity.setOtherCorpusQty(withdrawTicket.getOtherCorpusQty());
+		ticketEntity.setTollWheatQty(withdrawTicket.getTollWheatQty());
 
 		return ticketEntity;
 	}
@@ -151,10 +154,13 @@ public class TicketTransformer implements BaseTransformer<GenericTicketForEntiti
 
 		mapCommonFieldsForModel(ticket, withdrawTicketEntity);
 
-		ticket.setBranQty(withdrawTicketEntity.getBranQty());
-		ticket.setFlourQty(withdrawTicketEntity.getFlourQty());
+		ticket.setBranQtyWithdrawn(withdrawTicketEntity.getBranQtyWithdrawn());
+		ticket.setFlourQtyWithdrawn(withdrawTicketEntity.getFlourQtyWithdrawn());
 		ticket.setReferenceTicketNumber(withdrawTicketEntity.getReferenceTicketNumber());
-		ticket.setWheatQty(withdrawTicketEntity.getWheatQty());
+		ticket.setWheatQtyWithdrawn(withdrawTicketEntity.getWheatQtyWithdrawn());
+		ticket.setManufacturingLossesQty(withdrawTicketEntity.getManufacturingLossesQty());
+		ticket.setOtherCorpusQty(withdrawTicketEntity.getOtherCorpusQty());
+		ticket.setTollWheatQty(withdrawTicketEntity.getTollWheatQty());
 
 		return ticket;
 	}

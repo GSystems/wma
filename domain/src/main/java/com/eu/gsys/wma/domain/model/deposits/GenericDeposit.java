@@ -11,8 +11,6 @@ public class GenericDeposit implements Cloneable {
 
 	private Long id;
 	private Double wheatQty = 0d;
-	private Double flourQty = 0d;
-	private Double branQty = 0d;
 	private OperationTypeEnum operationType;
 	private Long ticketNumber;
 	private LocalDate date;

@@ -140,7 +140,7 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 			GenericClientEntity clientEntity) throws WmaException {
 
 		GenericDepositForEntities oldIndividualClientDepositEntity = individualDepositRepository
-				.findDepositByClient((IndividualClientEntity) clientEntity);
+				.findDepositByClientEntity((IndividualClientEntity) clientEntity);
 
 		GenericDeposit depositForSave;
 

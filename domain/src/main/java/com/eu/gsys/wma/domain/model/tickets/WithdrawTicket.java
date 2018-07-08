@@ -9,9 +9,12 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = false)
 public class WithdrawTicket extends GenericTicket {
 
-	private Double branQty = 0d;
-	private Double flourQty = 0d;
-	private Double wheatQty = 0d;
+	private Double branQtyWithdrawn;
+	private Double flourQtyWithdrawn;
+	private Double wheatQtyWithdrawn;
+	private double manufacturingLossesQty;
+	private double otherCorpusQty;
+	private double tollWheatQty;    // uium
 
 	@NotNull
 	private Long referenceTicketNumber;

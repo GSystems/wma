@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface IndividualDepositRepository extends CrudRepository<IndividualClientDepositEntity, Long> {
 
-	IndividualClientDepositEntity findDepositByClient(IndividualClientEntity clientEntity);
+	IndividualClientDepositEntity findDepositByClientEntity(IndividualClientEntity clientEntity);
 
 	IndividualClientDepositEntity findDepositByTicketNumber(Long ticketId);
 }

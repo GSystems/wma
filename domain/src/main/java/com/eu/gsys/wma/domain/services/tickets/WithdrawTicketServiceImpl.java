@@ -1,13 +1,12 @@
 package com.eu.gsys.wma.domain.services.tickets;
 
 import com.eu.gsys.wma.domain.model.Transaction;
-import com.eu.gsys.wma.domain.model.deposits.GenericDeposit;
 import com.eu.gsys.wma.domain.model.deposits.IndividualClientDeposit;
 import com.eu.gsys.wma.domain.model.mill.Mill;
 import com.eu.gsys.wma.domain.model.mill.MillOutput;
 import com.eu.gsys.wma.domain.model.tickets.DepositTicket;
 import com.eu.gsys.wma.domain.model.tickets.WithdrawTicket;
-import com.eu.gsys.wma.domain.services.DepositService;
+import com.eu.gsys.wma.domain.services.ClientDepositService;
 import com.eu.gsys.wma.domain.services.TransactionService;
 import com.eu.gsys.wma.domain.transformers.ClientTransformer;
 import com.eu.gsys.wma.domain.transformers.TicketTransformer;
@@ -23,13 +22,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.eu.gsys.wma.domain.util.ErrorMessages.INCONSISTENT_OPERATION;
+import static com.eu.gsys.wma.domain.util.OperationTypeEnum.WITHDRAW_WITH_DEPOSIT_TICKET;
 
 @Service
 public class WithdrawTicketServiceImpl implements WithdrawTicketService {
 
 	private final ClientTransformer clientTransformer;
 	private final DepositTicketService depositTicketService;
-	private final DepositService depositService;
+	private final ClientDepositService clientDepositService;
 	private final Mill mill;
 	private final TicketTransformer ticketTransformer;
 	private final TransactionService transactionService;
@@ -37,13 +37,13 @@ public class WithdrawTicketServiceImpl implements WithdrawTicketService {
 
 	@Autowired
 	public WithdrawTicketServiceImpl(ClientTransformer clientTransformer,
-			DepositTicketService depositTicketService, DepositService depositService, Mill mill,
+			DepositTicketService depositTicketService, ClientDepositService clientDepositService, Mill mill,
 			TicketTransformer ticketTransformer, TransactionService transactionService,
 			WithdrawTicketRepository withdrawTicketRepository) {
 
 		this.clientTransformer = clientTransformer;
 		this.depositTicketService = depositTicketService;
-		this.depositService = depositService;
+		this.clientDepositService = clientDepositService;
 		this.mill = mill;
 		this.ticketTransformer = ticketTransformer;
 		this.transactionService = transactionService;
@@ -81,31 +81,47 @@ public class WithdrawTicketServiceImpl implements WithdrawTicketService {
 		DepositTicket depositTicket =
 				depositTicketService.findByTicketNumber(withdrawTicket.getReferenceTicketNumber());
 
-		if (isDirectClient) {
-			withdrawOperationForDirectClient(withdrawTicket, depositTicket);
+		if (!depositTicket.getConsumedFlag()) {
+//			if (isDirectClient) {
+				withdrawOperationForDirectClient(withdrawTicket);
+//			} else {
+//				 TODO see this case
+//			}
 		} else {
-			// TODO see this case
+			throw new WmaException(INCONSISTENT_OPERATION);
 		}
 	}
 
-	private void withdrawOperationForDirectClient(WithdrawTicket withdrawTicket, DepositTicket depositTicket) throws WmaException {
+	private void withdrawOperationForDirectClient(WithdrawTicket withdrawTicket) throws WmaException {
 		// TODO refactor this logic
 
-		GenericDeposit lastDeposit = depositService.findByTicketNumber(withdrawTicket.getReferenceTicketNumber());
-		double remainingWheatQty = lastDeposit.getWheatQty() - withdrawTicket.getWheatQty();
+		DepositTicket lastDepositTicket = depositTicketService.findByTicketNumber(withdrawTicket.getReferenceTicketNumber());
+		double remainingWheatQty = lastDepositTicket.getWheatQty() - withdrawTicket.getWheatQtyWithdrawn();
 
-		if (!depositTicket.getConsumedFlag() && remainingWheatQty >= 0d) {
-			MillOutput millOutput = mill.grindWheat(withdrawTicket.getWheatQty());
+		if (remainingWheatQty >= 0d) {
+			withdrawTicket.setOperationType(WITHDRAW_WITH_DEPOSIT_TICKET);
+			MillOutput millOutput = mill.grindWheat(withdrawTicket.getWheatQtyWithdrawn());
 
-			withdrawTicket.setClient(lastDeposit.getClient());
+			mapFieldsForTicket(withdrawTicket, lastDepositTicket, millOutput);
 
-			calculateAndUpdateClientDeposit(withdrawTicket, millOutput, remainingWheatQty);
-			calculateAndUpdateTransactionLedger(withdrawTicket, millOutput);
+			calculateAndUpdateClientDeposit(withdrawTicket, remainingWheatQty);
+			calculateAndUpdateTransactionLedger(withdrawTicket);
 
 			withdrawTicketRepository.save((WithdrawTicketEntity) ticketTransformer.fromModel(withdrawTicket));
 		} else {
 			throw new WmaException(INCONSISTENT_OPERATION);
 		}
+	}
+
+	private void mapFieldsForTicket(WithdrawTicket withdrawTicket,
+			DepositTicket lastDepositTicekt, MillOutput millOutput) {
+
+		withdrawTicket.setClient(lastDepositTicekt.getClient());
+		withdrawTicket.setBranQtyWithdrawn(millOutput.getBranQty());
+		withdrawTicket.setFlourQtyWithdrawn(millOutput.getFlourQty());
+		withdrawTicket.setManufacturingLossesQty(millOutput.getManufacturingLossesQty());
+		withdrawTicket.setOtherCorpusQty(millOutput.getOtherCorpusQty());
+		withdrawTicket.setTollWheatQty(millOutput.getTollWheatQty());
 	}
 
 	@Override
@@ -118,44 +134,38 @@ public class WithdrawTicketServiceImpl implements WithdrawTicketService {
 
 	}
 
-	private void calculateAndUpdateClientDeposit(WithdrawTicket withdrawTicket,
-			MillOutput millOutput, double remainingWheatQty) {
-
+	private void calculateAndUpdateClientDeposit(WithdrawTicket withdrawTicket, double remainingWheatQty) {
 		GenericClientEntity clientEntity = clientTransformer.fromModel(withdrawTicket.getClient());
 
 		// TODO refactor this code
 
 		if (clientEntity instanceof IndividualClientEntity) {
-			updateDepositForIndividualClient(withdrawTicket, millOutput, remainingWheatQty);
-		} else {
-			// TODO see this case
+			updateDepositForIndividualClient(withdrawTicket, remainingWheatQty);
 		}
+		// TODO see the else case
 	}
 
-	private void updateDepositForIndividualClient(WithdrawTicket withdrawTicket,
-			MillOutput millOutput, double remainingWheatQty) {
-
+	private void updateDepositForIndividualClient(WithdrawTicket withdrawTicket, double remainingWheatQty) {
 		IndividualClientDeposit depositForSave = new IndividualClientDeposit();
 
-		depositForSave.setBranQty(millOutput.getBranQty());
 		depositForSave.setClient(withdrawTicket.getClient());
 		depositForSave.setDate(withdrawTicket.getDate());
-		depositForSave.setFlourQty(millOutput.getFlourQty());
 		depositForSave.setOperationType(withdrawTicket.getOperationType());
 		depositForSave.setReferenceTicketNumber(withdrawTicket.getReferenceTicketNumber());
 		depositForSave.setTicketNumber(withdrawTicket.getTicketNumber());
 		depositForSave.setWheatQty(remainingWheatQty);
+		depositForSave.setOperationType(WITHDRAW_WITH_DEPOSIT_TICKET);
 
-		depositService.save(depositForSave);
+		clientDepositService.save(depositForSave);
 	}
 
-	private void calculateAndUpdateTransactionLedger(WithdrawTicket withdrawTicket, MillOutput millOutput) {
-
+	private void calculateAndUpdateTransactionLedger(WithdrawTicket withdrawTicket) {
 		Transaction lastTransaction = transactionService.getMostRecentTransaction();
 
-		Double totalWheatForSave = lastTransaction.getTotalWheatQty() - withdrawTicket.getWheatQty();
-		Double wheatQtyOfClients = lastTransaction.getWheatQtyOfClients() - withdrawTicket.getWheatQty();
-		Double wheatQtyOfCompany = lastTransaction.getWheatQtyOfCompany() + millOutput.getTollWheatQty();
+		Double totalWheatForSave = lastTransaction.getTotalWheatQty() - withdrawTicket.getWheatQtyWithdrawn();
+		Double wheatQtyOfClients =
+				lastTransaction.getWheatQtyOfClients() - withdrawTicket.getWheatQtyWithdrawn() - withdrawTicket.getTollWheatQty();
+		Double wheatQtyOfCompany = lastTransaction.getWheatQtyOfCompany() + withdrawTicket.getTollWheatQty();
 
 		Transaction transactionForSave = new Transaction();
 
@@ -165,6 +175,7 @@ public class WithdrawTicketServiceImpl implements WithdrawTicketService {
 		transactionForSave.setTotalWheatQty(totalWheatForSave);
 		transactionForSave.setWheatQtyOfClients(wheatQtyOfClients);
 		transactionForSave.setWheatQtyOfCompany(wheatQtyOfCompany);
+		transactionForSave.setOperationType(WITHDRAW_WITH_DEPOSIT_TICKET);
 
 		transactionService.save(transactionForSave);
 	}

@@ -21,7 +21,7 @@ public class IndividualClientDepositEntity extends GenericDepositForEntities imp
 	private static final long serialVersionUID = 1L;
 
 	public static final String GET_DEPOSIT_BY_CLIENT =
-			"IndividualClientDepositEntity.findDepositByClient";
+			"IndividualClientDepositEntity.findDepositByClientEntity";
 	protected static final String GET_DEPOSIT_BY_CLIENT_QRY =
 			"SELECT ic FROM IndividualClientDepositEntity ic WHERE (ic.clientEntity = ?1 AND ic.id = (SELECT MAX(ice.id) FROM IndividualClientDepositEntity ice))";
 

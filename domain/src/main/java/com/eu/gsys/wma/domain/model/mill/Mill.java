@@ -8,11 +8,11 @@ import static com.eu.gsys.wma.domain.util.PercentageForGrind.*;
 public class Mill {
 
 	public MillOutput grindWheat(Double wheatQty) {
-		double branQty = wheatQty * BRAN_PERC;
-		double flourQty = wheatQty * FLOUR_PERC;
-		double manufacturingLossesQty = wheatQty * MANUFACTURING_LOSSES_PERC;
-		double otherCorpusQty = wheatQty * OTHER_CORPUS_PERC;
-		double tollWheatQty = wheatQty * TOLL_WHEAT_PERC;
+		double branQty = Math.round(wheatQty * BRAN_PERC);
+		double flourQty = Math.round(wheatQty * FLOUR_PERC);
+		double manufacturingLossesQty = Math.round(wheatQty * MANUFACTURING_LOSSES_PERC);
+		double otherCorpusQty = Math.round(wheatQty * OTHER_CORPUS_PERC);
+		double tollWheatQty = Math.round(wheatQty * TOLL_WHEAT_PERC);
 
 		MillOutput millOutput = new MillOutput();
 		millOutput.setBranQty(branQty);

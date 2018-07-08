@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DepositServiceImpl implements DepositService {
+public class ClientDepositServiceImpl implements ClientDepositService {
 
 	private final ClientTransformer clientTransformer;
 	private final CompanyDepositRepository companyDepositRepository;
@@ -25,7 +25,7 @@ public class DepositServiceImpl implements DepositService {
 	private final IndividualDepositRepository individualDepositRepository;
 
 	@Autowired
-	public DepositServiceImpl(ClientTransformer clientTransformer,
+	public ClientDepositServiceImpl(ClientTransformer clientTransformer,
 			CompanyDepositRepository companyDepositRepository, DepositTransformer depositTransformer,
 			IndividualDepositRepository individualDepositRepository) {
 		this.clientTransformer = clientTransformer;
@@ -53,7 +53,7 @@ public class DepositServiceImpl implements DepositService {
 
 		if (client instanceof IndividualClient) {
 			IndividualClientDepositEntity depositEntity =
-					individualDepositRepository.findDepositByClient((IndividualClientEntity) clientTransformer.fromModel(client));
+					individualDepositRepository.findDepositByClientEntity((IndividualClientEntity) clientTransformer.fromModel(client));
 
 			return depositTransformer.toModel(depositEntity);
 

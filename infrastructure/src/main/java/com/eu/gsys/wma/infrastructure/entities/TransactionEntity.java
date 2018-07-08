@@ -20,7 +20,7 @@ public class TransactionEntity implements Serializable {
 			"SELECT t FROM TransactionEntity t WHERE t.id = (SELECT MAX(te.id) FROM TransactionEntity te)";
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 
 	@NotNull

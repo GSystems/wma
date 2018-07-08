@@ -29,7 +29,7 @@ public class WithdrawTicketLoader implements ApplicationListener<ContextRefreshe
 		WithdrawTicket ticket = new WithdrawTicket();
 
 		ticket.setReferenceTicketNumber(1L);
-		ticket.setWheatQty(133d);
+		ticket.setWheatQtyWithdrawn(133d);
 		ticket.setDate(LocalDate.now());
 		ticket.setTicketNumber(27L);
 

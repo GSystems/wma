@@ -57,8 +57,6 @@ public class DepositTransformer implements BaseTransformer<GenericDepositForEnti
 	}
 
 	private void mapCommonFieldsForEntity(GenericDeposit deposit, GenericDepositForEntities depositEntity) {
-		depositEntity.setBranQty(deposit.getBranQty());
-		depositEntity.setFlourQty(deposit.getFlourQty());
 		depositEntity.setId(deposit.getId());
 		depositEntity.setOperationType(deposit.getOperationType().getCode());
 		depositEntity.setTicketNumber(deposit.getTicketNumber());
@@ -82,8 +80,6 @@ public class DepositTransformer implements BaseTransformer<GenericDepositForEnti
 			genericClientEntity = ((CompanyClientDepositEntity) depositEntity).getClientEntity();
 		}
 
-		deposit.setBranQty(depositEntity.getBranQty());
-		deposit.setFlourQty(depositEntity.getFlourQty());
 		deposit.setClient(clientTransformer.toModel(genericClientEntity));
 		deposit.setId(depositEntity.getId());
 		deposit

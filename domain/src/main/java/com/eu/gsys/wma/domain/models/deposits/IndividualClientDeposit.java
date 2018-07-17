@@ -1,4 +1,4 @@
-package com.eu.gsys.wma.domain.model.deposits;
+package com.eu.gsys.wma.domain.models.deposits;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

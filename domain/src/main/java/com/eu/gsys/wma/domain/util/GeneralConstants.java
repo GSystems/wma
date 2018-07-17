@@ -2,9 +2,11 @@ package com.eu.gsys.wma.domain.util;
 
 public class GeneralConstants {
 
-	public static final String NEW_DEPOSIT_TICKET = "Deposit Ticket Added";
-	public static final String NEW_GRIST_TICKET = "Grist Ticket Added";
-	public static final String WITHDRAW_WITH_DEPOSIT_TICKET = "Withdraw with Deposit Ticket";
-	public static final String DELETE_DEPOSIT_TICKET = "Deposit Ticket Removed";
-	public static final String DELETE_GRIST_TICKET = "Grist Ticket Removed";
+	static final String ADD_DEPOSIT_TICKET_OPERATION = "Deposit Ticket Added";
+	static final String ADD_GRIST_TICKET_OPERATION = "Grist Ticket Added";
+	static final String ADD_WITHDRAW_TICKET_OPERATION = "Withdraw with Deposit Ticket";
+	static final String REMOVE_DEPOSIT_TICKET_OPERATION = "Deposit Ticket Removed";
+	static final String REMOVE_GRIST_TICKET_OPERATION = "Grist Ticket Removed";
+	static final String REMOVE_WITHDRAW_TICKET_OPERATION = "Withdraw Ticket Removed";
+	public static final String EMPTY_STRING = "";
 }

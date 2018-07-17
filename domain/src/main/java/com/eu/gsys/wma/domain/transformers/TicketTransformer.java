@@ -1,9 +1,9 @@
 package com.eu.gsys.wma.domain.transformers;
 
-import com.eu.gsys.wma.domain.model.tickets.DepositTicket;
-import com.eu.gsys.wma.domain.model.tickets.GenericTicket;
-import com.eu.gsys.wma.domain.model.tickets.GristTicket;
-import com.eu.gsys.wma.domain.model.tickets.WithdrawTicket;
+import com.eu.gsys.wma.domain.models.tickets.DepositTicket;
+import com.eu.gsys.wma.domain.models.tickets.GenericTicket;
+import com.eu.gsys.wma.domain.models.tickets.GristTicket;
+import com.eu.gsys.wma.domain.models.tickets.WithdrawTicket;
 import com.eu.gsys.wma.domain.util.OperationTypeEnum;
 import com.eu.gsys.wma.infrastructure.entities.clients.CompanyClientEntity;
 import com.eu.gsys.wma.infrastructure.entities.clients.GenericClientEntity;

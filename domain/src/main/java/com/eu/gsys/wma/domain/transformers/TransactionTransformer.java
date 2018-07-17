@@ -1,6 +1,6 @@
 package com.eu.gsys.wma.domain.transformers;
 
-import com.eu.gsys.wma.domain.model.Transaction;
+import com.eu.gsys.wma.domain.models.Transaction;
 import com.eu.gsys.wma.domain.util.OperationTypeEnum;
 import com.eu.gsys.wma.infrastructure.entities.TransactionEntity;
 import org.springframework.stereotype.Component;

@@ -1,9 +1,9 @@
 package com.eu.gsys.wma.domain.services;
 
-import com.eu.gsys.wma.domain.model.clients.GenericClient;
-import com.eu.gsys.wma.domain.model.clients.IndividualClient;
-import com.eu.gsys.wma.domain.model.deposits.GenericDeposit;
-import com.eu.gsys.wma.domain.model.deposits.IndividualClientDeposit;
+import com.eu.gsys.wma.domain.models.clients.GenericClient;
+import com.eu.gsys.wma.domain.models.clients.IndividualClient;
+import com.eu.gsys.wma.domain.models.deposits.GenericDeposit;
+import com.eu.gsys.wma.domain.models.deposits.IndividualClientDeposit;
 import com.eu.gsys.wma.domain.transformers.ClientTransformer;
 import com.eu.gsys.wma.domain.transformers.DepositTransformer;
 import com.eu.gsys.wma.infrastructure.entities.clients.CompanyClientEntity;

@@ -1,7 +1,7 @@
 package com.eu.gsys.wma.web.startup;
 
-import com.eu.gsys.wma.domain.model.clients.GenericClient;
-import com.eu.gsys.wma.domain.model.tickets.DepositTicket;
+import com.eu.gsys.wma.domain.models.clients.GenericClient;
+import com.eu.gsys.wma.domain.models.tickets.DepositTicket;
 import com.eu.gsys.wma.domain.services.clients.ClientService;
 import com.eu.gsys.wma.domain.services.tickets.DepositTicketService;
 import com.eu.gsys.wma.domain.util.WmaException;
@@ -84,7 +84,7 @@ public class DepositTicketLoader implements ApplicationListener<ContextRefreshed
 		depositTicket.setComment("Wrong qty");
 
 		try {
-			depositTicketService.deleteByDepositTicket(depositTicket);
+			depositTicketService.removeDepositTicket(depositTicket);
 		} catch (WmaException e) {
 			e.printStackTrace();
 		}

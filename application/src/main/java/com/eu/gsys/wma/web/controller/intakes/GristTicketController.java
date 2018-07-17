@@ -1,6 +1,6 @@
 package com.eu.gsys.wma.web.controller.intakes;
 
-import com.eu.gsys.wma.domain.model.tickets.GristTicket;
+import com.eu.gsys.wma.domain.models.tickets.GristTicket;
 import com.eu.gsys.wma.domain.services.tickets.GristTicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

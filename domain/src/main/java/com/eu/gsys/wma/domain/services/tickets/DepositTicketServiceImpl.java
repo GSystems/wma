@@ -1,10 +1,10 @@
 package com.eu.gsys.wma.domain.services.tickets;
 
-import com.eu.gsys.wma.domain.model.Transaction;
-import com.eu.gsys.wma.domain.model.deposits.CompanyClientDeposit;
-import com.eu.gsys.wma.domain.model.deposits.GenericDeposit;
-import com.eu.gsys.wma.domain.model.deposits.IndividualClientDeposit;
-import com.eu.gsys.wma.domain.model.tickets.DepositTicket;
+import com.eu.gsys.wma.domain.models.Transaction;
+import com.eu.gsys.wma.domain.models.deposits.CompanyClientDeposit;
+import com.eu.gsys.wma.domain.models.deposits.GenericDeposit;
+import com.eu.gsys.wma.domain.models.deposits.IndividualClientDeposit;
+import com.eu.gsys.wma.domain.models.tickets.DepositTicket;
 import com.eu.gsys.wma.domain.services.TransactionService;
 import com.eu.gsys.wma.domain.transformers.ClientTransformer;
 import com.eu.gsys.wma.domain.transformers.DepositTransformer;
@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.eu.gsys.wma.domain.util.ErrorMessages.INCONSISTENT_OPERATION;
+import static com.eu.gsys.wma.domain.util.GeneralConstants.EMPTY_STRING;
 
 @Service
 public class DepositTicketServiceImpl implements DepositTicketService {
@@ -106,11 +107,13 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 	}
 
 	@Override
-	public void deleteByDepositTicket(DepositTicket depositTicket) throws WmaException {
+	public void removeDepositTicket(DepositTicket depositTicket) throws WmaException {
 		DepositTicket lastDepositTicket = findByTicketNumber(depositTicket.getTicketNumber());
 		String comment = depositTicket.getComment();
 
-		if (!lastDepositTicket.getConsumedFlag() && comment != null && !"".equals(comment)) {
+		if (lastDepositTicket.getConsumedFlag() && EMPTY_STRING.equals(comment)) {
+			throw new WmaException(INCONSISTENT_OPERATION);
+		} else {
 			depositTicket.setOperationType(OperationTypeEnum.REMOVE_DEPOSIT_TICKET);
 			depositTicket.setConsumedFlag(true);
 
@@ -119,8 +122,6 @@ public class DepositTicketServiceImpl implements DepositTicketService {
 
 			depositTicket.setId(null);
 			depositTicketRepository.save((DepositTicketEntity) ticketTransformer.fromModel(depositTicket));
-		} else {
-			throw new WmaException(INCONSISTENT_OPERATION);
 		}
 	}
 

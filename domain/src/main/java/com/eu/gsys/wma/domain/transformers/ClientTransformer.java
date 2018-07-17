@@ -1,8 +1,8 @@
 package com.eu.gsys.wma.domain.transformers;
 
-import com.eu.gsys.wma.domain.model.clients.CompanyClient;
-import com.eu.gsys.wma.domain.model.clients.GenericClient;
-import com.eu.gsys.wma.domain.model.clients.IndividualClient;
+import com.eu.gsys.wma.domain.models.clients.CompanyClient;
+import com.eu.gsys.wma.domain.models.clients.GenericClient;
+import com.eu.gsys.wma.domain.models.clients.IndividualClient;
 import com.eu.gsys.wma.infrastructure.entities.clients.CompanyClientEntity;
 import com.eu.gsys.wma.infrastructure.entities.clients.GenericClientEntity;
 import com.eu.gsys.wma.infrastructure.entities.clients.IndividualClientEntity;

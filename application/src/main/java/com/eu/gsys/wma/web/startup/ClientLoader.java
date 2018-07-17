@@ -1,7 +1,7 @@
 package com.eu.gsys.wma.web.startup;
 
-import com.eu.gsys.wma.domain.model.clients.CompanyClient;
-import com.eu.gsys.wma.domain.model.clients.IndividualClient;
+import com.eu.gsys.wma.domain.models.clients.CompanyClient;
+import com.eu.gsys.wma.domain.models.clients.IndividualClient;
 import com.eu.gsys.wma.domain.services.clients.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;

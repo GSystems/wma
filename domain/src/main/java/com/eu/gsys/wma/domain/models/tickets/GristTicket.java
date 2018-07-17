@@ -1,4 +1,4 @@
-package com.eu.gsys.wma.domain.model.tickets;
+package com.eu.gsys.wma.domain.models.tickets;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

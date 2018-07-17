@@ -1,6 +1,6 @@
 package com.eu.gsys.wma.domain.services.tickets;
 
-import com.eu.gsys.wma.domain.model.tickets.GristTicket;
+import com.eu.gsys.wma.domain.models.tickets.GristTicket;
 import com.eu.gsys.wma.domain.transformers.TicketTransformer;
 import com.eu.gsys.wma.domain.util.OperationTypeEnum;
 import com.eu.gsys.wma.infrastructure.entities.tickets.GristTicketEntity;

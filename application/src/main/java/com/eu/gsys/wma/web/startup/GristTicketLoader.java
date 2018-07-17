@@ -1,7 +1,7 @@
 package com.eu.gsys.wma.web.startup;
 
-import com.eu.gsys.wma.domain.model.clients.GenericClient;
-import com.eu.gsys.wma.domain.model.tickets.GristTicket;
+import com.eu.gsys.wma.domain.models.clients.GenericClient;
+import com.eu.gsys.wma.domain.models.tickets.GristTicket;
 import com.eu.gsys.wma.domain.services.clients.ClientService;
 import com.eu.gsys.wma.domain.services.tickets.GristTicketService;
 import org.springframework.beans.factory.annotation.Autowired;

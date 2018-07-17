@@ -1,6 +1,6 @@
 package com.eu.gsys.wma.web.startup;
 
-import com.eu.gsys.wma.domain.model.tickets.WithdrawTicket;
+import com.eu.gsys.wma.domain.models.tickets.WithdrawTicket;
 import com.eu.gsys.wma.domain.services.tickets.WithdrawTicketService;
 import com.eu.gsys.wma.domain.util.WmaException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +35,8 @@ public class WithdrawTicketLoader implements ApplicationListener<ContextRefreshe
 
 		try {
 			withdrawTicketService.grindAndWithdrawFromDeposit(ticket, true);
+			ticket.setComment("Wrong input");
+			withdrawTicketService.removeWithdrawTicket(ticket);
 		} catch (WmaException e) {
 			e.printStackTrace();
 		}

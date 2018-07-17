@@ -1,6 +1,6 @@
 package com.eu.gsys.wma.domain.services;
 
-import com.eu.gsys.wma.domain.model.Transaction;
+import com.eu.gsys.wma.domain.models.Transaction;
 import com.eu.gsys.wma.domain.transformers.TransactionTransformer;
 import com.eu.gsys.wma.infrastructure.entities.TransactionEntity;
 import com.eu.gsys.wma.infrastructure.repositories.TransactionRepository;

@@ -1,6 +1,6 @@
 package com.eu.gsys.wma.domain.services.tickets;
 
-import com.eu.gsys.wma.domain.model.tickets.GristTicket;
+import com.eu.gsys.wma.domain.models.tickets.GristTicket;
 
 import java.util.List;
 

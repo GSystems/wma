@@ -1,4 +1,4 @@
-package com.eu.gsys.wma.domain.model.mill;
+package com.eu.gsys.wma.domain.models.mill;
 
 import org.springframework.stereotype.Component;
 

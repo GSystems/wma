@@ -1,99 +1,184 @@
 package com.eu.gsys.wma.domain.transformers;
 
-import com.eu.gsys.wma.domain.model.DepositTicket;
-import com.eu.gsys.wma.domain.model.GristTicket;
+import com.eu.gsys.wma.domain.models.tickets.DepositTicket;
+import com.eu.gsys.wma.domain.models.tickets.GenericTicket;
+import com.eu.gsys.wma.domain.models.tickets.GristTicket;
+import com.eu.gsys.wma.domain.models.tickets.WithdrawTicket;
+import com.eu.gsys.wma.domain.util.OperationTypeEnum;
+import com.eu.gsys.wma.infrastructure.entities.clients.CompanyClientEntity;
+import com.eu.gsys.wma.infrastructure.entities.clients.GenericClientEntity;
+import com.eu.gsys.wma.infrastructure.entities.clients.IndividualClientEntity;
 import com.eu.gsys.wma.infrastructure.entities.tickets.DepositTicketEntity;
+import com.eu.gsys.wma.infrastructure.entities.tickets.GenericTicketForEntities;
 import com.eu.gsys.wma.infrastructure.entities.tickets.GristTicketEntity;
+import com.eu.gsys.wma.infrastructure.entities.tickets.WithdrawTicketEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Component
-public class TicketTransformer {
+public class TicketTransformer implements BaseTransformer<GenericTicketForEntities, GenericTicket> {
 
-	public GristTicketEntity fromGristTicketToEntity(GristTicket gristTicket) {
-		GristTicketEntity gristTicketEntity = new GristTicketEntity();
+	private final ClientTransformer clientTransformer;
 
-//		gristTicketEntity.setAddress(gristTicket.getAddress());
-		gristTicketEntity.setBranQtyForClient(gristTicket.getBranQtyForClient());
-//		gristTicketEntity.setClientId(gristTicket.getClientId());
-//		gristTicketEntity.setFirstName(gristTicket.getFirstName());
-		gristTicketEntity.setFlourQtyForClient(gristTicket.getFlourQtyForClient());
-		gristTicketEntity.setManufacturingLossesQty(gristTicket.getManufacturingLossesQty());
-		gristTicketEntity.setOtherCorpusQty(gristTicket.getOtherCorpusQty());
-		gristTicketEntity.setReferenceId(gristTicket.getReferenceId());
-		gristTicketEntity.setTicketId(gristTicket.getTicketId());
-		gristTicketEntity.setTollWheatQty(gristTicket.getTollWheatQty());
-		gristTicketEntity.setWheatQtyBrought(gristTicket.getWheatQtyBrought());
-		gristTicketEntity.setWheatQtyForGrist(gristTicket.getWheatQtyForGrist());
-		gristTicketEntity.setTimestamp(gristTicket.getDate());
-
-		return gristTicketEntity;
+	@Autowired
+	public TicketTransformer(ClientTransformer clientTransformer) {
+		this.clientTransformer = clientTransformer;
 	}
 
-	public GristTicket toGristTicketFromEntity(GristTicketEntity gristTicketEntity) {
-		GristTicket gristTicket = new GristTicket();
+	@Override
+	public GenericTicketForEntities fromModel(GenericTicket ticket) {
 
-//		gristTicket.setAddress(gristTicketEntity.getAddress());
-		gristTicket.setBranQtyForClient(gristTicketEntity.getBranQtyForClient());
-//		gristTicket.setClientId(gristTicketEntity.getClientId());
-		gristTicket.setFlourQtyForClient(gristTicketEntity.getFlourQtyForClient());
-		gristTicket.setManufacturingLossesQty(gristTicketEntity.getManufacturingLossesQty());
-		gristTicket.setOtherCorpusQty(gristTicketEntity.getOtherCorpusQty());
-		gristTicket.setReferenceId(gristTicketEntity.getReferenceId());
-		gristTicket.setTicketId(gristTicketEntity.getTicketId());
-		gristTicket.setTollWheatQty(gristTicketEntity.getTollWheatQty());
-		gristTicket.setWheatQtyBrought(gristTicketEntity.getWheatQtyBrought());
-		gristTicket.setWheatQtyForGrist(gristTicketEntity.getWheatQtyForGrist());
-		gristTicket.setDate(gristTicketEntity.getTimestamp());
-
-		return gristTicket;
+		if (ticket instanceof DepositTicket) {
+			return fromDepositTicketToEntity(ticket);
+		} else if (ticket instanceof GristTicket){
+			return fromGristTicketToEntity(ticket);
+		} else {
+			return fromWithdrawTicketToEntity(ticket);
+		}
 	}
 
-	public List<DepositTicket> toDepositTicketFromEntityList(Iterable<DepositTicketEntity> depositTicketEntities) {
-		List<DepositTicket> depositTickets = new ArrayList<>();
+	@Override
+	public GenericTicket toModel(GenericTicketForEntities ticketEntity) {
 
-		for (DepositTicketEntity depositTicketEntity : depositTicketEntities) {
-			depositTickets.add(toDepositTicketFromEntity(depositTicketEntity));
+		if (ticketEntity instanceof DepositTicketEntity) {
+			return toDepositTicketFromEntity(ticketEntity);
+		} else if (ticketEntity instanceof GristTicketEntity){
+			return toGristTicketFromEntity(ticketEntity);
+		} else {
+			return toWithdrawTicketFromEntity(ticketEntity);
+		}
+	}
+
+	private GenericTicketForEntities fromDepositTicketToEntity(GenericTicket ticket) {
+		DepositTicket depositTicket = (DepositTicket) ticket;
+		DepositTicketEntity ticketEntity = new DepositTicketEntity();
+
+		mapCommonFieldsForEntity(ticket, ticketEntity);
+
+		if (depositTicket.getConsumedFlag()) {
+			ticketEntity.setConsumedFlag(1);
 		}
 
-		return depositTickets;
+		ticketEntity.setWheatQty(depositTicket.getWheatQty());
+
+		return ticketEntity;
 	}
 
-	public DepositTicket toDepositTicketFromEntity(DepositTicketEntity depositTicketEntity) {
-		DepositTicket depositTicket = new DepositTicket();
+	private GenericTicketForEntities fromGristTicketToEntity(GenericTicket ticket) {
+		GristTicket gristTicket = (GristTicket) ticket;
+		GristTicketEntity ticketEntity = new GristTicketEntity();
 
-		depositTicket.setWheatQtyForDeposit(depositTicketEntity.getWheatQtyForDeposit());
-//		depositTicket.setAddress(depositTicketEntity.getAddress());
-//		depositTicket.setClientId(depositTicketEntity.getClientId());
-//		depositTicket.setFirstName(depositTicketEntity.getFirstName());
-		depositTicket.setDate(depositTicketEntity.getTimestamp());
-		depositTicket.setTicketId(depositTicketEntity.getTicketId());
+		mapCommonFieldsForEntity(ticket, ticketEntity);
 
-		return depositTicket;
+		ticketEntity.setBranQtyForClient(gristTicket.getBranQtyForClient());
+		ticketEntity.setFlourQtyForClient(gristTicket.getFlourQtyForClient());
+		ticketEntity.setManufacturingLossesQty(gristTicket.getManufacturingLossesQty());
+		ticketEntity.setOperationType(gristTicket.getOperationType().getCode());
+		ticketEntity.setOtherCorpusQty(gristTicket.getOtherCorpusQty());
+		ticketEntity.setTollWheatQty(gristTicket.getTollWheatQty());
+		ticketEntity.setWheatQtyBrought(gristTicket.getWheatQtyBrought());
+		ticketEntity.setWheatQtyForGrist(gristTicket.getWheatQtyForGrist());
+
+		return ticketEntity;
 	}
 
-	public DepositTicketEntity fromDepositTicketToEntity(DepositTicket depositTicket) {
-		DepositTicketEntity depositTicketEntity = new DepositTicketEntity();
+	private GenericTicketForEntities fromWithdrawTicketToEntity(GenericTicket ticket) {
+		WithdrawTicket withdrawTicket = (WithdrawTicket) ticket;
+		WithdrawTicketEntity ticketEntity = new WithdrawTicketEntity();
 
-		depositTicketEntity.setWheatQtyForDeposit(depositTicket.getWheatQtyForDeposit());
-//		depositTicketEntity.setAddress(depositTicket.getAddress());
-//		depositTicketEntity.setClientId(depositTicket.getClientId());
-//		depositTicketEntity.setFirstName(depositTicket.getFirstName());
-		depositTicketEntity.setTimestamp(depositTicket.getDate());
-		depositTicketEntity.setTicketId(depositTicket.getTicketId());
+		mapCommonFieldsForEntity(ticket, ticketEntity);
+		ticketEntity.setBranQtyWithdrawn(withdrawTicket.getBranQtyWithdrawn());
+		ticketEntity.setFlourQtyWithdrawn(withdrawTicket.getFlourQtyWithdrawn());
+		ticketEntity.setReferenceTicketNumber(withdrawTicket.getReferenceTicketNumber());
+		ticketEntity.setWheatQtyWithdrawn(withdrawTicket.getWheatQtyWithdrawn());
+		ticketEntity.setManufacturingLossesQty(withdrawTicket.getManufacturingLossesQty());
+		ticketEntity.setOtherCorpusQty(withdrawTicket.getOtherCorpusQty());
+		ticketEntity.setTollWheatQty(withdrawTicket.getTollWheatQty());
 
-		return depositTicketEntity;
+		return ticketEntity;
 	}
 
-	public Iterable<GristTicket> fromGristTicketToEntityList(Iterable<GristTicketEntity> gristTicketEntities) {
-		List<GristTicket> gristTickets = new ArrayList<>();
+	private void mapCommonFieldsForEntity(GenericTicket ticket, GenericTicketForEntities ticketEntity) {
 
-		for (GristTicketEntity gristTicketEntity : gristTicketEntities) {
-			gristTickets.add(toGristTicketFromEntity(gristTicketEntity));
+		ticketEntity.setComment(ticket.getComment());
+		ticketEntity.setDate(ticket.getDate());
+		ticketEntity.setId(ticket.getId());
+		ticketEntity.setTicketNumber(ticket.getTicketNumber());
+		ticketEntity.setOperationType(ticket.getOperationType().getCode());
+
+		GenericClientEntity clientEntity = clientTransformer.fromModel(ticket.getClient());
+
+		if (clientEntity instanceof IndividualClientEntity) {
+			ticketEntity.setIndividualClientEntity((IndividualClientEntity) clientEntity);
+		} else {
+			ticketEntity.setCompanyClientEntity((CompanyClientEntity) clientEntity);
+		}
+	}
+
+	private GenericTicket toDepositTicketFromEntity(GenericTicketForEntities depositEntity) {
+		DepositTicketEntity depositTicketEntity = (DepositTicketEntity) depositEntity;
+		DepositTicket deposit = new DepositTicket();
+
+		mapCommonFieldsForModel(deposit, depositTicketEntity);
+
+		if (depositTicketEntity.getConsumedFlag() == 1) {
+			deposit.setConsumedFlag(true);
 		}
 
-		return gristTickets;
+		deposit.setWheatQty(depositTicketEntity.getWheatQty());
+
+		return deposit;
+	}
+
+	private GenericTicket toGristTicketFromEntity(GenericTicketForEntities ticketEntity) {
+		GristTicketEntity gristTicketEntity = (GristTicketEntity) ticketEntity;
+		GristTicket ticket = new GristTicket();
+
+		mapCommonFieldsForModel(ticket, gristTicketEntity);
+
+		ticket.setBranQtyForClient(gristTicketEntity.getBranQtyForClient());
+		ticket.setFlourQtyForClient(gristTicketEntity.getFlourQtyForClient());
+		ticket.setManufacturingLossesQty(gristTicketEntity.getManufacturingLossesQty());
+		ticket.setOperationType(OperationTypeEnum.getTicketTypeByCode(gristTicketEntity.getOperationType()));
+		ticket.setOtherCorpusQty(gristTicketEntity.getOtherCorpusQty());
+		ticket.setTollWheatQty(gristTicketEntity.getTollWheatQty());
+		ticket.setWheatQtyBrought(gristTicketEntity.getWheatQtyBrought());
+		ticket.setWheatQtyForGrist(gristTicketEntity.getWheatQtyForGrist());
+
+		return ticket;
+	}
+
+	private GenericTicket toWithdrawTicketFromEntity(GenericTicketForEntities ticketEntity) {
+		WithdrawTicketEntity withdrawTicketEntity = (WithdrawTicketEntity) ticketEntity;
+		WithdrawTicket ticket = new WithdrawTicket();
+
+		mapCommonFieldsForModel(ticket, withdrawTicketEntity);
+
+		ticket.setBranQtyWithdrawn(withdrawTicketEntity.getBranQtyWithdrawn());
+		ticket.setFlourQtyWithdrawn(withdrawTicketEntity.getFlourQtyWithdrawn());
+		ticket.setReferenceTicketNumber(withdrawTicketEntity.getReferenceTicketNumber());
+		ticket.setWheatQtyWithdrawn(withdrawTicketEntity.getWheatQtyWithdrawn());
+		ticket.setManufacturingLossesQty(withdrawTicketEntity.getManufacturingLossesQty());
+		ticket.setOtherCorpusQty(withdrawTicketEntity.getOtherCorpusQty());
+		ticket.setTollWheatQty(withdrawTicketEntity.getTollWheatQty());
+
+		return ticket;
+	}
+
+	private void mapCommonFieldsForModel(GenericTicket ticket, GenericTicketForEntities ticketEntity) {
+		GenericClientEntity genericClientEntity;
+
+		if (ticketEntity.getIndividualClientEntity() != null) {
+			genericClientEntity = ticketEntity.getIndividualClientEntity();
+		} else {
+			genericClientEntity = ticketEntity.getCompanyClientEntity();
+		}
+
+		ticket.setComment(ticketEntity.getComment());
+		ticket.setClient(clientTransformer.toModel(genericClientEntity));
+		ticket.setDate(ticketEntity.getDate());
+		ticket.setId(ticketEntity.getId());
+		ticket.setOperationType(OperationTypeEnum.getTicketTypeByCode(ticketEntity.getOperationType()));
+		ticket.setTicketNumber(ticketEntity.getTicketNumber());
 	}
 }

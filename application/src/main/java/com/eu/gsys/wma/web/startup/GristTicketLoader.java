@@ -1,9 +1,9 @@
 package com.eu.gsys.wma.web.startup;
 
-import com.eu.gsys.wma.domain.model.Client;
-import com.eu.gsys.wma.domain.model.GristTicket;
-import com.eu.gsys.wma.domain.services.ClientService;
-import com.eu.gsys.wma.domain.services.GristTicketService;
+import com.eu.gsys.wma.domain.models.clients.GenericClient;
+import com.eu.gsys.wma.domain.models.tickets.GristTicket;
+import com.eu.gsys.wma.domain.services.clients.ClientService;
+import com.eu.gsys.wma.domain.services.tickets.GristTicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -14,34 +14,41 @@ import java.time.LocalDate;
 @Component
 public class GristTicketLoader implements ApplicationListener<ContextRefreshedEvent> {
 
-	@Autowired
-	private GristTicketService gristTicketService;
+	private final GristTicketService gristTicketService;
+	private final ClientService clientService;
 
 	@Autowired
-	private ClientService clientService;
+	public GristTicketLoader(GristTicketService gristTicketService, ClientService clientService) {
+		this.gristTicketService = gristTicketService;
+		this.clientService = clientService;
+	}
+
+	public int getOrder() {
+		return 3;
+	}
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 		GristTicket gristTicket0 = new GristTicket();
 
-		Client client0 = clientService.getClientById(1);
-		gristTicket0.setClient(client0);
+		GenericClient genericClient0 = clientService.findById(1L);
+		gristTicket0.setClient(genericClient0);
 		gristTicket0.setWheatQtyBrought(100.0);
-		gristTicket0.setTicketId(10L);
+		gristTicket0.setTicketNumber(10L);
 		gristTicket0.setDate(LocalDate.now());
-		gristTicketService.saveGristTicket(gristTicket0);
+		gristTicketService.addNew(gristTicket0);
 
-		System.out.println("Saved GristTicket - id: " + gristTicket0.getTicketId());
+		System.out.println("Saved GristTicket - id: " + gristTicket0.getTicketNumber());
 
 		GristTicket gristTicket1 = new GristTicket();
 
-		Client client1 = clientService.getClientById(2);
-		gristTicket1.setClient(client1);
+		GenericClient genericClient1 = clientService.findById(2L);
+		gristTicket1.setClient(genericClient1);
 		gristTicket1.setWheatQtyBrought(1000.0);
-		gristTicket1.setTicketId(11L);
+		gristTicket1.setTicketNumber(11L);
 		gristTicket1.setDate(LocalDate.now());
-		gristTicketService.saveGristTicket(gristTicket1);
+		gristTicketService.addNew(gristTicket1);
 
-		System.out.println("Saved GristTicket - id: " + gristTicket1.getTicketId());
+		System.out.println("Saved GristTicket - id: " + gristTicket1.getTicketNumber());
 	}
 }

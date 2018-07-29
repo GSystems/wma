@@ -1,7 +1,8 @@
 package com.eu.gsys.wma.web.startup;
 
-import com.eu.gsys.wma.domain.model.Client;
-import com.eu.gsys.wma.domain.services.ClientService;
+import com.eu.gsys.wma.domain.models.clients.CompanyClient;
+import com.eu.gsys.wma.domain.models.clients.IndividualClient;
+import com.eu.gsys.wma.domain.services.clients.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -12,8 +13,12 @@ import java.time.LocalDate;
 @Component
 public class ClientLoader implements ApplicationListener<ContextRefreshedEvent> {
 
+	private final ClientService clientService;
+
 	@Autowired
-	private ClientService clientService;
+	public ClientLoader(ClientService clientService) {
+		this.clientService = clientService;
+	}
 
 	public int getOrder() {
 		return 1;
@@ -21,25 +26,23 @@ public class ClientLoader implements ApplicationListener<ContextRefreshedEvent> 
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-		Client client0 = new Client();
+		IndividualClient individualClient = new IndividualClient();
 
-		client0.setId(1);
-		client0.setAddress("str Louis");
-		client0.setClientId(1890210226682L);
-		client0.setFirstName("Lesseter");
-		client0.setLastName("Gregory");
-		client0.setJoinDate(LocalDate.now());
+		individualClient.setAddress("str Louis");
+		individualClient.setFirstName("Lesseter");
+		individualClient.setLastName("Gregory");
+		individualClient.setPersonalId("1761234123123");
+		individualClient.setJoinDate(LocalDate.now());
 
-		clientService.saveClientTicket(client0);
+		clientService.save(individualClient);
 
-		Client client1 = new Client();
+		CompanyClient companyClient = new CompanyClient();
 
-		client1.setId(2);
-		client1.setAddress("str Alca");
-		client1.setCompanyName("SC Example SRL");
-		client1.setCompanyId("RO21423");
-		client0.setJoinDate(LocalDate.now());
+		companyClient.setAddress("str Alca");
+		companyClient.setCompanyName("SC Example SRL");
+		companyClient.setCompanyId("RO21423");
+		companyClient.setJoinDate(LocalDate.now());
 
-		clientService.saveClientTicket(client1);
+		clientService.save(companyClient);
 	}
 }

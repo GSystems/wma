@@ -1,7 +1,7 @@
 package com.eu.gsys.wma.web.controller.intakes;
 
-import com.eu.gsys.wma.domain.model.GristTicket;
-import com.eu.gsys.wma.infrastructure.dao.GristTicketDAO;
+import com.eu.gsys.wma.domain.models.tickets.GristTicket;
+import com.eu.gsys.wma.domain.services.tickets.GristTicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,12 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class GristTicketController {
 
 	@Autowired
-	private GristTicketDAO gristTicketDAO;
-
-	@Autowired
-	public void setGristTicketDAO(GristTicketDAO gristTicketDAO) {
-		this.gristTicketDAO = gristTicketDAO;
-	}
+	private GristTicketService gristTicketService;
 
 	@RequestMapping(value = "/gristTickets", method = RequestMethod.GET)
 	public String listGristTickets(Model model) {
@@ -42,9 +37,9 @@ public class GristTicketController {
 		return "gristTicketForm";
 	}
 
-	@RequestMapping("gristTicket/delete/{id}")
-	public String delete(@PathVariable Integer id) {
-		gristTicketDAO.deleteGristTicket(id);
+	@RequestMapping("gristTicket/delete/{gristTicket}")
+	public String delete(@PathVariable GristTicket gristTicket) {
+		gristTicketService.deleteByGristTicket(gristTicket);
 		return "redirect:/gristTickets";
 	}
 }

@@ -1,45 +1,83 @@
 package com.eu.gsys.wma.domain.transformers;
 
-import com.eu.gsys.wma.domain.model.Client;
-import com.eu.gsys.wma.infrastructure.entities.ClientEntity;
+import com.eu.gsys.wma.domain.models.clients.CompanyClient;
+import com.eu.gsys.wma.domain.models.clients.GenericClient;
+import com.eu.gsys.wma.domain.models.clients.IndividualClient;
+import com.eu.gsys.wma.infrastructure.entities.clients.CompanyClientEntity;
+import com.eu.gsys.wma.infrastructure.entities.clients.GenericClientEntity;
+import com.eu.gsys.wma.infrastructure.entities.clients.IndividualClientEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ClientTransformer implements BaseTransformer<ClientEntity, Client> {
+public class ClientTransformer implements BaseTransformer<GenericClientEntity, GenericClient> {
+
+	// TODO refactor this code
 
 	@Override
-	public ClientEntity fromModel(Client client) {
-		ClientEntity clientEntity = new ClientEntity();
+	public GenericClientEntity fromModel(GenericClient client) {
 
+		if (client instanceof IndividualClient) {
+			IndividualClient individualClient = (IndividualClient) client;
+			IndividualClientEntity clientEntity = new IndividualClientEntity();
+
+			mapCommonFieldsForEntity(individualClient, clientEntity);
+
+			clientEntity.setFirstName(individualClient.getFirstName());
+			clientEntity.setLastName(individualClient.getLastName());
+			clientEntity.setPersonalId(individualClient.getPersonalId());
+
+			return clientEntity;
+
+		} else {
+			CompanyClient companyClient = (CompanyClient) client;
+			CompanyClientEntity clientEntity = new CompanyClientEntity();
+
+			mapCommonFieldsForEntity(companyClient, clientEntity);
+
+			clientEntity.setCompanyId(companyClient.getCompanyId());
+			clientEntity.setCompanyName(companyClient.getCompanyName());
+
+			return clientEntity;
+		}
+	}
+
+	private void mapCommonFieldsForEntity(GenericClient client, GenericClientEntity clientEntity) {
 		clientEntity.setAddress(client.getAddress());
-		clientEntity.setCompanyId(client.getCompanyId());
-		clientEntity.setCompanyName(client.getCompanyName());
-		clientEntity.setClientId(client.getClientId());
-		clientEntity.setFirstName(client.getFirstName());
-		clientEntity.setLastName(client.getLastName());
 		clientEntity.setId(client.getId());
 		clientEntity.setJoinDate(client.getJoinDate());
-
-		return clientEntity;
 	}
 
 	@Override
-	public Client toModel(ClientEntity clientEntity) {
-		Client client = new Client();
+	public GenericClient toModel(GenericClientEntity genericClientEntity) {
 
-		client.setAddress(clientEntity.getAddress());
-		client.setClientId(clientEntity.getClientId());
-		client.setCompanyId(clientEntity.getCompanyId());
-		client.setCompanyName(clientEntity.getCompanyName());
-		client.setFirstName(clientEntity.getFirstName());
-		client.setLastName(clientEntity.getLastName());
-		client.setJoinDate(clientEntity.getJoinDate());
-		client.setId(clientEntity.getId());
+		if (genericClientEntity instanceof IndividualClientEntity) {
+			IndividualClientEntity clientEntity = (IndividualClientEntity) genericClientEntity;
+			IndividualClient client = new IndividualClient();
 
-		if (clientEntity.getCompanyId() != null) {
-			client.setIsCompany(true);
+			mapCommonFieldsForModel(client, clientEntity);
+
+			client.setFirstName(clientEntity.getFirstName());
+			client.setLastName(clientEntity.getLastName());
+			client.setPersonalId(clientEntity.getPersonalId());
+
+			return client;
+
+		} else {
+			CompanyClientEntity clientEntity = (CompanyClientEntity) genericClientEntity;
+			CompanyClient client = new CompanyClient();
+
+			mapCommonFieldsForModel(client, clientEntity);
+
+			client.setCompanyId(clientEntity.getCompanyId());
+			client.setCompanyName(clientEntity.getCompanyName());
+
+			return client;
 		}
+	}
 
-		return client;
+	private void mapCommonFieldsForModel(GenericClient client, GenericClientEntity clientEntity) {
+		client.setAddress(clientEntity.getAddress());
+		client.setId(clientEntity.getId());
+		client.setJoinDate(clientEntity.getJoinDate());
 	}
 }
